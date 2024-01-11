@@ -17,6 +17,20 @@ public class Method {
     private boolean isAbstract;
     private LinkedList<Parameter> parameters;
 
+
+    @Override
+    public String toString(){
+        String data = "<modifier> " + this.modifier + "</modifier>\n";
+        data = "<name> " + this.name + "</name>\n";
+        data = "<returnType> " + this.returnType + "</returnType>\n";
+        data = "<isAbstract> " + this.isAbstract + "</isAbstract>\n";
+        data = "<parameters= "+ parameters.size() + ">\n";
+            for(Parameter parameter : parameters){
+                data = parameter.toString();
+            }
+        data = data + "<parameters>\n";
+        return data;
+    }
     /**
      * Method
      * Constructor for the method class

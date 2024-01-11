@@ -12,6 +12,14 @@ public class Parameter {
     private String type;
     private String name;
 
+
+    @Override
+    public String toString(){
+        String data = "";
+        data = "<type> " + this.type + "</type>\n";
+        data = "<name> " + this.name + "</name>\n";
+        return data;
+    }
     /**
      * Parameter
      * Constructor for the parameter class

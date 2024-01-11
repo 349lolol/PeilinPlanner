@@ -18,6 +18,21 @@ public class InterfaceDiagram {
     private int xSize;
     private int ySize;
 
+    @Override
+    public String toString(){
+        String data = "<objectName> " + this.name + " </objectName>\n";
+        data = data +  "<xPosition> " + this.xPosition + " </xPosition>\n";
+        data = data +  "<yPosition> " + this.yPosition + " </yPosition>\n";
+        data = data +  "<xSize> " + this.xSize + " </xSize>\n";
+        data = data +  "<ySize> " + this.xSize + " </ySize>\n";
+        data = data + "<methods= "+methods.size()+">\n";
+            for(Method method : methods){
+                data = data + method.toString();
+            }
+        data = data + "</methods>\n";
+        return data;
+    }
+
     /**
      * InterfaceDiagram
      * Constructor for the InterfaceDiagram class

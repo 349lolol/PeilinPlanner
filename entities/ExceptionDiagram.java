@@ -15,6 +15,16 @@ public class ExceptionDiagram {
     private int xSize;
     private int ySize;
 
+    @Override
+    public String toString(){
+        String data = "<name> " + this.name + "</name>\n";
+        data = data +  "<xPosition> " + this.xPosition + " </xPosition>\n";
+        data = data +  "<yPosition> " + this.yPosition + " </yPosition>\n";
+        data = data +  "<xSize> " + this.xSize + " </xSize>\n";
+        data = data +  "<ySize> " + this.xSize + " </ySize>\n";
+        return data;
+    }
+
     /**
      * ExceptionDiagram
      * Constructor for the ExceptionDiagram class
