@@ -25,7 +25,7 @@ public class InterfaceDiagram {
         data = data +  "<yPosition> " + this.yPosition + " </yPosition>\n";
         data = data +  "<xSize> " + this.xSize + " </xSize>\n";
         data = data +  "<ySize> " + this.xSize + " </ySize>\n";
-        data = data + "<methods= "+methods.size()+">\n";
+        data = data + "<methods= "+ methods.size() + ">\n";
             for(Method method : methods){
                 data = data + method.toString();
             }

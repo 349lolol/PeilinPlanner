@@ -23,12 +23,12 @@ public class ClassDiagram {
     @Override
     public String toString(){
         String data = "<objectName> " + this.name + " </objectName>\n";
-        data = data +  "<isAbstract> " + this.isAbstract + " </isAbstract>\n";
-        data = data +  "<xPosition> " + this.xPosition + " </xPosition>\n";
-        data = data +  "<yPosition> " + this.yPosition + " </yPosition>\n";
-        data = data +  "<xSize> " + this.xSize + " </xSize>\n";
-        data = data +  "<ySize> " + this.xSize + " </ySize>\n";
-        data = data + "<fields= "+fields.size()+">\n";
+        data = data + "<isAbstract> " + this.isAbstract + " </isAbstract>\n";
+        data = data + "<xPosition> " + this.xPosition + " </xPosition>\n";
+        data = data + "<yPosition> " + this.yPosition + " </yPosition>\n";
+        data = data + "<xSize> " + this.xSize + " </xSize>\n";
+        data = data + "<ySize> " + this.xSize + " </ySize>\n";
+        data = data + "<fields= " + fields.size()+">\n";
             for(Field field : fields){
                 data = data + field.toString();
             }

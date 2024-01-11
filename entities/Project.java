@@ -29,7 +29,7 @@ public class Project {
         objects = new HashMap<Integer, Object>();
     }
 
-    public void addObject(Object object){
+    public void addObject(Object object){   
         objects.put(objectIdCount, object);
         objectIdCount++;
     }

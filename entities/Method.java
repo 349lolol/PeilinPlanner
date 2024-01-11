@@ -24,7 +24,7 @@ public class Method {
         data = "<name> " + this.name + "</name>\n";
         data = "<returnType> " + this.returnType + "</returnType>\n";
         data = "<isAbstract> " + this.isAbstract + "</isAbstract>\n";
-        data = "<parameters= "+ parameters.size() + ">\n";
+        data = "<parameters= " + parameters.size() + ">\n";
             for(Parameter parameter : parameters){
                 data = parameter.toString();
             }
