@@ -13,6 +13,14 @@ public class Field {
     private String type;
     private String name;
 
+    @Override
+    public String toString(){
+        String data = "<modifier> " + this.modifier + "</modifier>\n";
+        data = "<type> " + this.type + "</type>\n";
+        data = "<name> " + this.name + "</name>\n";
+        return data;
+    }
+
     /**
      * Field
      * Constructor for the field class
