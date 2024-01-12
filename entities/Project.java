@@ -7,6 +7,10 @@ public class Project {
     private int objectIdCount;
     private final HashMap<Integer, Object> objects;
 
+    /**
+     * toString
+     * constructs XML structure for a UML project
+     */
     @Override
     public String toString(){
         String data = "<objectName= " + objectIdCount +">" + projectName + "</objectName>\n";
@@ -23,13 +27,23 @@ public class Project {
         return data;
     }
 
+    /**
+     * fromString
+     * deparses XML structure into java project structure
+     * @param data data from string
+     */
+    public void fromString(String data){
+        String[] lines = data.split("\n");
+        
+    }
+
     Project(String projectName){
         this.objectIdCount = 0;
         this.projectName = projectName;
         objects = new HashMap<Integer, Object>();
     }
 
-    public void addObject(Object object){
+    public void addObject(Object object){   
         objects.put(objectIdCount, object);
         objectIdCount++;
     }

@@ -1,7 +1,7 @@
 /**
  * [Parameter.java]
  * Class representing a method parameter
- * @author Perry Xu
+ * @author Perry Xu & Patrick Wei
  * @version 1.0
  * 01/07/24
  */
@@ -12,7 +12,10 @@ public class Parameter {
     private String type;
     private String name;
 
-
+    /**
+     * toString
+     * constructs XML structure for parameter
+     */
     @Override
     public String toString(){
         String data = "";
