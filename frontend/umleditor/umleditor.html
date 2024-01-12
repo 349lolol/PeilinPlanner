@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UML Editor</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Peilin Planner</h1>
+    </header>
+
+    <nav>
+
+        <section id="diagrams" class="elements">
+
+            <h2>Diagrams</h2>
+
+            <div class="optionelements">
+                <div class="diagram">
+                    <img src="images/diagrams/classdiagramdisplay.png" alt="Class Diagram">
+
+                    <p>Class Diagram</p>
+                </div>
+
+                <div class="diagram">
+                    <img src="images/diagrams/interfacediagramdisplay.png" alt="Interface Diagram">
+
+                    <p>Interface Diagram</p>
+                </div>
+
+                <div class="diagram">
+                    <img src="images/diagrams/abstractclassdiagramdisplay.png" alt="Abstract Class Diagram">
+
+                    <p>Abstract Class Diagram</p>
+                </div>
+
+                <div class="diagram">
+                    <img src="images/diagrams/exceptiondiagramdisplay.png" alt="Exception Diagram">
+
+                    <p>Exception Diagram</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="connections" class="elements">
+
+            <h2>Connections</h2>
+
+            <form action="" method="get" id="verticesform">
+                <label for="vertices">Number of Vertices:</label>
+                <select name="vertices" id="vertices">
+                    <option value="0">0</option>
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </form>
+
+            <div class="optionelements">
+                <div class="connection">
+                    <img src="images/connections/inheritancearrow.png" alt="Inheritance Arrow">
+
+                    <p>Inheritance Arrow</p>
+                </div>
+
+                <div class="connection">
+                    <img src="images/connections/compositionarrow.png" alt="Composition Arrow">
+
+                    <p>Composition Arrow</p>
+                </div>
+
+                <div class="connection">
+                    <img src="images/connections/implemetationarrow.png" alt="Implementation Arrow">
+
+                    <p>Implementation Arrow</p>
+                </div>
+            </div>
+        </section>
+
+    </nav>
+
+    <div id="grid">
+
+    </div>
+
+    <section id="menu">
+        <div class="option">
+            Save
+        </div>
+
+        <div class="option">
+            Comment
+        </div>
+    </section>
+    
+</body>
+</html>
