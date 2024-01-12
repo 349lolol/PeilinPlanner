@@ -1,7 +1,7 @@
 /**
  * [Parameter.java]
  * Class representing a class field
- * @author Perry Xu
+ * @author Perry Xu & Patrick Wei
  * @version 1.0
  * 01/07/24
  */
@@ -13,6 +13,10 @@ public class Field {
     private String type;
     private String name;
 
+    /**
+     * toString
+     * constructs XML structure for field
+     */
     @Override
     public String toString(){
         String data = "<modifier> " + this.modifier + "</modifier>\n";

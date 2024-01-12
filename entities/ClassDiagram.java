@@ -1,7 +1,7 @@
 /**
  * [ClassDiagram.java]
  * Class representing a class diagram in UML
- * @author Perry Xu
+ * @author Perry Xu & Patrick Wei
  * @version 1.1
  * 01/09/24
  */
@@ -20,6 +20,10 @@ public class ClassDiagram {
     private int xSize;
     private int ySize;
 
+    /**
+     * toString
+     * constructs XML structure for class diagram
+     */
     @Override
     public String toString(){
         String data = "<objectName> " + this.name + " </objectName>\n";

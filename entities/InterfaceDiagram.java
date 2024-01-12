@@ -1,7 +1,7 @@
 /**
  * [InterfaceDiagram.java]
  * Class representing an interface diagram in UML
- * @author Perry Xu
+ * @author Perry Xu & Patrick Wei
  * @version 1.1
  * 01/09/24
  */
@@ -18,6 +18,11 @@ public class InterfaceDiagram {
     private int xSize;
     private int ySize;
 
+
+    /**
+     * toString
+     * constructs XML structure for interface diagram
+     */
     @Override
     public String toString(){
         String data = "<objectName> " + this.name + " </objectName>\n";

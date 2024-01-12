@@ -1,7 +1,7 @@
 /**
  * [Parameter.java]
  * Class representing a method
- * @author Perry Xu
+ * @author Perry Xu & Patrick Wei
  * @version 1.0
  * 01/07/24
  */
@@ -18,6 +18,10 @@ public class Method {
     private LinkedList<Parameter> parameters;
 
 
+    /**
+     * toString
+     * constructs XML structure for a method
+     */
     @Override
     public String toString(){
         String data = "<modifier> " + this.modifier + "</modifier>\n";
