@@ -14,16 +14,19 @@ public class toJava {
         }
         //process the list of objects in project to seperate into diagrams and arrows
         LinkedList<Object> allObjects = project.getAllObjects();
-        LinkedList<Object> classes = new LinkedList<Object>();
-        LinkedList<Object> arrows = new LinkedList<Object>();
+        LinkedList<Diagram> classes = new LinkedList<Diagram>();
+        LinkedList<Arrow> arrows = new LinkedList<Arrow>();
         HashMap<Object, LinkedList<Object>> links = new  HashMap<Object, LinkedList<Object>>();
         for(Object object : allObjects){
-            if((object instanceof ClassDiagram) || (object instanceof ExceptionDiagram) || (object instanceof InterfaceDiagram)){
-                classes.add(object);
-                links.put(object, new LinkedList<Object> ());
+            if((object instanceof Diagram)){
+                classes.add(((Diagram)object));
+                links.put(((Diagram)object), new LinkedList<Object> ());
             }
             else {
                 //add to arrows temporarily
+                if(object instanceof Arrow){
+                    arrows.add(((Arrow) object));
+                }
             }
         }
 
@@ -32,21 +35,21 @@ public class toJava {
         }
 
         //for every file, create a new file and then print the code in
-        for(Object newClass : classes){
-            
-            if(newClass instanceof ClassDiagram){
-                File javaFile = new File(path + "\\" + ((ClassDiagram)newClass).getName()+".java");
+        for(Diagram newObject : classes){
+            ClassDiagram testDiagram =  ((ClassDiagram)newObject);
+            if(newObject instanceof ClassDiagram){
+                File javaFile = new File(path + "\\" + newObject.getName()+".java");
                 String code = "";
                 //check for any imports using links
                 if(((ClassDiagram)object).isAbstract() == true){
-                    code = code + "public abstract class " + ((ClassDiagram)newClass).getName();
+                    code = code + "public abstract class " + ((ClassDiagram)newObject).getName();
                     //do all of the inheritance and interfaces here
                     code = code + " {\n";
-                    for(((ClassDiagram)newClass).getFields()){
+                    for(((ClassDiagram)newObject).getFields()){
                         //do all of the variables here
                     }
 
-                    for(((ClassDiagram)newClass).getMethods()){
+                    for(((ClassDiagram)newObject).getMethods()){
                         //do all of the variables here
                     }
                     code = code + "}";
