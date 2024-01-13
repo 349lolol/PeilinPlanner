@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UML Editor</title>
     <script defer src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css"
+        rel="stylesheet"
+    />
     <link rel="stylesheet" href="app.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +17,12 @@
 </head>
 <body>
     <header>
+        <form action="" method="get">
+            <button type="submit" id="home">
+                <i class="ri-home-office-line"></i>
+            </button>
+        </form>
+
         <h1>PeilinPlanner</h1>
     </header>
 
@@ -90,8 +100,25 @@
         </nav>
 
         <div id="grid">
-            <div id="diagram1">
-                Test
+            <div class="classdiagram diagram" id="diagram1">
+                <textarea name="name" cols="20" rows="1" placeholder="name" class="name"></textarea>
+                <textarea name="fields" cols="20" rows="5" placeholder="fields" class="fields"></textarea>
+                <textarea name="methods" cols="20" rows="5" placeholder="methods" class="methods"></textarea>
+            </div>
+
+            <div class="interfacediagram diagram" id="diagram2">
+                <textarea name="name" cols="20" rows="1" placeholder="name" class="name"></textarea>
+                <textarea name="methods" cols="20" rows="5" placeholder="methods" class="methods"></textarea>
+            </div>
+
+            <div class="abstractclassdiagram diagram" id="diagram3">
+                <textarea name="name" cols="20" rows="1" placeholder="name" class="name"></textarea>
+                <textarea name="fields" cols="20" rows="5" placeholder="fields" class="fields"></textarea>
+                <textarea name="methods" cols="20" rows="5" placeholder="methods" class="methods"></textarea>
+            </div>
+
+            <div class="exceptiondiagram diagram" id="diagram4">
+                <textarea name="name" cols="20" rows="1" placeholder="name" class="name"></textarea>
             </div>
         </div>
 

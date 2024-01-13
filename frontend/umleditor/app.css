@@ -58,6 +58,29 @@ header {
     height: 4rem;
 }
 
+header > form {
+    height: 4rem;
+    width: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+}
+
+#home {
+    background-color: rgb(117, 117, 117);
+    border: none;
+    padding: 0 0 0 0;
+    cursor: pointer;
+
+}
+
+#home > i {
+    font-size: 3rem;
+    color: #000;
+}
+
 h1 {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -221,19 +244,51 @@ main {
     position: relative;
 }
 
-#diagram1 {
+.classdiagram, .interfacediagram, .abstractclassdiagram, .exceptiondiagram {
     width: 10rem;
-    height: 10rem;
-    padding: 1rem;
-    background-color: aqua;
-    border: 4px solid grey;
-    position: absolute;
-    top: 20rem;
-    right: 10rem;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(230, 230, 230);
+    border: 2px solid black;
+    position: relative;
 
-    scale: 1;
+    scale: 1
+
 }
 
+.classdiagram > textarea, .interfacediagram > textarea, .abstractclassdiagram > textarea, .exceptiondiagram > textarea {
+    resize: none;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 0.8rem;
+}
+
+.classdiagram > .name, .interfacediagram > .name, .abstractclassdiagram > .name, .exceptiondiagram > .name {
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.classdiagram > .methods, .interfacediagram > .methods, .abstractclassdiagram > .methods, .exceptiondiagram > .methods {
+    border-top: 1px solid black;
+}
+
+.classdiagram >.name {
+    border-top: 4px solid #ff9f2a;
+}
+
+.interfacediagram >.name {
+    border-top: 4px solid #2aff66;
+}
+
+.abstractclassdiagram >.name {
+    border-top: 4px solid #2ebdfc;
+}
+
+.exceptiondiagram >.name {
+    border-top: 4px solid #ff2626;
+}
 #menu {
     width: 8rem;
     background-color: rgb(141, 141, 141);
