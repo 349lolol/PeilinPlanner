@@ -10,26 +10,19 @@ package entities;
 
 import java.util.LinkedList;
 
-public class InterfaceDiagram {
-    private String name;
+public class InterfaceDiagram extends Diagram{
     private final LinkedList<Method> methods;
-    private int xPosition;
-    private int yPosition;
-    private int xSize;
-    private int ySize;
-
-
     /**
      * toString
      * constructs XML structure for interface diagram
      */
     @Override
     public String toString(){
-        String data = "<objectName> " + this.name + " </objectName>\n";
-        data = data +  "<xPosition> " + this.xPosition + " </xPosition>\n";
-        data = data +  "<yPosition> " + this.yPosition + " </yPosition>\n";
-        data = data +  "<xSize> " + this.xSize + " </xSize>\n";
-        data = data +  "<ySize> " + this.xSize + " </ySize>\n";
+        String data = "<name> " + super.getName() + "</name>\n";
+        data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
+        data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";
+        data = data +  "<xSize> " + super.getYSize() + " </xSize>\n";
+        data = data +  "<ySize> " + super.getYSize() + " </ySize>\n";
         data = data + "<methods= "+ methods.size() + ">\n";
             for(Method method : methods){
                 data = data + method.toString();
@@ -49,30 +42,99 @@ public class InterfaceDiagram {
      * @param ySize the y size of the class
      */
     public InterfaceDiagram(String name, LinkedList<Method> methods, int xPosition, int yPosition, int xSize, int ySize) {
-        this.name = name;
+        super(name, xPosition, yPosition, xSize, ySize);
         this.methods = methods;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.xSize = xSize;
-        this.ySize = ySize;
+        
     }
 
     /**
      * getName
-     * returns the name of the interface
-     * @return the name of the interface
+     * returns the name of the exception
+     * @return the name of the exception
      */
     public String getName() {
-        return name;
+        return super.getName();
     }
 
     /**
      * setName
-     * updates the name of the interface
-     * @param name the new name of the interface
+     * updates the name of the exception
+     * @param name the new name of the exception
      */
     public void setName(String name) {
-        this.name = name;
+        super.setName(name);
+    }
+
+        /**
+     * getXPosition
+     * returns the x position of the top left of the class
+     * @return the x position of the top left of the class
+     */
+    public int getXPosition() {
+        return super.getXPosition();
+    }
+
+    /**
+     * setXPosition
+     * updates the x position of the top left of the class
+     * @param xPosition the new x position of the top left of the class
+     */
+    public void setXPosition(int xPosition) {
+        super.setXPosition(xPosition);
+    }
+
+    /**
+     * getYPosition
+     * returns the y position of the top left of the class
+     * @return the y position of the top left of the class
+     */
+    public int getYPosition() {
+        return super.getYPosition();
+    }
+
+    /**
+     * setYPosition
+     * updates the y position of the top left of the class
+     * @param xPosition the new y position of the top left of the class
+     */
+    public void setYPosition(int yPosition) {
+        super.setYPosition(yPosition);
+    }
+
+    /**
+     * getXSize
+     * returns the x size  of the class
+     * @return the x size of the class
+     */
+    public int getXSize() {
+        return super.getXSize();
+    }
+
+    /**
+     * setXSize
+     * updates the x size of the class
+     * @param xPosition the new x size of the class
+     */
+    public void setXSize(int xSize) {
+        super.setXSize(xSize);
+    }
+
+    /**
+     * getYSize
+     * returns the y size  of the class
+     * @return the y size of the class
+     */
+    public int getYSize() {
+        return super.getYSize();
+    }
+
+    /**
+     * setYSize
+     * updates the y size of the class
+     * @param xPosition the new y size of the class
+     */
+    public void setYSize(int ySize) {
+        super.setYSize(ySize);
     }
 
     /**
@@ -111,77 +173,4 @@ public class InterfaceDiagram {
     public void updateMethod(Method oldMethod, Method newMethod) {
         this.methods.set(this.methods.indexOf(oldMethod), newMethod);
     }
-
-        /**
-     * getXPosition
-     * returns the x position of the top left of the class
-     * @return the x position of the top left of the class
-     */
-    public int getXPosition() {
-        return this.xPosition;
-    }
-
-    /**
-     * setXPosition
-     * updates the x position of the top left of the class
-     * @param xPosition the new x position of the top left of the class
-     */
-    public void setXPosition(int xPosition) {
-        this.xPosition = xPosition;
-    }
-
-    /**
-     * getYPosition
-     * returns the y position of the top left of the class
-     * @return the y position of the top left of the class
-     */
-    public int getYPosition() {
-        return this.yPosition;
-    }
-
-    /**
-     * setYPosition
-     * updates the y position of the top left of the class
-     * @param xPosition the new y position of the top left of the class
-     */
-    public void setYPosition(int yPosition) {
-        this.yPosition = yPosition;
-    }
-
-    /**
-     * getXSize
-     * returns the x size  of the class
-     * @return the x size of the class
-     */
-    public int getXSize() {
-        return this.xSize;
-    }
-
-    /**
-     * setXSize
-     * updates the x size of the class
-     * @param xPosition the new x size of the class
-     */
-    public void setXSize(int xSize) {
-        this.xSize = xSize;
-    }
-
-    /**
-     * getYSize
-     * returns the y size  of the class
-     * @return the y size of the class
-     */
-    public int getYSize() {
-        return this.ySize;
-    }
-
-    /**
-     * setYSize
-     * updates the y size of the class
-     * @param xPosition the new y size of the class
-     */
-    public void setYSize(int ySize) {
-        this.ySize = ySize;
-    }
-
 }
