@@ -50,7 +50,7 @@ table {
 
 
 header {
-    background-color: grey;
+    background-color: rgb(117, 117, 117);
     position: relative;
     display: flex;
     justify-content: center;
@@ -67,8 +67,6 @@ h1 {
 }
 
 nav {
-    position: absolute;
-    left: 0rem;
     width: 25rem;
     height: 100%;
     background-color: darkgray;
@@ -89,15 +87,202 @@ section > h2 {
     text-align: center;
 }
 
-.elements {
+#diagramsdisplay > h2 {
+    background-color: rgb(141, 141, 141);
+}
+
+.elementsdisplay {
     width: 12.5rem;
+}
+
+.optionelements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+}
+
+#verticesform {
+    display: flex;
+    height: 2rem;
+    margin-left: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#verticesform > *:hover {
+    cursor:pointer;
+}
+
+#verticesform > label {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1rem;
+    letter-spacing: 0.2rem;
+
+}
+
+#optiondiagrams {
+    position: relative;
+    top: 3rem;
+}
+
+#optionconnections {
+    position: relative;
+    top: 1rem;
+}
+
+select {
+    width: 6rem;
+    height: 100%;
+    border: 1px solid grey;
+    background-color: rgb(189, 189, 189);
+}
+
+option {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 0.7rem;
+    
+    
+}
+
+#diagramsdisplay {
+    background-color: rgb(160, 160, 160);
     height: 100%;
 }
 
 .optionelements {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
+}
+
+
+.diagramdisplay {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.diagramdisplay:hover {
+    cursor: pointer;
+}
+.diagramdisplay > p {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1rem;
+}
+
+.connectiondisplay {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.connectiondisplay:hover {
+    cursor: pointer;
+}
+.connectiondisplay > p {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1rem;
+}
+
+html, body {
+    margin: 0;
     height: 100%;
 }
+
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+}
+
+#grid {
+    flex-grow: 1;
+    position: relative;
+}
+
+#diagram1 {
+    width: 10rem;
+    height: 10rem;
+    padding: 1rem;
+    background-color: aqua;
+    border: 4px solid grey;
+    position: absolute;
+    top: 20rem;
+    right: 10rem;
+
+    scale: 1;
+}
+
+#menu {
+    width: 8rem;
+    background-color: rgb(141, 141, 141);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.option:nth-of-type(1) {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.3rem;
+    border: 1px solid rgb(130, 130, 130);
+    width: 100%;
+    height: 2rem;
+    box-sizing: border-box;
+    background-color: rgb(141, 141, 141);
+}
+
+.option {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.3rem;
+    border-left: 1px solid rgb(130, 130, 130);
+    border-right: 1px solid rgb(130, 130, 130);
+    border-bottom: 1px solid rgb(130, 130, 130);
+    border-top: 0px;
+    width: 100%;
+    height: 2rem;
+    box-sizing: border-box;
+    background-color: rgb(141, 141, 141);
+}
+
+.option:hover {
+    background-color: rgb(130, 130, 130);
+
+    transition: background-color 0.1s linear 0s;
+}
+
+.option:active {
+    background-color: rgb(117, 117, 117);
+
+    transition: background-color 0.1s linear 0s;
+}
+

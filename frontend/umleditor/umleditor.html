@@ -4,100 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UML Editor</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <link rel="stylesheet" href="app.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script defer src="index.js" type="module"></script>
 </head>
 <body>
     <header>
-        <h1>Peilin Planner</h1>
+        <h1>PeilinPlanner</h1>
     </header>
 
-    <nav>
+    <main>
 
-        <section id="diagrams" class="elements">
+        <nav>
 
-            <h2>Diagrams</h2>
+            <section id="diagramsdisplay" class="elementsdisplay">
 
-            <div class="optionelements">
-                <div class="diagram">
-                    <img src="images/diagrams/classdiagramdisplay.png" alt="Class Diagram">
+                <h2>Diagrams</h2>
 
-                    <p>Class Diagram</p>
+                <div class="optionelements" id="optiondiagrams">
+                    <div class="diagramdisplay">
+                        <img src="images/diagrams/classdiagramdisplay.png" alt="Class Diagram">
+
+                        <p>Class</p>
+                    </div>
+
+                    <div class="diagramdisplay">
+                        <img src="images/diagrams/interfacediagramdisplay.png" alt="Interface Diagram">
+
+                        <p>Interface</p>
+                    </div>
+
+                    <div class="diagramdisplay">
+                        <img src="images/diagrams/abstractclassdiagramdisplay.png" alt="Abstract Class Diagram">
+
+                        <p>Abstract Class</p>
+                    </div>
+
+                    <div class="diagramdisplay">
+                        <img src="images/diagrams/exceptiondiagramdisplay.png" alt="Exception Diagram">
+
+                        <p>Exception</p>
+                    </div>
                 </div>
+            </section>
 
-                <div class="diagram">
-                    <img src="images/diagrams/interfacediagramdisplay.png" alt="Interface Diagram">
+            <section id="connectionsdisplay" class="elementsdisplay">
 
-                    <p>Interface Diagram</p>
+                <h2>Connections</h2>
+
+                <form action="" method="get" id="verticesform">
+                    <label for="vertices">Vertices: </label>
+                    <select name="vertices" id="vertices">
+                        <option value="0">0</option>
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </form>
+
+                <div class="optionelements" id="optionconnections">
+                    <div class="connectiondisplay">
+                        <img src="images/connections/inheritancearrow.png" alt="Inheritance Arrow">
+
+                        <p>Inheritance Arrow</p>
+                    </div>
+
+                    <div class="connectiondisplay">
+                        <img src="images/connections/compositionarrow.png" alt="Composition Arrow">
+
+                        <p>Composition Arrow</p>
+                    </div>
+
+                    <div class="connectiondisplay">
+                        <img src="images/connections/implemetationarrow.png" alt="Implementation Arrow">
+
+                        <p>Implementation Arrow</p>
+                    </div>
                 </div>
+            </section>
 
-                <div class="diagram">
-                    <img src="images/diagrams/abstractclassdiagramdisplay.png" alt="Abstract Class Diagram">
+        </nav>
 
-                    <p>Abstract Class Diagram</p>
-                </div>
-
-                <div class="diagram">
-                    <img src="images/diagrams/exceptiondiagramdisplay.png" alt="Exception Diagram">
-
-                    <p>Exception Diagram</p>
-                </div>
+        <div id="grid">
+            <div id="diagram1">
+                Test
             </div>
-        </section>
+        </div>
 
-        <section id="connections" class="elements">
-
-            <h2>Connections</h2>
-
-            <form action="" method="get" id="verticesform">
-                <label for="vertices">Number of Vertices:</label>
-                <select name="vertices" id="vertices">
-                    <option value="0">0</option>
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
+        <section id="menu">
+            <form action="" method="get">
+                <button class="option" type="submit">
+                    Save
+                </button>
+    
+                <button class="option" type="submit">
+                    Comment
+                </button>
             </form>
-
-            <div class="optionelements">
-                <div class="connection">
-                    <img src="images/connections/inheritancearrow.png" alt="Inheritance Arrow">
-
-                    <p>Inheritance Arrow</p>
-                </div>
-
-                <div class="connection">
-                    <img src="images/connections/compositionarrow.png" alt="Composition Arrow">
-
-                    <p>Composition Arrow</p>
-                </div>
-
-                <div class="connection">
-                    <img src="images/connections/implemetationarrow.png" alt="Implementation Arrow">
-
-                    <p>Implementation Arrow</p>
-                </div>
-            </div>
         </section>
-
-    </nav>
-
-    <div id="grid">
-
-    </div>
-
-    <section id="menu">
-        <div class="option">
-            Save
-        </div>
-
-        <div class="option">
-            Comment
-        </div>
-    </section>
+    </main>
     
 </body>
 </html>
