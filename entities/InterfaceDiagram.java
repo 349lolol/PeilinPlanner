@@ -47,11 +47,12 @@ public class InterfaceDiagram extends Diagram{
         
     }
 
-    /**
+        /**
      * getName
      * returns the name of the exception
      * @return the name of the exception
      */
+    @Override
     public String getName() {
         return super.getName();
     }
@@ -61,6 +62,7 @@ public class InterfaceDiagram extends Diagram{
      * updates the name of the exception
      * @param name the new name of the exception
      */
+    @Override
     public void setName(String name) {
         super.setName(name);
     }
@@ -70,6 +72,7 @@ public class InterfaceDiagram extends Diagram{
      * returns the x position of the top left of the class
      * @return the x position of the top left of the class
      */
+    @Override
     public int getXPosition() {
         return super.getXPosition();
     }
@@ -79,6 +82,7 @@ public class InterfaceDiagram extends Diagram{
      * updates the x position of the top left of the class
      * @param xPosition the new x position of the top left of the class
      */
+    @Override
     public void setXPosition(int xPosition) {
         super.setXPosition(xPosition);
     }
@@ -88,6 +92,7 @@ public class InterfaceDiagram extends Diagram{
      * returns the y position of the top left of the class
      * @return the y position of the top left of the class
      */
+    @Override
     public int getYPosition() {
         return super.getYPosition();
     }
@@ -97,6 +102,7 @@ public class InterfaceDiagram extends Diagram{
      * updates the y position of the top left of the class
      * @param xPosition the new y position of the top left of the class
      */
+    @Override
     public void setYPosition(int yPosition) {
         super.setYPosition(yPosition);
     }
@@ -106,6 +112,7 @@ public class InterfaceDiagram extends Diagram{
      * returns the x size  of the class
      * @return the x size of the class
      */
+    @Override
     public int getXSize() {
         return super.getXSize();
     }
@@ -115,6 +122,7 @@ public class InterfaceDiagram extends Diagram{
      * updates the x size of the class
      * @param xPosition the new x size of the class
      */
+    @Override
     public void setXSize(int xSize) {
         super.setXSize(xSize);
     }
@@ -124,6 +132,7 @@ public class InterfaceDiagram extends Diagram{
      * returns the y size  of the class
      * @return the y size of the class
      */
+    @Override
     public int getYSize() {
         return super.getYSize();
     }
@@ -133,6 +142,7 @@ public class InterfaceDiagram extends Diagram{
      * updates the y size of the class
      * @param xPosition the new y size of the class
      */
+    @Override
     public void setYSize(int ySize) {
         super.setYSize(ySize);
     }

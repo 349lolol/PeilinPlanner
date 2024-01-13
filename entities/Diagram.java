@@ -1,6 +1,14 @@
+/**
+ * [Diagram.java]
+ * Class representing a diagram in UML
+ * @author Perry Xu & Patrick Wei
+ * @version 1.1
+ * 01/09/24
+ */
+
 package entities;
 
-public abstract class Diagram {
+public class Diagram {
     private String name;
     private int xPosition;
     private int yPosition;
