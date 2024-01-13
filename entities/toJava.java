@@ -43,7 +43,6 @@ public class toJava {
         //for every file, create a new file and then print the code in
         for(Diagram newObject : classes){
             if(newObject instanceof ClassDiagram){
-                    
                 File javaFile = new File(path + "\\" + newObject.getName()+".java");
                 String code = "";
                 //check for any imports using links

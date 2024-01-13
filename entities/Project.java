@@ -19,7 +19,7 @@ public class Project {
         for(int index = 0; index < objectIdCount; index++){
             if(objects.get(index) != null){
                 //object has not been deleted by user, add to list
-                data = data + "<object id" + index + ">\n";
+                data = data + "<object id:" + index + ">\n";
                 data = data + objects.get(index).toString();
                 data = data + "</object>\n";
             }
