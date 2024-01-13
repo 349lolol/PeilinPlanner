@@ -8,12 +8,7 @@
 
 package entities;
 
-public class ExceptionDiagram {
-    private String name;
-    private int xPosition;
-    private int yPosition;
-    private int xSize;
-    private int ySize;
+public class ExceptionDiagram extends Diagram{
 
     /**
      * toString
@@ -21,11 +16,11 @@ public class ExceptionDiagram {
      */
     @Override
     public String toString(){
-        String data = "<name> " + this.name + "</name>\n";
-        data = data +  "<xPosition> " + this.xPosition + " </xPosition>\n";
-        data = data +  "<yPosition> " + this.yPosition + " </yPosition>\n";
-        data = data +  "<xSize> " + this.xSize + " </xSize>\n";
-        data = data +  "<ySize> " + this.xSize + " </ySize>\n";
+        String data = "<name> " + super.getName() + "</name>\n";
+        data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
+        data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";
+        data = data +  "<xSize> " + super.getYSize() + " </xSize>\n";
+        data = data +  "<ySize> " + super.getYSize() + " </ySize>\n";
         return data;
     }
 
@@ -39,20 +34,17 @@ public class ExceptionDiagram {
      * @param ySize the y size of the class
      */
     public ExceptionDiagram(String name, int xPosition, int yPosition, int xSize, int ySize) {
-        this.name = name;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.xSize = xSize;
-        this.ySize = ySize;
+        super(name, xPosition, yPosition, xSize, ySize);
     }
 
-    /**
+       /**
      * getName
      * returns the name of the exception
      * @return the name of the exception
      */
+    @Override
     public String getName() {
-        return name;
+        return super.getName();
     }
 
     /**
@@ -60,8 +52,9 @@ public class ExceptionDiagram {
      * updates the name of the exception
      * @param name the new name of the exception
      */
+    @Override
     public void setName(String name) {
-        this.name = name;
+        super.setName(name);
     }
 
         /**
@@ -69,8 +62,9 @@ public class ExceptionDiagram {
      * returns the x position of the top left of the class
      * @return the x position of the top left of the class
      */
+    @Override
     public int getXPosition() {
-        return this.xPosition;
+        return super.getXPosition();
     }
 
     /**
@@ -78,8 +72,9 @@ public class ExceptionDiagram {
      * updates the x position of the top left of the class
      * @param xPosition the new x position of the top left of the class
      */
+    @Override
     public void setXPosition(int xPosition) {
-        this.xPosition = xPosition;
+        super.setXPosition(xPosition);
     }
 
     /**
@@ -87,8 +82,9 @@ public class ExceptionDiagram {
      * returns the y position of the top left of the class
      * @return the y position of the top left of the class
      */
+    @Override
     public int getYPosition() {
-        return this.yPosition;
+        return super.getYPosition();
     }
 
     /**
@@ -96,8 +92,9 @@ public class ExceptionDiagram {
      * updates the y position of the top left of the class
      * @param xPosition the new y position of the top left of the class
      */
+    @Override
     public void setYPosition(int yPosition) {
-        this.yPosition = yPosition;
+        super.setYPosition(yPosition);
     }
 
     /**
@@ -105,8 +102,9 @@ public class ExceptionDiagram {
      * returns the x size  of the class
      * @return the x size of the class
      */
+    @Override
     public int getXSize() {
-        return this.xSize;
+        return super.getXSize();
     }
 
     /**
@@ -114,8 +112,9 @@ public class ExceptionDiagram {
      * updates the x size of the class
      * @param xPosition the new x size of the class
      */
+    @Override
     public void setXSize(int xSize) {
-        this.xSize = xSize;
+        super.setXSize(xSize);
     }
 
     /**
@@ -123,8 +122,9 @@ public class ExceptionDiagram {
      * returns the y size  of the class
      * @return the y size of the class
      */
+    @Override
     public int getYSize() {
-        return this.ySize;
+        return super.getYSize();
     }
 
     /**
@@ -132,7 +132,8 @@ public class ExceptionDiagram {
      * updates the y size of the class
      * @param xPosition the new y size of the class
      */
+    @Override
     public void setYSize(int ySize) {
-        this.ySize = ySize;
+        super.setYSize(ySize);
     }
 }

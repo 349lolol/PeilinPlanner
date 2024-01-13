@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.LinkedList;
 import java.util.HashMap;
 
 public class Project {
@@ -18,7 +19,7 @@ public class Project {
         for(int index = 0; index < objectIdCount; index++){
             if(objects.get(index) != null){
                 //object has not been deleted by user, add to list
-                data = data + "<object id" + index + ">\n";
+                data = data + "<object id:" + index + ">\n";
                 data = data + objects.get(index).toString();
                 data = data + "</object>\n";
             }
@@ -50,6 +51,16 @@ public class Project {
 
     public Object getObject(int id){
         return objects.get(id);
+    }
+
+    public LinkedList<Object> getAllObjects(){
+        LinkedList<Object> allObjects = new LinkedList<Object>();
+        for(int i = 0; i < objectIdCount; i++){
+            if(getObject(i) != null){
+                allObjects.add(getObject(i));
+            }
+        }
+        return allObjects;
     }
 
     public String getProjectName(){
