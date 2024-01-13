@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.LinkedList;
 import java.util.HashMap;
 
 public class Project {
@@ -50,6 +51,16 @@ public class Project {
 
     public Object getObject(int id){
         return objects.get(id);
+    }
+
+    public LinkedList<Object> getAllObjects(){
+        LinkedList<Object> allObjects = new LinkedList<Object>();
+        for(int i = 0; i < objectIdCount; i++){
+            if(getObject(i) != null){
+                allObjects.add(getObject(i));
+            }
+        }
+        return allObjects;
     }
 
     public String getProjectName(){
