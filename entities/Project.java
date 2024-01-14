@@ -1,3 +1,11 @@
+/**
+ * [Project.java]
+ * Class representing a UML PROJECT
+ * @author Perry Xu & Patrick Wei
+ * @version 1.0
+ * 01/07/24
+ */
+
 package entities;
 
 import java.util.LinkedList;
@@ -14,7 +22,8 @@ public class Project {
      */
     @Override
     public String toString(){
-        String data = "<name= " + objectIdCount +">" + projectName + "</name>\n";
+        String data = "<OBJECTYPE-PROJECT>";
+        data = data + "<name= " + objectIdCount +">" + projectName + "</name>\n";
         data = data + "<objects>\n";
         for(int index = 0; index < objectIdCount; index++){
             if(objects.get(index) != null){
