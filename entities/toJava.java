@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.io.PrintWriter;
 
 public class toJava {
@@ -28,7 +27,7 @@ public class toJava {
             else {
                 //add to arrows temporarily
                 if(UMLObject instanceof Arrow){
-                    arrows.add(((Arrow) UMLObject));
+                    arrows.add(((Arrow)UMLObject));
                 }
             }
         }
@@ -91,7 +90,7 @@ public class toJava {
             }
             File javaFile = new File(path + "\\" + newObject.getName()+".java"); 
             PrintWriter printWriter = new PrintWriter(javaFile);
-            printWriter.println (code);
+            printWriter.println(code);
             printWriter.close(); 
         }
     } 
