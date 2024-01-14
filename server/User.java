@@ -1,0 +1,32 @@
+import java.util.LinkedList;
+
+import entities.Arrow;
+import entities.ClassDiagram;
+import entities.Diagram;
+import entities.ExceptionDiagram;
+import entities.Field;
+import entities.InterfaceDiagram;
+import entities.Method;
+import entities.Parameter;
+import entities.Project;
+
+
+public class User {
+    private final String username;
+    private final String password;
+    private final LinkedList<Project> sharedProjects;
+
+    User(String username, String password){
+        this.username = username;
+        this.password = password;
+        sharedProjects = new LinkedList<Project>();
+    }
+
+    public String getUserName(){
+        return this.username;
+    }
+
+    String getPassword(){
+        return this.password;
+    }
+}

@@ -17,6 +17,16 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+import entities.Arrow;
+import entities.ClassDiagram;
+import entities.Diagram;
+import entities.ExceptionDiagram;
+import entities.Field;
+import entities.InterfaceDiagram;
+import entities.Method;
+import entities.Parameter;
+import entities.Project;
+
 public class Server {
 
     //wait for papi to come back with the solution

@@ -14,7 +14,7 @@ public class Project {
      */
     @Override
     public String toString(){
-        String data = "<objectName= " + objectIdCount +">" + projectName + "</objectName>\n";
+        String data = "<name= " + objectIdCount +">" + projectName + "</name>\n";
         data = data + "<objects>\n";
         for(int index = 0; index < objectIdCount; index++){
             if(objects.get(index) != null){
@@ -35,6 +35,11 @@ public class Project {
      */
     public void fromString(String data){
         String[] lines = data.split("\n");
+        //level 1 - project
+        //level 2 - project details
+        //level 2 - header of object
+        //level 3 - index value information (object)
+        //level 4 - lists of parameters of object
         
     }
 
