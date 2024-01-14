@@ -71,15 +71,22 @@ public class Project{
     public void fromFile(String data){
         String[] lines = data.split("\n");
         ArrayList<Integer> diagramIndices = new ArrayList<Integer>();
+        ArrayList<Integer> arrowIndices = new ArrayList<Integer>();
         for(int i = 0; i < lines.length; i++){
             if((lines[i].equals("<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>"))){
                 diagramIndices.add(i);
             }
             else if(lines[i].equals("<OBJECTYPE> ARROW </OBJECTYPE>")){
-                
+                arrowIndices.add(i);
             }
         }
+
+        //extract data from each point
+
         //now all classes starting points are stored
+        //iteratively sort through each diagram indice
+        //just use string.split(" ") to seperate the header/foot from the actual data
+        //for x,y, coordiantes of an arrow do string.split(", ")
     }
 
     Project(String projectName){
