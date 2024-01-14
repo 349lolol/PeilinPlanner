@@ -47,7 +47,7 @@ public class InterfaceDiagram extends Diagram{
         
     }
 
-        /**
+    /**
      * getName
      * returns the name of the exception
      * @return the name of the exception

@@ -25,6 +25,10 @@ public class Field {
         return data;
     }
 
+    public String toJava(){
+        return (this.modifier + " " + this.type + " " + this.name + ";\n");
+    }
+
     /**
      * Field
      * Constructor for the field class

@@ -35,6 +35,27 @@ public class Method {
         data = data + "<parameters>\n";
         return data;
     }
+
+    public String toJava(){
+        String code = "";
+        if(this.isAbstract()){
+            code = this.modifier + " abstract " + this.returnType + " " + this.name + " (";
+            for(int i = 0; i < parameters.size(); i++){
+                code = code + parameters.get(i).getType() + " " + parameters.get(i).getName() + ", ";
+            }
+            code = code.substring(0, (code.length() - 2));
+            code = code + ") {\n    \n}\n\n";
+        }
+        else {
+            code = this.modifier + " " + this.returnType + " " + this.name + " (";
+            for(int i = 0; i < parameters.size(); i++){
+                code = code + parameters.get(i).getType() + " " + parameters.get(i).getName() + ", ";
+            }
+            code = code.substring(0, (code.length() - 2));
+            code = code + ");\n\n";
+        }
+        return code;
+    }
     /**
      * Method
      * Constructor for the method class

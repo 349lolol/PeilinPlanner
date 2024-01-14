@@ -1,12 +1,13 @@
 package entities;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.PrintWriter;
 
 public class toJava {
-    public static void toJava(Project project){
+    public static void toJava(Project project) throws FileNotFoundException{
         //initialize the new folder
         String path = "C:\\Users\\patri\\Documents\\PeilinPlanner\\PeilinPlanner\\"+project.getProjectName();
         File folder = new File(path);
@@ -16,11 +17,7 @@ public class toJava {
         //process the list of objects in project to seperate into diagrams and arrows
         LinkedList<Object> allObjects = project.getAllObjects();
         LinkedList<Diagram> classes = new LinkedList<Diagram>();
-        // LinkedList<Field> a = new LinkedList<Field>();
-        // LinkedList<Method> b = new LinkedList<Method>();
-        // boolean flag = true;
-        // ClassDiagram c = new ClassDiagram("name", flag ,a, b, 1, 2, 1, 2);
-        // classes.add(c);
+        
         LinkedList<Arrow> arrows = new LinkedList<Arrow>();
         HashMap<Object, LinkedList<Object>> links = new HashMap<Object, LinkedList<Object>>();
         for(Object UMLObject : allObjects){
@@ -36,50 +33,66 @@ public class toJava {
             }
         }
 
-        for(Arrow newArrow : arrows){
+        for(int i = 0; i < arrows.size(); i++){
             //get the class its pointing to, and then add it to links
+            Arrow arrow = arrows.get(i);
+            links.get(arrow.getDestination()).add(arrow);
         }
 
         //for every file, create a new file and then print the code in
-        for(Diagram newObject : classes){
-            if(newObject instanceof ClassDiagram){
-                File javaFile = new File(path + "\\" + newObject.getName()+".java");
-                String code = "";
+        for(int i = 0; i < classes.size(); i++){
+            Diagram newObject = classes.get(i);
+            String code = "";
+            //add printwriter and filewriter here
+            if(newObject instanceof ClassDiagram){ 
+                
                 //check for any imports using links
                 if(((ClassDiagram)newObject).isAbstract() == true){
                     code = code + "public abstract class " + ((ClassDiagram)newObject).getName();
-                    //do all of the inheritance and interfaces here
-
-                    code = code + " {\n";
-                    for(((ClassDiagram)newObject).getFields()){
-                        //do all of the variables here
-                    }
-
-                    for(((ClassDiagram)newObject).getMethods()){
-                        //do all of the variables here
-                    }
-                    code = code + "}";
+                    
                 }
                 else {
-                    code = code + "public class " + ((ClassDiagram)object).getName() + " {\n";
-
-                    code = code + "}";
+                    code = code + "public class " + ((ClassDiagram)newObject).getName() + " {\n";
                 }
-                
-                
+                for(int j = 0; j < arrows.size(); j++){
+                    if(arrows.get(j).getArrowType().equals("INHERIT")){
+                        code = code + " inherits " + arrows.get(j).getOrigin() + " ";
+                    }
+                    else if(arrows.get(j).getArrowType().equals("INTERFACE")){
+                        code = code + " implements " + arrows.get(j).getOrigin() + " ";
+                    }
+                }
+                code = code + " {\n";
+                for(int j = 0; j < ((ClassDiagram)newObject).getFields().size(); j++){
+                    code = code + "    " + ((ClassDiagram)newObject).getFields().get(i).toJava();
+                }
+                code = code + "\n";
+                for(int j = 0; j < ((ClassDiagram)newObject).getMethods().size(); j++){
+                    code = code + "    " + ((ClassDiagram)newObject).getMethods().get(i).toJava();
+
+                }
                 code = code + "}";
             }
             else if (newObject instanceof ExceptionDiagram){
-                String code = "";
-                //check for any imports, inheritance, interfaces using links
+                code = code + "public class " + ((ExceptionDiagram)newObject).getName() + " extends Exception {\n";
+                code = code + "    public " + ((ExceptionDiagram)newObject).getName() + "(String errorMessage) {\n";
+                code = code + "        super(errorMessage);\n    }\n}\n";
             }
             else if (newObject instanceof InterfaceDiagram){
-                String code = "";
                 //check for any imports, inheritance, interfaces using links
+                code = code + "public interface " + ((InterfaceDiagram)newObject).getName() + " {\n";
+                for(int j = 0; j < ((InterfaceDiagram)newObject).getMethods().size(); j++){
+                    code = code + "    " + ((InterfaceDiagram)newObject).getMethods().get(i).toJava();
+                    code = code + "}";
+                }
             }
             else {
                 System.out.println("bad class - error in toJava");
             }
+            File javaFile = new File(path + "\\" + newObject.getName()+".java"); 
+            PrintWriter printWriter = new PrintWriter(javaFile);
+            printWriter.println (code);
+            printWriter.close(); 
         }
     } 
 }
