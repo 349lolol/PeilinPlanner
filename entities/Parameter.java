@@ -19,8 +19,8 @@ public class Parameter {
     @Override
     public String toString(){
         String data = "";
-        data = "<type> " + this.type + "</type>\n";
-        data = "<name> " + this.name + "</name>\n";
+        data = "<type> " + this.type + " </type>\n";
+        data = "<name> " + this.name + " </name>\n";
         return data;
     }
     /**

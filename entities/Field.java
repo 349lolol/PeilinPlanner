@@ -19,9 +19,9 @@ public class Field {
      */
     @Override
     public String toString(){
-        String data = "<modifier> " + this.modifier + "</modifier>\n";
-        data = "<type> " + this.type + "</type>\n";
-        data = "<name> " + this.name + "</name>\n";
+        String data = "<modifier> " + this.modifier + " </modifier>\n";
+        data = "<type> " + this.type + " </type>\n";
+        data = "<name> " + this.name + " </name>\n";
         return data;
     }
 

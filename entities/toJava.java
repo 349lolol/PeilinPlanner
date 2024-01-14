@@ -14,23 +14,9 @@ public class toJava {
             folder.mkdirs();
         }
         //process the list of objects in project to seperate into diagrams and arrows
-        LinkedList<Object> allObjects = project.getAllObjects();
-        LinkedList<Diagram> classes = new LinkedList<Diagram>();
-        
-        LinkedList<Arrow> arrows = new LinkedList<Arrow>();
+        LinkedList<Diagram> classes = project.getAllDiagrams();
+        LinkedList<Arrow> arrows = project.getAllArrows();
         HashMap<Object, LinkedList<Object>> links = new HashMap<Object, LinkedList<Object>>();
-        for(Object UMLObject : allObjects){
-            if((UMLObject instanceof Diagram)){
-                classes.add(((Diagram)UMLObject));
-                links.put(((Diagram)UMLObject), new LinkedList<Object>());
-            }
-            else {
-                //add to arrows temporarily
-                if(UMLObject instanceof Arrow){
-                    arrows.add(((Arrow)UMLObject));
-                }
-            }
-        }
 
         for(int i = 0; i < arrows.size(); i++){
             //get the class its pointing to, and then add it to links

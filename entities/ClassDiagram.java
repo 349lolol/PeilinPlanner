@@ -21,18 +21,19 @@ public class ClassDiagram extends Diagram {
      */
     @Override
     public String toString(){
-        String data = "<name> " + super.getName() + "</name>\n";
+        String data = "<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>\n";
+        data = data +  "<name> " + super.getName() + " </name>\n";
         data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
         data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";
         data = data +  "<xSize> " + super.getYSize() + " </xSize>\n";
         data = data +  "<ySize> " + super.getYSize() + " </ySize>\n";
         data = data + "<isAbstract> " + this.isAbstract + " </isAbstract>\n";
-        data = data + "<fields= " + fields.size()+">\n";
+        data = data + "<fields=" + fields.size() + ">\n";
             for(Field field : fields){
                 data = data + field.toString();
             }
         data = data + "</fields>\n";
-        data = data + "<methods= "+methods.size()+">\n";
+        data = data + "<methods= " + methods.size() + ">\n";
             for(Method method : methods){
                 data = data + method.toString();
             }

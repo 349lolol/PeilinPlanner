@@ -18,12 +18,13 @@ public class InterfaceDiagram extends Diagram{
      */
     @Override
     public String toString(){
-        String data = "<name> " + super.getName() + "</name>\n";
+        String data = "<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>\n";
+        data = data +  "<name> " + super.getName() + " </name>\n";
         data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
         data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";
         data = data +  "<xSize> " + super.getYSize() + " </xSize>\n";
         data = data +  "<ySize> " + super.getYSize() + " </ySize>\n";
-        data = data + "<methods= "+ methods.size() + ">\n";
+        data = data + "<methods=" + methods.size() + ">\n";
             for(Method method : methods){
                 data = data + method.toString();
             }
