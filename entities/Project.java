@@ -76,14 +76,16 @@ public class Project{
             if((lines[i].equals("<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>"))){
                 diagramIndices.add(i);
                 //all of the single variable/single line values are written first
+                //do string.split on " ", take the middle value
                 //after that it is the variables/methods, which then requires another layer of searching for start/end of variable/method
-                //based on the length of the list, create for loop that iterates through n lines
+                //based on the length of the list, create for loop that iterates through n lines and process each line with string.split " "
             }
             else if(lines[i].equals("<OBJECTYPE> ARROW </OBJECTYPE>")){
                 arrowIndices.add(i);
                 //all of the single variable/single line values are written first
-                //after that its two lists of variables/methods
-                //the lists for these have already been.tostringed using "a, b, c, d, e", just do string.split on ", " to get the values
+                //do string.split on " ", take the middle value
+                //after that its two lists of x/y coordinates
+                //the lists for these have already been.tostringed using "a, b, c, d, e", just do string.split on ", " to get the values with parseint, add to arraylist
             }
         }
 
