@@ -72,6 +72,7 @@ public class Project{
         String[] lines = data.split("\n");
         ArrayList<Integer> diagramIndices = new ArrayList<Integer>();
         ArrayList<Integer> arrowIndices = new ArrayList<Integer>();
+        int counter = 0;
         for(int i = 0; i < lines.length; i++){
             if((lines[i].equals("<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>"))){
                 diagramIndices.add(i);
@@ -86,6 +87,53 @@ public class Project{
                 //do string.split on " ", take the middle value
                 //after that its two lists of x/y coordinates
                 //the lists for these have already been.tostringed using "a, b, c, d, e", just do string.split on ", " to get the values with parseint, add to arraylist
+            }
+        }
+
+        for (int i = 0; i < diagramIndices.size(); i++) {
+            if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>")) {
+                int name = Integer.parseInt(lines[diagramIndices.get(i) + 1].split(" ")[1]);
+                int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
+                int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
+                int xSize = Integer.parseInt(lines[diagramIndices.get(i) + 4].split(" ")[1]);
+                int ySize = Integer.parseInt(lines[diagramIndices.get(i) + 5].split(" ")[1]);
+                boolean isAbstract = Boolean.valueOf(lines[diagramIndices.get(i) + 6].split(" ")[1]);
+
+                counter = 7;
+                LinkedList<String[]> fields = new LinkedList<>();
+
+                for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); j++) {
+                    fields.add(new String[3]);
+                    for (int k = 0; k < 3; k++) {
+                        counter = counter + 1;
+                        fields.get(3*j)[k] = lines[diagramIndices.get(i) + counter];
+                    }
+                }
+
+                for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + 7 + ].split(" ")[1]); j++) {
+                    fields.add(new String[3]);
+                    for (int k = 0; k < 3; k++) {
+                        fields.get(3*j)[k] = lines[diagramIndices.get(i) + 8 + k];
+                    }
+                }
+
+
+            } else if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) {
+                int name = Integer.parseInt(lines[diagramIndices.get(i) + 1].split(" ")[1]);
+                int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
+                int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
+                int xSize = Integer.parseInt(lines[diagramIndices.get(i) + 4].split(" ")[1]);
+                int ySize = Integer.parseInt(lines[diagramIndices.get(i) + 5].split(" ")[1]);
+                
+
+            } else if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>")) {
+                int name = Integer.parseInt(lines[diagramIndices.get(i) + 1].split(" ")[1]);
+                int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
+                int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
+                int xSize = Integer.parseInt(lines[diagramIndices.get(i) + 4].split(" ")[1]);
+                int ySize = Integer.parseInt(lines[diagramIndices.get(i) + 5].split(" ")[1]);
+
+
             }
         }
 
