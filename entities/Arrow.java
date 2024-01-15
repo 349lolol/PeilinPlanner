@@ -18,7 +18,7 @@ public class Arrow{
 
     public String toString(){
         String data = "<OBJECTYPE> ARROW </OBJECTYPE>\n";
-        data = data + "<Origin> " + this.origin.getName() + " </Origin>\n";
+        data = data + "<Origin> " + this.origin.getName() + " </Origin>\n";  //only getname, not actual one for tostring
         data = data + "<Destination> " + this.destination.getName() + " </Destination>\n";
         data = data + "<ArrowType> " + this.arrowType + " </ArrowType>\n";
         String xList = "";
