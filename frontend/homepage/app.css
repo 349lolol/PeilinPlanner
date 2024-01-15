@@ -179,9 +179,10 @@ main {
     padding: 5rem;
     flex-grow: 1;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 8rem;
+    gap: 7rem;
+
 }
 
 .project {
