@@ -73,6 +73,14 @@ public class Method {
         this.parameters = parameters;
     }
 
+    public Method(){
+        this.modifier = "EMPTY";
+        this.name = "EMPTY";
+        this.returnType = "EMPTY";
+        this.isAbstract = false;
+        this.parameters = new LinkedList<Parameter>();
+    }
+
     /**
      * getModifier
      * Returns the modifier of the method

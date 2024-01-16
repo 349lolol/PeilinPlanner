@@ -100,17 +100,20 @@ public class Project{
                 boolean isAbstract = Boolean.valueOf(lines[diagramIndices.get(i) + 6].split(" ")[1]);
 
                 counter = 7;
-                LinkedList<String[]> fields = new LinkedList<>();
+                LinkedList<Field> fields = new LinkedList<Field>();
 
                 for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); j++) {
-                    fields.add(new String[3]);
-                    for (int k = 0; k < 3; k++) {
-                        counter = counter + 1;
-                        fields.get(3*j)[k] = lines[diagramIndices.get(i) + counter];
-                    }
+                    fields.add(new Field());
+                    counter = counter + 1;
+                    fields.get(fields.size()-1).setModifier(lines[diagramIndices.get(i) + counter]);
+                    counter = counter + 1;
+                    fields.get(fields.size()-1).setType(lines[diagramIndices.get(i) + counter]);
+                    counter = counter + 1;
+                    fields.get(fields.size()-1).setName(lines[diagramIndices.get(i) + counter]);
                 }
-
-                for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + 7 + ].split(" ")[1]); j++) {
+                //increment counter once to represent end point
+                LinkedList<Method> methods = new LinkedList<Method>();
+                for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); j++) {
                     fields.add(new String[3]);
                     for (int k = 0; k < 3; k++) {
                         fields.get(3*j)[k] = lines[diagramIndices.get(i) + 8 + k];

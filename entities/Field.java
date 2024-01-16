@@ -42,6 +42,12 @@ public class Field {
         this.name = name;
     }
 
+    public Field(){
+        this.modifier = "EMPTY";
+        this.name = "EMPTY";
+        this.type = "EMPTY";
+    }
+
     /**
      * getModifier
      * returns the field's modifier
