@@ -54,7 +54,7 @@ public class Project{
             if(arrows.get(index) != null){
                 //object has not been deleted by user, add to list
                 data = data + "<arrow id:" + index + ">\n";
-                data = data + arrows.get(index).toString(); //change to instanceof checks
+                data = data + arrows.get(index).toString(this); //change to instanceof checks
                 data = data + "</arrow>\n";
             }
         }
@@ -91,8 +91,11 @@ public class Project{
         }
 
         for (int i = 0; i < diagramIndices.size(); i++) {
+            String idStore = lines[diagramIndices.get(i) - 1].split(":")[1];
+            int id = Integer.parseInt(idStore.substring(0, idStore.length() - 1));
+            
             if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>")) {
-                int name = Integer.parseInt(lines[diagramIndices.get(i) + 1].split(" ")[1]);
+                String name = (lines[diagramIndices.get(i) + 1].split(" ")[1]);
                 int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
                 int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
                 int xSize = Integer.parseInt(lines[diagramIndices.get(i) + 4].split(" ")[1]);
@@ -138,19 +141,19 @@ public class Project{
 
                     counter = 0;
                 }
-
+                diagrams.put(id, new ClassDiagram(name, isAbstract, fields, methods, xPosition, yPosition, xSize, ySize));
             } else if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) {
-                int name = Integer.parseInt(lines[diagramIndices.get(i) + 1].split(" ")[1]);
+                String name = (lines[diagramIndices.get(i) + 1].split(" ")[1]);
                 int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
                 int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
                 int xSize = Integer.parseInt(lines[diagramIndices.get(i) + 4].split(" ")[1]);
                 int ySize = Integer.parseInt(lines[diagramIndices.get(i) + 5].split(" ")[1]);
-
+                diagrams.put(id, new ExceptionDiagram(name, xPosition, yPosition, xSize, ySize));
                 counter = 0;
                 
 
             } else if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>")) {
-                int name = Integer.parseInt(lines[diagramIndices.get(i) + 1].split(" ")[1]);
+                String name = (lines[diagramIndices.get(i) + 1].split(" ")[1]);
                 int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
                 int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
                 int xSize = Integer.parseInt(lines[diagramIndices.get(i) + 4].split(" ")[1]);
@@ -179,7 +182,7 @@ public class Project{
                         counter = counter + 1;
                         parameters.get(parameters.size()-1).setName(lines[diagramIndices.get(i) + counter]);
                     }
-
+                    diagrams.put(id, new InterfaceDiagram(name, methods, xPosition, yPosition, xSize, ySize));
                     counter = 0;
                 }
             }
@@ -191,6 +194,30 @@ public class Project{
         //iteratively sort through each diagram indice
         //just use string.split(" ") to seperate the header/foot from the actual data
         //for x,y, coordiantes of an arrow do string.split(", ")
+        for(int i = 0; i < arrowIndices.size(); i++){
+            String idStore = lines[arrowIndices.get(i) - 1].split(":")[1];
+            int id = Integer.parseInt(idStore.substring(0, idStore.length() - 1));
+            counter = 0;
+            Arrow arrow = new Arrow();
+            counter++;
+            arrow.setOrigin(this.getDiagram(Integer.parseInt(lines[arrowIndices.get(i) + counter].split(" ")[1])));
+            counter++;
+            arrow.setDestination(this.getDiagram(Integer.parseInt(lines[arrowIndices.get(i) + counter].split(" ")[1])));
+            counter++;
+            arrow.setArrowType(lines[arrowIndices.get(i) + counter].split(" ")[1]);
+            counter++;
+            String[] xCoords = lines[arrowIndices.get(i) + counter].split(" ")[1].split(",");
+            counter++;
+            String[] yCoords = lines[arrowIndices.get(i) + counter].split(" ")[1].split(",");
+            //process xCoords and yCoords, add to arraylist
+            ArrayList<Integer> xPoints = new  ArrayList<Integer>();
+            ArrayList<Integer> yPoints = new  ArrayList<Integer>();
+            for(int j = 0; i < xCoords.length; j++){
+                xPoints.add(Integer.parseInt(xCoords[j]));
+                yPoints.add(Integer.parseInt(yCoords[j]));
+            }
+            arrows.put(id, arrow);
+        }
     }
 
     Project(String projectName){
@@ -201,6 +228,15 @@ public class Project{
         arrows = new HashMap<Integer, Arrow>();
     }
 
+    public Diagram getDiagram(String diagramName){
+        for(int i = 0; i < diagramIdCount; i++){
+            if(diagrams.get(i).getName().equals(diagramName)){
+                return diagrams.get(i);
+            }
+        }
+        return null;
+    }
+
     public void addDiagram(Diagram diagram){   
         diagrams.put(diagramIdCount, diagram);
         diagramIdCount++;
@@ -208,6 +244,15 @@ public class Project{
 
     public Diagram getDiagram(int id){
         return diagrams.get(id);
+    }
+
+    public int getId(Diagram diagram){
+        for(int i = 0; i < diagramIdCount; i++){
+            if(diagrams.get(i).equals(diagram)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public LinkedList<Diagram> getAllDiagrams(){

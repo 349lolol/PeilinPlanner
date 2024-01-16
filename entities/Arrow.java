@@ -10,22 +10,22 @@ import java.util.ArrayList;
  */
 
 public class Arrow{
-    private final Diagram origin;
-    private final Diagram destination;
-    private final String arrowType;
+    private Diagram origin;
+    private Diagram destination;
+    private String arrowType;
     private ArrayList<Integer> xPoints;
     private ArrayList<Integer> yPoints;
 
-    public String toString(){
+    public String toString(Project project){
         String data = "<OBJECTYPE> ARROW </OBJECTYPE>\n";
-        data = data + "<Origin> " + this.origin.getName() + " </Origin>\n";  //only getname, not actual one for tostring
-        data = data + "<Destination> " + this.destination.getName() + " </Destination>\n";
+        data = data + "<Origin> " + project.getId(origin) + " </Origin>\n";  //only getname, not actual one for tostring
+        data = data + "<Destination> " + project.getId(origin) + " </Destination>\n";
         data = data + "<ArrowType> " + this.arrowType + " </ArrowType>\n";
         String xList = "";
         String yList = "";
         for(int i = 0; i < xPoints.size(); i++){
-            xList = xList + Integer.toString(xPoints.get(i)) + ", ";
-            yList = yList + Integer.toString(yPoints.get(i)) + ", ";
+            xList = xList + Integer.toString(xPoints.get(i)) + ",";
+            yList = yList + Integer.toString(yPoints.get(i)) + ",";
         }
         xList.substring(0, xList.length() - 2);
         yList.substring(0, yList.length() - 2);
@@ -41,16 +41,44 @@ public class Arrow{
         yPoints = new ArrayList<Integer>();
     }
 
+    Arrow(){
+        this.origin = null;
+        this.destination = null;
+        this.arrowType = null;
+        xPoints = new ArrayList<Integer>();
+        yPoints = new ArrayList<Integer>();
+    }
+
     public Diagram getOrigin(){
         return this.origin;
+    }
+
+    public void addXPoints(ArrayList<Integer> xPoints){
+        this.xPoints = xPoints;
+    }
+
+    public void addYPoints(ArrayList<Integer> yPoints){
+        this.yPoints = yPoints;
+    }
+
+    public void setOrigin(Diagram diagram){
+        this.origin = diagram;
     }
 
     public Diagram getDestination(){
         return this.destination;
     }
 
+    public void setDestination(Diagram diagram){
+        this.origin = diagram;
+    }
+
     public String getArrowType(){
         return this.arrowType;
+    }
+
+    public void setArrowType(String arrowType){
+        this.arrowType = arrowType;
     }
 
     public ArrayList<Integer> getXPoints(){
