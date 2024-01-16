@@ -219,7 +219,7 @@ public class Project{
         }
     }
 
-    Project(){
+    public Project(){
         this.diagramIdCount = 0;
         this.projectName = "";
         diagrams = new HashMap<Integer, Diagram>();

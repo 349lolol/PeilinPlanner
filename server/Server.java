@@ -31,8 +31,12 @@ public class Server {
 
     //wait for papi to come back with the solution
     public static void main(String[] args) throws IOException {
-        String data = "";//read stuff from file, keep as one whole line with \n preserved
+        String projectData = "";//read stuff from file, keep as one whole line with \n preserved
         Project project = new Project();
+        project.fromFile(projectData);
+        projectData = null; //free up memory
+
+        UserBase userBase = null;//deserialize userbase here
 
         // int port = 8080;
         // Server server = Server.create(new InetSocketAddress(port), 0);
@@ -46,7 +50,20 @@ public class Server {
         
         // System.out.println("Server is running on port " + port);
 
+        //while(true){
+            //run loop
+        //}
+
+        //serialize userbase here
+
+        //write userbase to appropriate file
+
+        //convert project into xml here
+
+        projectData = project.toString();
         
+        //write project to appropriate file
+        }
     }
 
     static class HelloHandler implements HttpHandler {
