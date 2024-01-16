@@ -31,8 +31,9 @@ public class Server {
 
     //wait for papi to come back with the solution
     public static void main(String[] args) throws IOException {
-        OpenProject openProject = new OpenProject();
-        Project project = openProject();
+        String data = "";//read stuff from file, keep as one whole line with \n preserved
+        Project project = new Project();
+
         // int port = 8080;
         // Server server = Server.create(new InetSocketAddress(port), 0);
         

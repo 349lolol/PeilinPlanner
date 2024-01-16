@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class Project{
-    private final String projectName;
+    private String projectName;
     private int diagramIdCount;
     private final HashMap<Integer, Diagram> diagrams;
     private int arrowIdCount;
@@ -26,7 +26,7 @@ public class Project{
     @Override
     public String toString(){
         String data = "<OBJECTYPE-PROJECT>";
-        data = data + "<name= " + diagramIdCount +">" + projectName + "</name>\n";
+        data = data + "<name:" + diagramIdCount +":"+arrowIdCount+ ":> " + projectName + " </name>\n";
         data = data + "<diagrams>\n";
         for(int index = 0; index < diagramIdCount; index++){
             if(diagrams.get(index) != null){
@@ -72,24 +72,23 @@ public class Project{
         String[] lines = data.split("\n");
         ArrayList<Integer> diagramIndices = new ArrayList<Integer>();
         ArrayList<Integer> arrowIndices = new ArrayList<Integer>();
-        int counter = 0;
+        int counter = 0; 
+        setProjectName(lines[1].split(" ")[1]);
+        this.diagramIdCount = Integer.parseInt(lines[1].split(" ")[0].split(":")[1]);
+        this.arrowIdCount = Integer.parseInt(lines[1].split(" ")[0].split(":")[2]);
         for(int i = 0; i < lines.length; i++){
             if((lines[i].equals("<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>"))){
                 diagramIndices.add(i);
-                //all of the single variable/single line values are written first
-                //do string.split on " ", take the middle value
-                //after that it is the variables/methods, which then requires another layer of searching for start/end of variable/method
-                //based on the length of the list, create for loop that iterates through n lines and process each line with string.split " "
+                
             }
             else if(lines[i].equals("<OBJECTYPE> ARROW </OBJECTYPE>")){
                 arrowIndices.add(i);
-                //all of the single variable/single line values are written first
-                //do string.split on " ", take the middle value
-                //after that its two lists of x/y coordinates
-                //the lists for these have already been.tostringed using "a, b, c, d, e", just do string.split on ", " to get the values with parseint, add to arraylist
             }
         }
-
+        //all of the single variable/single line values are written first
+        //do string.split on " ", take the middle value
+        //after that it is the variables/methods, which then requires another layer of searching for start/end of variable/method
+        //based on the length of the list, create for loop that iterates through n lines and process each line with string.split " "
         for (int i = 0; i < diagramIndices.size(); i++) {
             String idStore = lines[diagramIndices.get(i) - 1].split(":")[1];
             int id = Integer.parseInt(idStore.substring(0, idStore.length() - 1));
@@ -193,7 +192,7 @@ public class Project{
         //now all classes starting points are stored
         //iteratively sort through each diagram indice
         //just use string.split(" ") to seperate the header/foot from the actual data
-        //for x,y, coordiantes of an arrow do string.split(", ")
+        //for x,y, coordiantes of an arrow do string.split(",")
         for(int i = 0; i < arrowIndices.size(); i++){
             String idStore = lines[arrowIndices.get(i) - 1].split(":")[1];
             int id = Integer.parseInt(idStore.substring(0, idStore.length() - 1));
@@ -210,8 +209,8 @@ public class Project{
             counter++;
             String[] yCoords = lines[arrowIndices.get(i) + counter].split(" ")[1].split(",");
             //process xCoords and yCoords, add to arraylist
-            ArrayList<Integer> xPoints = new  ArrayList<Integer>();
-            ArrayList<Integer> yPoints = new  ArrayList<Integer>();
+            ArrayList<Integer> xPoints = new ArrayList<Integer>();
+            ArrayList<Integer> yPoints = new ArrayList<Integer>();
             for(int j = 0; i < xCoords.length; j++){
                 xPoints.add(Integer.parseInt(xCoords[j]));
                 yPoints.add(Integer.parseInt(yCoords[j]));
@@ -220,9 +219,9 @@ public class Project{
         }
     }
 
-    Project(String projectName){
+    Project(){
         this.diagramIdCount = 0;
-        this.projectName = projectName;
+        this.projectName = "";
         diagrams = new HashMap<Integer, Diagram>();
         this.arrowIdCount = 0;
         arrows = new HashMap<Integer, Arrow>();
@@ -288,5 +287,8 @@ public class Project{
         return this.projectName;
     }
 
+    public void setProjectName(String name){
+        this.projectName = name;
+    }
     
 }
