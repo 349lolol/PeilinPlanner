@@ -17,7 +17,7 @@ public class InterfaceDiagram extends Diagram{
      * constructs XML structure for interface diagram
      */
     @Override
-    public String toString(){
+    public String toString() {
         String data = "<OBJECTTYPE> INTERFACEDIAGRAM </OBJECTTYPE>\n";
         data = data +  "<name> " + super.getName() + " </name>\n";
         data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
@@ -25,7 +25,7 @@ public class InterfaceDiagram extends Diagram{
         data = data +  "<xSize> " + super.getYSize() + " </xSize>\n";
         data = data +  "<ySize> " + super.getYSize() + " </ySize>\n";
         data = data + "<methods=" + methods.size() + ">\n";
-            for(Method method : methods){
+            for(Method method : methods) {
                 data = data + method.toString();
             }
         data = data + "</methods>\n";

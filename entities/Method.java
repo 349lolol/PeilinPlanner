@@ -12,32 +12,32 @@ public class Method {
     private String data;
 
     @Override
-    public String toString(){
+    public String toString() {
         return "<Line> " + this.data + "</Line>\n";
         
     }
 
-    public String toJava(){
-        if(data.contains("abstract")){
+    public String toJava() {
+        if(data.contains("abstract")) {
             return this.data + ";\n";
         } else {
             return this.data + "{\n\n}";
         }
     }
 
-    public Method(String data){
+    public Method(String data) {
         this.data = data;
     }
 
-    public Method(){
+    public Method() {
         this.data = "EMPTY";
     }
 
-    public String getData(){
+    public String getData() {
         return this.data;
     }
 
-    public void setData(String data){
+    public void setData(String data) {
         this.data = data;
     }
 }

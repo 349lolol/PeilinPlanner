@@ -26,6 +26,7 @@ public class Diagram {
     /**
      * getName
      * returns the name of the exception
+     * 
      * @return the name of the exception
      */
     public String getName() {

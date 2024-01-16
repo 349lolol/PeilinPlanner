@@ -15,7 +15,7 @@ public class ExceptionDiagram extends Diagram{
      * constructs XML structure for exception diagram
      */
     @Override
-    public String toString(){
+    public String toString() {
         String data = "<OBJECTTYPE> EXCEPTIONDIAGRAM </OBJECTTYPE>\n";
         data = data +  "<name> " + super.getName() + " </name>\n";
         data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";

@@ -24,21 +24,21 @@ public class Project{
      * constructs XML structure for a UML project
      */
     @Override
-    public String toString(){
+    public String toString() {
         String data = "<OBJECTTYPE> PROJECT </OBJECTTYPE>";
         data = data + "<name:" + diagramIdCount +":"+arrowIdCount+ ":> " + projectName + " </name>\n";
         data = data + "<diagrams>\n";
-        for(int index = 0; index < diagramIdCount; index++){
-            if(diagrams.get(index) != null){
+        for(int index = 0; index < diagramIdCount; index++) {
+            if(diagrams.get(index) != null) {
                 //object has not been deleted by user, add to list
                 data = data + "<diagram id:" + index + ">\n";
-                if(diagrams.get(index) instanceof ClassDiagram){
+                if(diagrams.get(index) instanceof ClassDiagram) {
                     data = data + ((ClassDiagram)diagrams.get(index)).toString();
                 }
-                else if(diagrams.get(index) instanceof ExceptionDiagram){
+                else if(diagrams.get(index) instanceof ExceptionDiagram) {
                     data = data + ((ExceptionDiagram)diagrams.get(index)).toString(); 
                 }
-                else if(diagrams.get(index) instanceof InterfaceDiagram){
+                else if(diagrams.get(index) instanceof InterfaceDiagram) {
                     data = data + ((InterfaceDiagram)diagrams.get(index)).toString(); 
                 }
                 else {
@@ -50,8 +50,8 @@ public class Project{
         data = data + "</diagrams>\n";
 
         data = data + "<arrows>\n";
-        for(int index = 0; index < arrowIdCount; index++){
-            if(arrows.get(index) != null){
+        for(int index = 0; index < arrowIdCount; index++) {
+            if(arrows.get(index) != null) {
                 //object has not been deleted by user, add to list
                 data = data + "<arrow id:" + index + ">\n";
                 data = data + arrows.get(index).toString(this); //change to instanceof checks
@@ -68,7 +68,7 @@ public class Project{
      * deparses XML structure into java project structure
      * @param data data from string
      */
-    public void fromFile(String data){
+    public void fromFile(String data) {
         String[] lines = data.split("\n");
         ArrayList<Integer> diagramIndices = new ArrayList<Integer>();
         ArrayList<Integer> arrowIndices = new ArrayList<Integer>();
@@ -76,12 +76,12 @@ public class Project{
         setProjectName(lines[1].split(" ")[1]);
         this.diagramIdCount = Integer.parseInt(lines[1].split(" ")[0].split(":")[1]);
         this.arrowIdCount = Integer.parseInt(lines[1].split(" ")[0].split(":")[2]);
-        for(int i = 0; i < lines.length; i++){
-            if((lines[i].equals("<OBJECTTYPE> CLASSDIAGRAM </OBJECTTYPE>")) || (lines[i].equals("<OBJECTTYPE> EXCEPTIONDIAGRAM </OBJECTTYPE>")) || (lines[i].equals("<OBJECTTYPE> INTERFACEDIAGRAM </OBJECTTYPE>"))){
+        for(int i = 0; i < lines.length; i++) {
+            if((lines[i].equals("<OBJECTTYPE> CLASSDIAGRAM </OBJECTTYPE>")) || (lines[i].equals("<OBJECTTYPE> EXCEPTIONDIAGRAM </OBJECTTYPE>")) || (lines[i].equals("<OBJECTTYPE> INTERFACEDIAGRAM </OBJECTTYPE>"))) {
                 diagramIndices.add(i);
                 
             }
-            else if(lines[i].equals("<OBJECTTYPE> ARROW </OBJECTTYPE>")){
+            else if(lines[i].equals("<OBJECTTYPE> ARROW </OBJECTTYPE>")) {
                 arrowIndices.add(i);
             }
         }
@@ -154,7 +154,7 @@ public class Project{
         //iteratively sort through each diagram indice
         //just use string.split(" ") to seperate the header/foot from the actual data
         //for x,y, coordiantes of an arrow do string.split(",")
-        for(int i = 0; i < arrowIndices.size(); i++){
+        for(int i = 0; i < arrowIndices.size(); i++) {
             String idStore = lines[arrowIndices.get(i) - 1].split(":")[1];
             int id = Integer.parseInt(idStore.substring(0, idStore.length() - 1));
             counter = 0;
@@ -172,7 +172,7 @@ public class Project{
             //process xCoords and yCoords, add to arraylist
             ArrayList<Integer> xPoints = new ArrayList<Integer>();
             ArrayList<Integer> yPoints = new ArrayList<Integer>();
-            for(int j = 0; i < xCoords.length; j++){
+            for(int j = 0; i < xCoords.length; j++) {
                 xPoints.add(Integer.parseInt(xCoords[j]));
                 yPoints.add(Integer.parseInt(yCoords[j]));
             }
@@ -180,7 +180,7 @@ public class Project{
         }
     }
 
-    public Project(){
+    public Project() {
         this.diagramIdCount = 0;
         this.projectName = "";
         diagrams = new HashMap<Integer, Diagram>();
@@ -188,67 +188,67 @@ public class Project{
         arrows = new HashMap<Integer, Arrow>();
     }
 
-    public Diagram getDiagram(String diagramName){
-        for(int i = 0; i < diagramIdCount; i++){
-            if(diagrams.get(i).getName().equals(diagramName)){
+    public Diagram getDiagram(String diagramName) {
+        for(int i = 0; i < diagramIdCount; i++) {
+            if(diagrams.get(i).getName().equals(diagramName)) {
                 return diagrams.get(i);
             }
         }
         return null;
     }
 
-    public void addDiagram(Diagram diagram){   
+    public void addDiagram(Diagram diagram) {   
         diagrams.put(diagramIdCount, diagram);
         diagramIdCount++;
     }
 
-    public Diagram getDiagram(int id){
+    public Diagram getDiagram(int id) {
         return diagrams.get(id);
     }
 
-    public int getId(Diagram diagram){
-        for(int i = 0; i < diagramIdCount; i++){
-            if(diagrams.get(i).equals(diagram)){
+    public int getId(Diagram diagram) {
+        for(int i = 0; i < diagramIdCount; i++) {
+            if(diagrams.get(i).equals(diagram)) {
                 return i;
             }
         }
         return -1;
     }
 
-    public LinkedList<Diagram> getAllDiagrams(){
+    public LinkedList<Diagram> getAllDiagrams() {
         LinkedList<Diagram> allDiagrams = new LinkedList<Diagram>();
-        for(int i = 0; i < diagramIdCount; i++){
-            if(getDiagram(i) != null){
+        for(int i = 0; i < diagramIdCount; i++) {
+            if(getDiagram(i) != null) {
                 allDiagrams.add(getDiagram(i));
             }
         }
         return allDiagrams;
     }
 
-    public void addArrow(Arrow arrow){
+    public void addArrow(Arrow arrow) {
         arrows.put(arrowIdCount, arrow);
         arrowIdCount++;
     }
 
-    public Arrow getArrow(int id){
+    public Arrow getArrow(int id) {
         return arrows.get(id);
     }
 
-    public LinkedList<Arrow> getAllArrows(){
+    public LinkedList<Arrow> getAllArrows() {
         LinkedList<Arrow> allArrows = new LinkedList<Arrow>();
-        for(int i = 0; i < arrowIdCount; i++){
-            if(getArrow(i) != null){
+        for(int i = 0; i < arrowIdCount; i++) {
+            if(getArrow(i) != null) {
                 allArrows.add(getArrow(i));
             }
         }
         return allArrows;
     }
 
-    public String getProjectName(){
+    public String getProjectName() {
         return this.projectName;
     }
 
-    public void setProjectName(String name){
+    public void setProjectName(String name) {
         this.projectName = name;
     }
     

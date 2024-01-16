@@ -15,17 +15,17 @@ public class User {
     private final String password;
     private final LinkedList<Project> sharedProjects;
 
-    User(String username, String password){
+    User(String username, String password) {
         this.username = username;
         this.password = password;
         sharedProjects = new LinkedList<Project>();
     }
 
-    public String getUserName(){
+    public String getUserName() {
         return this.username;
     }
 
-    String getPassword(){
+    String getPassword() {
         return this.password;
     }
 }

@@ -9,21 +9,21 @@ import java.util.ArrayList;
  * 01/09/24
  */
 
-public class Arrow{
+public class Arrow {
     private Diagram origin;
     private Diagram destination;
     private String arrowType;
     private ArrayList<Integer> xPoints;
     private ArrayList<Integer> yPoints;
 
-    public String toString(Project project){
+    public String toString(Project project) {
         String data = "<OBJECTTYPE> ARROW </OBJECTTYPE>\n";
         data = data + "<Origin> " + project.getId(origin) + " </Origin>\n";  //only getname, not actual one for tostring
         data = data + "<Destination> " + project.getId(origin) + " </Destination>\n";
         data = data + "<ArrowType> " + this.arrowType + " </ArrowType>\n";
         String xList = "";
         String yList = "";
-        for(int i = 0; i < xPoints.size(); i++){
+        for(int i = 0; i < xPoints.size(); i++) {
             xList = xList + Integer.toString(xPoints.get(i)) + ",";
             yList = yList + Integer.toString(yPoints.get(i)) + ",";
         }
@@ -33,7 +33,7 @@ public class Arrow{
         data = data + "<YPoints> " + yList + " </YPoints>\n";
         return data;
     }
-    Arrow(Diagram origin, Diagram destination, String arrowType){
+    Arrow(Diagram origin, Diagram destination, String arrowType) {
         this.origin = origin;
         this.destination = destination;
         this.arrowType = arrowType;
@@ -41,7 +41,7 @@ public class Arrow{
         yPoints = new ArrayList<Integer>();
     }
 
-    Arrow(){
+    Arrow() {
         this.origin = null;
         this.destination = null;
         this.arrowType = null;
@@ -49,62 +49,62 @@ public class Arrow{
         yPoints = new ArrayList<Integer>();
     }
 
-    public Diagram getOrigin(){
+    public Diagram getOrigin() {
         return this.origin;
     }
 
-    public void addXPoints(ArrayList<Integer> xPoints){
+    public void addXPoints(ArrayList<Integer> xPoints) {
         this.xPoints = xPoints;
     }
 
-    public void addYPoints(ArrayList<Integer> yPoints){
+    public void addYPoints(ArrayList<Integer> yPoints) {
         this.yPoints = yPoints;
     }
 
-    public void setOrigin(Diagram diagram){
+    public void setOrigin(Diagram diagram) {
         this.origin = diagram;
     }
 
-    public Diagram getDestination(){
+    public Diagram getDestination() {
         return this.destination;
     }
 
-    public void setDestination(Diagram diagram){
+    public void setDestination(Diagram diagram) {
         this.origin = diagram;
     }
 
-    public String getArrowType(){
+    public String getArrowType() {
         return this.arrowType;
     }
 
-    public void setArrowType(String arrowType){
+    public void setArrowType(String arrowType) {
         this.arrowType = arrowType;
     }
 
-    public ArrayList<Integer> getXPoints(){
+    public ArrayList<Integer> getXPoints() {
         return this.xPoints;
     }
 
-    public ArrayList<Integer> getYPoints(){
+    public ArrayList<Integer> getYPoints() {
         return this.yPoints;
     }
 
-    public void addPoint(int x, int y){
+    public void addPoint(int x, int y) {
         this.xPoints.add(x);
         this.yPoints.add(y);
     }
 
-    public void removePoints(int n){
-        while(n>0){
+    public void removePoints(int n) {
+        while(n>0) {
             n--;
             this.xPoints.remove(0);
             this.yPoints.remove(0);
         }
     }
 
-    public boolean removePoint(int x, int y){
-        for(int i = 0; i < xPoints.size(); i++){
-            if((xPoints.get(i) == x) && (yPoints.get(i) == y)){
+    public boolean removePoint(int x, int y) {
+        for(int i = 0; i < xPoints.size(); i++) {
+            if((xPoints.get(i) == x) && (yPoints.get(i) == y)) {
                 xPoints.remove(i);
                 yPoints.remove(i);
                 return true;

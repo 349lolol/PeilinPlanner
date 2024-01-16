@@ -12,27 +12,27 @@ public class Field {
     private String data;
 
     @Override
-    public String toString(){
+    public String toString() {
         return "<Line> " + this.data + "</Line>\n"; 
     }
 
-    public String toJava(){
+    public String toJava() {
         return (data + ";\n");
     }
 
-    public Field(String data){
+    public Field(String data) {
         this.data = data;
     }
 
-    public Field(){
+    public Field() {
         this.data = "EMPTY";
     }
 
-    public String getData(){
+    public String getData() {
         return this.data;
     }
 
-    public void setData(String data){
+    public void setData(String data) {
         this.data = data;
     }
 }
