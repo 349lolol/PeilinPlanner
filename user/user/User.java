@@ -9,6 +9,7 @@ import entities.Field;
 import entities.InterfaceDiagram;
 import entities.Method;
 import entities.Project;
+import entities.ProjectBase;
 
 
 public class User {

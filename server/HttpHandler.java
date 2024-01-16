@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import entities.Arrow;
 import entities.ClassDiagram;
 import entities.Diagram;
@@ -8,6 +9,7 @@ import entities.Field;
 import entities.InterfaceDiagram;
 import entities.Method;
 import entities.Project;
+import entities.ProjectBase;
 import user.User;
 import user.UserBase;
 
@@ -55,7 +57,8 @@ public class HttpHandler {
         return null;
     }
 
-    public String createResponse(String responseType){
+    public String createResponse(String responseType, ArrayList<String> data){
+        //pass in an arraylist of data needed for everything, use arraylist for flexibility in size
         if(responseType.equals("LoginSuccess")) {
 
         }

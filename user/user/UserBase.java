@@ -10,6 +10,7 @@ import entities.InterfaceDiagram;
 import entities.Method;
 import entities.Project;
 import java.io.Serializable;
+import entities.ProjectBase;
 
 public class UserBase implements Serializable {
     HashMap<String, User> userBase;
