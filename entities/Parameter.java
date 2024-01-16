@@ -34,6 +34,15 @@ public class Parameter {
         this.name = name;
     }
 
+        /**
+     * Parameter
+     * Constructor for the parameter class with no parameters
+     */
+    public Parameter() {
+        this.type = "EMPTY";
+        this.name = "EMPTY";
+    }
+
     /**
      * getType
      * returns the parameter's type

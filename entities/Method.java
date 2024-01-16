@@ -73,7 +73,7 @@ public class Method {
         this.parameters = parameters;
     }
 
-    public Method(){
+    public Method() {
         this.modifier = "EMPTY";
         this.name = "EMPTY";
         this.returnType = "EMPTY";

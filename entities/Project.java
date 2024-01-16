@@ -113,13 +113,31 @@ public class Project{
                 }
                 //increment counter once to represent end point
                 LinkedList<Method> methods = new LinkedList<Method>();
+                counter = counter + 1;
                 for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); j++) {
-                    fields.add(new String[3]);
-                    for (int k = 0; k < 3; k++) {
-                        fields.get(3*j)[k] = lines[diagramIndices.get(i) + 8 + k];
-                    }
-                }
+                    methods.add(new Method());
+                    counter = counter + 1;
+                    methods.get(methods.size()-1).setModifier(lines[diagramIndices.get(i) + counter]);
+                    counter = counter + 1;
+                    methods.get(methods.size()-1).setName(lines[diagramIndices.get(i) + counter]);
+                    counter = counter + 1;
+                    methods.get(methods.size()-1).setReturnType(lines[diagramIndices.get(i) + counter]);
+                    counter = counter + 1;
+                    methods.get(methods.size()-1).setAbstract(Boolean.valueOf(lines[diagramIndices.get(i) + counter]));
 
+                    LinkedList<Parameter> parameters = new LinkedList<>();
+                    counter = counter + 1;
+
+                    for (int k = 0; k < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1])) {
+                        parameters.add(new Parameter());
+                        counter = counter + 1;
+                        parameters.get(parameters.size()-1).setType(lines[diagramIndices.get(i) + counter]);
+                        counter = counter + 1;
+                        parameters.get(parameters.size()-1).setName(lines[diagramIndices.get(i) + counter]);
+                    }
+
+                    counter = 0;
+                }
 
             } else if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) {
                 int name = Integer.parseInt(lines[diagramIndices.get(i) + 1].split(" ")[1]);
@@ -127,6 +145,8 @@ public class Project{
                 int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
                 int xSize = Integer.parseInt(lines[diagramIndices.get(i) + 4].split(" ")[1]);
                 int ySize = Integer.parseInt(lines[diagramIndices.get(i) + 5].split(" ")[1]);
+
+                counter = 0;
                 
 
             } else if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>")) {
@@ -136,7 +156,32 @@ public class Project{
                 int xSize = Integer.parseInt(lines[diagramIndices.get(i) + 4].split(" ")[1]);
                 int ySize = Integer.parseInt(lines[diagramIndices.get(i) + 5].split(" ")[1]);
 
+                counter = 6;
+                LinkedList<Method> methods = new LinkedList<Method>();
+                for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); j++) {
+                    methods.add(new Method());
+                    counter = counter + 1;
+                    methods.get(methods.size()-1).setModifier(lines[diagramIndices.get(i) + counter]);
+                    counter = counter + 1;
+                    methods.get(methods.size()-1).setName(lines[diagramIndices.get(i) + counter]);
+                    counter = counter + 1;
+                    methods.get(methods.size()-1).setReturnType(lines[diagramIndices.get(i) + counter]);
+                    counter = counter + 1;
+                    methods.get(methods.size()-1).setAbstract(Boolean.valueOf(lines[diagramIndices.get(i) + counter]));
 
+                    LinkedList<Parameter> parameters = new LinkedList<>();
+                    counter = counter + 1;
+
+                    for (int k = 0; k < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1])) {
+                        parameters.add(new Parameter());
+                        counter = counter + 1;
+                        parameters.get(parameters.size()-1).setType(lines[diagramIndices.get(i) + counter]);
+                        counter = counter + 1;
+                        parameters.get(parameters.size()-1).setName(lines[diagramIndices.get(i) + counter]);
+                    }
+
+                    counter = 0;
+                }
             }
         }
 
