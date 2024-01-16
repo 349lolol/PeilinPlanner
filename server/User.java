@@ -7,7 +7,6 @@ import entities.ExceptionDiagram;
 import entities.Field;
 import entities.InterfaceDiagram;
 import entities.Method;
-import entities.Parameter;
 import entities.Project;
 
 
