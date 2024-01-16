@@ -107,11 +107,7 @@ public class Project{
                 for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); j++) {
                     fields.add(new Field());
                     counter = counter + 1;
-                    fields.get(fields.size()-1).setModifier(lines[diagramIndices.get(i) + counter]);
-                    counter = counter + 1;
-                    fields.get(fields.size()-1).setType(lines[diagramIndices.get(i) + counter]);
-                    counter = counter + 1;
-                    fields.get(fields.size()-1).setName(lines[diagramIndices.get(i) + counter]);
+                    fields.get(fields.size()-1).setData(lines[diagramIndices.get(i) + counter]);
                 }
                 //increment counter once to represent end point
                 LinkedList<Method> methods = new LinkedList<Method>();
@@ -119,25 +115,7 @@ public class Project{
                 for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); j++) {
                     methods.add(new Method());
                     counter = counter + 1;
-                    methods.get(methods.size()-1).setModifier(lines[diagramIndices.get(i) + counter]);
-                    counter = counter + 1;
-                    methods.get(methods.size()-1).setName(lines[diagramIndices.get(i) + counter]);
-                    counter = counter + 1;
-                    methods.get(methods.size()-1).setReturnType(lines[diagramIndices.get(i) + counter]);
-                    counter = counter + 1;
-                    methods.get(methods.size()-1).setAbstract(Boolean.valueOf(lines[diagramIndices.get(i) + counter]));
-
-                    LinkedList<Parameter> parameters = new LinkedList<>();
-                    counter = counter + 1;
-
-                    for (int k = 0; k < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); k++) {
-                        parameters.add(new Parameter());
-                        counter = counter + 1;
-                        parameters.get(parameters.size()-1).setType(lines[diagramIndices.get(i) + counter]);
-                        counter = counter + 1;
-                        parameters.get(parameters.size()-1).setName(lines[diagramIndices.get(i) + counter]);
-                    }
-
+                    methods.get(methods.size()-1).setData(lines[diagramIndices.get(i) + counter]);
                     counter = 0;
                 }
                 diagrams.put(id, new ClassDiagram(name, isAbstract, fields, methods, xPosition, yPosition, xSize, ySize));
@@ -163,24 +141,7 @@ public class Project{
                 for (int j = 0; j < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); j++) {
                     methods.add(new Method());
                     counter = counter + 1;
-                    methods.get(methods.size()-1).setModifier(lines[diagramIndices.get(i) + counter]);
-                    counter = counter + 1;
-                    methods.get(methods.size()-1).setName(lines[diagramIndices.get(i) + counter]);
-                    counter = counter + 1;
-                    methods.get(methods.size()-1).setReturnType(lines[diagramIndices.get(i) + counter]);
-                    counter = counter + 1;
-                    methods.get(methods.size()-1).setAbstract(Boolean.valueOf(lines[diagramIndices.get(i) + counter]));
-
-                    LinkedList<Parameter> parameters = new LinkedList<>();
-                    counter = counter + 1;
-
-                    for (int k = 0; k < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); k++) {
-                        parameters.add(new Parameter());
-                        counter = counter + 1;
-                        parameters.get(parameters.size()-1).setType(lines[diagramIndices.get(i) + counter]);
-                        counter = counter + 1;
-                        parameters.get(parameters.size()-1).setName(lines[diagramIndices.get(i) + counter]);
-                    }
+                    methods.get(methods.size()-1).setData(lines[diagramIndices.get(i) + counter]);
                     diagrams.put(id, new InterfaceDiagram(name, methods, xPosition, yPosition, xSize, ySize));
                     counter = 0;
                 }

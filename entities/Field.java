@@ -24,6 +24,10 @@ public class Field {
         this.data = data;
     }
 
+    public Field(){
+        this.data = "EMPTY";
+    }
+
     public String getData(){
         return this.data;
     }

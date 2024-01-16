@@ -29,6 +29,10 @@ public class Method {
         this.data = data;
     }
 
+    public Method(){
+        this.data = "EMPTY";
+    }
+
     public String getData(){
         return this.data;
     }
