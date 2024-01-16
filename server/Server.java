@@ -31,17 +31,21 @@ public class Server {
 
     //wait for papi to come back with the solution
     public static void main(String[] args) throws IOException {
-        int port = 8080;
-        Server server = Server.create(new InetSocketAddress(port), 0);
+        OpenProject openProject = new OpenProject();
+        Project project = openProject();
+        // int port = 8080;
+        // Server server = Server.create(new InetSocketAddress(port), 0);
         
-        // Context for the "/hello" path, handling both GET and POST requests
-        server.createContext("/hello", new HelloHandler());
+        // // Context for the "/hello" path, handling both GET and POST requests
+        // server.createContext("/hello", new HelloHandler());
         
-        // Start the server
-        server.setExecutor(null);
-        server.start();
+        // // Start the server
+        // server.setExecutor(null);
+        // server.start();
         
-        System.out.println("Server is running on port " + port);
+        // System.out.println("Server is running on port " + port);
+
+        
     }
 
     static class HelloHandler implements HttpHandler {
