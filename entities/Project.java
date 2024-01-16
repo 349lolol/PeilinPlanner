@@ -128,7 +128,7 @@ public class Project{
                     LinkedList<Parameter> parameters = new LinkedList<>();
                     counter = counter + 1;
 
-                    for (int k = 0; k < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1])) {
+                    for (int k = 0; k < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); k++) {
                         parameters.add(new Parameter());
                         counter = counter + 1;
                         parameters.get(parameters.size()-1).setType(lines[diagramIndices.get(i) + counter]);
@@ -172,7 +172,7 @@ public class Project{
                     LinkedList<Parameter> parameters = new LinkedList<>();
                     counter = counter + 1;
 
-                    for (int k = 0; k < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1])) {
+                    for (int k = 0; k < Integer.parseInt(lines[diagramIndices.get(i) + counter].split(" ")[1]); k++) {
                         parameters.add(new Parameter());
                         counter = counter + 1;
                         parameters.get(parameters.size()-1).setType(lines[diagramIndices.get(i) + counter]);
