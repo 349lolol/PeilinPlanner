@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.io.PrintWriter;
 
 public class toJava {
-    public static void toJava(Project project) throws FileNotFoundException{
+    public static void printToJava(Project project) throws FileNotFoundException{
         //initialize the new folder
         String path = "C:\\Users\\patri\\Documents\\PeilinPlanner\\PeilinPlanner\\"+project.getProjectName();
         File folder = new File(path);
