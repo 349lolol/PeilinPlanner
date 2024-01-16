@@ -16,7 +16,7 @@ public class ExceptionDiagram extends Diagram{
      */
     @Override
     public String toString(){
-        String data = "<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>\n";
+        String data = "<OBJECTTYPE> EXCEPTIONDIAGRAM </OBJECTTYPE>\n";
         data = data +  "<name> " + super.getName() + " </name>\n";
         data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
         data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";

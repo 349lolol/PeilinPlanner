@@ -15,7 +15,7 @@ public class UserBase implements Serializable {
 
     UserBase(HashMap<String, User> userBase){
         userBase = new HashMap<String, User>();
-    }z
+    }
 
     public User getUser(String username){
         return userBase.get(username);

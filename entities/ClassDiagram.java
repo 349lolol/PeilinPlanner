@@ -21,7 +21,7 @@ public class ClassDiagram extends Diagram {
      */
     @Override
     public String toString(){
-        String data = "<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>\n";
+        String data = "<OBJECTTYPE> CLASSDIAGRAM </OBJECTTYPE>\n";
         data = data +  "<name> " + super.getName() + " </name>\n";
         data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
         data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";

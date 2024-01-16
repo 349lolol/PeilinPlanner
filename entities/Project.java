@@ -25,7 +25,7 @@ public class Project{
      */
     @Override
     public String toString(){
-        String data = "<OBJECTYPE-PROJECT>";
+        String data = "<OBJECTTYPE> PROJECT </OBJECTTYPE>";
         data = data + "<name:" + diagramIdCount +":"+arrowIdCount+ ":> " + projectName + " </name>\n";
         data = data + "<diagrams>\n";
         for(int index = 0; index < diagramIdCount; index++){
@@ -77,11 +77,11 @@ public class Project{
         this.diagramIdCount = Integer.parseInt(lines[1].split(" ")[0].split(":")[1]);
         this.arrowIdCount = Integer.parseInt(lines[1].split(" ")[0].split(":")[2]);
         for(int i = 0; i < lines.length; i++){
-            if((lines[i].equals("<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) || (lines[i].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>"))){
+            if((lines[i].equals("<OBJECTTYPE> CLASSDIAGRAM </OBJECTTYPE>")) || (lines[i].equals("<OBJECTTYPE> EXCEPTIONDIAGRAM </OBJECTTYPE>")) || (lines[i].equals("<OBJECTTYPE> INTERFACEDIAGRAM </OBJECTTYPE>"))){
                 diagramIndices.add(i);
                 
             }
-            else if(lines[i].equals("<OBJECTYPE> ARROW </OBJECTYPE>")){
+            else if(lines[i].equals("<OBJECTTYPE> ARROW </OBJECTTYPE>")){
                 arrowIndices.add(i);
             }
         }
@@ -93,7 +93,7 @@ public class Project{
             String idStore = lines[diagramIndices.get(i) - 1].split(":")[1];
             int id = Integer.parseInt(idStore.substring(0, idStore.length() - 1));
             
-            if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> CLASSDIAGRAM </OBJECTYPE>")) {
+            if (lines[diagramIndices.get(i)].equals("<OBJECTTYPE> CLASSDIAGRAM </OBJECTTYPE>")) {
                 String name = (lines[diagramIndices.get(i) + 1].split(" ")[1]);
                 int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
                 int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
@@ -119,7 +119,7 @@ public class Project{
                     counter = 0;
                 }
                 diagrams.put(id, new ClassDiagram(name, isAbstract, fields, methods, xPosition, yPosition, xSize, ySize));
-            } else if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> EXCEPTIONDIAGRAM </OBJECTYPE>")) {
+            } else if (lines[diagramIndices.get(i)].equals("<OBJECTTYPE> EXCEPTIONDIAGRAM </OBJECTTYPE>")) {
                 String name = (lines[diagramIndices.get(i) + 1].split(" ")[1]);
                 int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
                 int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);
@@ -129,7 +129,7 @@ public class Project{
                 counter = 0;
                 
 
-            } else if (lines[diagramIndices.get(i)].equals("<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>")) {
+            } else if (lines[diagramIndices.get(i)].equals("<OBJECTTYPE> INTERFACEDIAGRAM </OBJECTTYPE>")) {
                 String name = (lines[diagramIndices.get(i) + 1].split(" ")[1]);
                 int xPosition = Integer.parseInt(lines[diagramIndices.get(i) + 2].split(" ")[1]);
                 int yPosition = Integer.parseInt(lines[diagramIndices.get(i) + 3].split(" ")[1]);

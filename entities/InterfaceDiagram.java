@@ -18,7 +18,7 @@ public class InterfaceDiagram extends Diagram{
      */
     @Override
     public String toString(){
-        String data = "<OBJECTYPE> INTERFACEDIAGRAM </OBJECTYPE>\n";
+        String data = "<OBJECTTYPE> INTERFACEDIAGRAM </OBJECTTYPE>\n";
         data = data +  "<name> " + super.getName() + " </name>\n";
         data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
         data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";
