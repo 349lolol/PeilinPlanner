@@ -11,8 +11,9 @@ class MultiThreadedServer {
     BufferedReader input;
     int clientCounter = 0;
     
-    public static void main(String[] args) throws Exception{ 
+    public static void main(String[] args) throws Exception { 
         MultiThreadedServer server = new MultiThreadedServer();
+        HttpHandler e = new HttpHandler();
         server.go();
     }
     
