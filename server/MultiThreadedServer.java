@@ -16,7 +16,7 @@ class MultiThreadedServer {
         server.go();
     }
     
-    public void go() throws Exception{ 
+    public void go() throws Exception { 
         //create a socket with the local IP address and wait for connection request       
         System.out.println("Waiting for a connection request from a client ...");
         serverSocket = new ServerSocket(PORT);                //create and bind a socket

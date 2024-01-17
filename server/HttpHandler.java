@@ -58,7 +58,7 @@ public class HttpHandler {
     }
 
     public String createResponse(String responseType, ArrayList<String> data){
-        //pass in an arraylist of data needed for everything, use arraylist for flexibility in size
+        //pass in an arraylist of data needed for everything, use arraylist for flexibility in
         if(responseType.equals("LoginSuccess")) {
 
         }
