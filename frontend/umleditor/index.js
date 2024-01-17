@@ -1,10 +1,10 @@
 const grid = document.getElementById('grid');
 
-grid.addEventListener("scroll", (event) => {
-  console.log(event);
+grid.addEventListener("scroll", (e) => {
+  console.log(e);
 
   for (const child of grid.children) {
-    grid.style.scale = "";
+    
   }
 })
 

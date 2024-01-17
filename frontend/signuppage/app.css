@@ -165,3 +165,20 @@ button:active {
     transform: translateY(-0.2rem);
     transition: all 0.05s linear 0s;
 }
+
+#incorrect {
+    display: none;
+    justify-content: center;
+}
+
+#warning {
+    font-size: 2rem;
+    background-color: red;
+    width: 80%;
+    height: 3rem;
+    border: 2px solid darkred;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
