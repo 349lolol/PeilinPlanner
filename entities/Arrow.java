@@ -16,7 +16,23 @@ public class Arrow {
     private ArrayList<Integer> xPoints;
     private ArrayList<Integer> yPoints;
 
-    
+    public String toString(Project project) {
+        String data = "<OBJECTTYPE> ARROW </OBJECTTYPE>\n";
+        data = data + "<Origin> " + project.getId(origin) + " </Origin>\n";  //only getname, not actual one for tostring
+        data = data + "<Destination> " + project.getId(origin) + " </Destination>\n";
+        data = data + "<ArrowType> " + this.arrowType + " </ArrowType>\n";
+        String xList = "";
+        String yList = "";
+        for(int i = 0; i < xPoints.size(); i++) {
+            xList = xList + Integer.toString(xPoints.get(i)) + ",";
+            yList = yList + Integer.toString(yPoints.get(i)) + ",";
+        }
+        xList.substring(0, xList.length() - 2);
+        yList.substring(0, yList.length() - 2);
+        data = data + "<XPoints> " + xList + " </XPoints>\n";
+        data = data + "<YPoints> " + yList + " </YPoints>\n";
+        return data;
+    }
     Arrow(Diagram origin, Diagram destination, String arrowType) {
         this.origin = origin;
         this.destination = destination;

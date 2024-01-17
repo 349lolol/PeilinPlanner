@@ -10,6 +10,20 @@ package entities;
 
 public class ExceptionDiagram extends Diagram{
 
+    /**
+     * toString
+     * constructs XML structure for exception diagram
+     */
+    @Override
+    public String toString() {
+        String data = "<OBJECTTYPE> EXCEPTIONDIAGRAM </OBJECTTYPE>\n";
+        data = data +  "<name> " + super.getName() + " </name>\n";
+        data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
+        data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";
+        data = data +  "<xSize> " + super.getYSize() + " </xSize>\n";
+        data = data +  "<ySize> " + super.getYSize() + " </ySize>\n";
+        return data;
+    }
 
     /**
      * ExceptionDiagram

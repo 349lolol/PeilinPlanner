@@ -12,7 +12,25 @@ import java.util.LinkedList;
 
 public class InterfaceDiagram extends Diagram{
     private final LinkedList<Method> methods;
-
+    /**
+     * toString
+     * constructs XML structure for interface diagram
+     */
+    @Override
+    public String toString() {
+        String data = "<OBJECTTYPE> INTERFACEDIAGRAM </OBJECTTYPE>\n";
+        data = data +  "<name> " + super.getName() + " </name>\n";
+        data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
+        data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";
+        data = data +  "<xSize> " + super.getYSize() + " </xSize>\n";
+        data = data +  "<ySize> " + super.getYSize() + " </ySize>\n";
+        data = data + "<methods=" + methods.size() + ">\n";
+            for(Method method : methods) {
+                data = data + method.toString();
+            }
+        data = data + "</methods>\n";
+        return data;
+    }
 
     /**
      * InterfaceDiagram

@@ -11,7 +11,11 @@ package entities;
 public class Method {
     private String data;
 
-
+    @Override
+    public String toString() {
+        return "<Line> " + this.data + "</Line>\n";
+        
+    }
 
     public String toJava() {
         if(data.contains("abstract")) {
