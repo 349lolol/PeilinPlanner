@@ -11,10 +11,7 @@ package entities;
 public class Field {
     private String data;
 
-    @Override
-    public String toString() {
-        return "<Line> " + this.data + "</Line>\n"; 
-    }
+
 
     public String toJava() {
         return (data + ";\n");
