@@ -236,12 +236,13 @@ main {
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 4rem);
 }
 
 #grid {
     flex-grow: 1;
     position: relative;
+    overflow: hidden;
 }
 
 .classdiagram, .interfacediagram, .abstractclassdiagram, .exceptiondiagram {
@@ -250,10 +251,10 @@ main {
     flex-direction: column;
     background-color: rgb(230, 230, 230);
     border: 2px solid black;
-    position: relative;
+    position: absolute;
 
-    scale: 1
-
+    scale: 1;
+    z-index: 2;
 }
 
 .classdiagram > textarea, .interfacediagram > textarea, .abstractclassdiagram > textarea, .exceptiondiagram > textarea {
@@ -340,4 +341,3 @@ main {
 
     transition: background-color 0.1s linear 0s;
 }
-
