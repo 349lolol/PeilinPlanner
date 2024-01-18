@@ -42,19 +42,35 @@ class MultiThreadedServer {
 //------------------------------------------------------------------------------        
         @Override
         public void run() {
-            try {
-                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                output = new PrintWriter(socket.getOutputStream());
-                //receive a message from the client
-                String msg = input.readLine();
-                System.out.println("Message from the client: " + msg);
-                //send a response to the client
-                output.println("Client "+clientCounter+", you are connected!");
-                output.flush();         
-                //after completing the communication close the streams but do not close the socket!
+            boolean breakLoop = false;
+            
+                try {
+                    input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    output = new PrintWriter(socket.getOutputStream());
+                    while(!breakLoop) {
+                        //receive a message from the client
+                        String msg = input.readLine();
+                        //msg is the request from the js side
+                        System.out.println("Message from the client: " + msg);
+
+
+                        //send a response to the client
+                        output.println("Client "+clientCounter+", you are connected!");
+                        //change the text in the output to what youre sending to the server in data
+                        //use the httphandler functions to deal with it 
+                        output.flush();         
+                        //after completing the communication close the streams but do not close the socket!
+                    }
+                try {
+                    Thread.sleep(10000);
+                }catch(Exception f){
+                    f.printStackTrace();
+                }
                 input.close();
                 output.close();
-            }catch (IOException e) {e.printStackTrace();}
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }    
 }
