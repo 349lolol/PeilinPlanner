@@ -6,11 +6,11 @@ let defaultLineHeight = 0.8;
 
 const snap = () => {
   const elements = document.querySelectorAll('.diagram');
-console.dir("beans" + elements);
+  console.dir("beans" + elements);
 
-elements.forEach((element) => {
+  elements.forEach((element) => {
   let x = 0;
-  let y = 0
+  let y = 0;
 
   interact(element)
     .draggable({
@@ -37,8 +37,8 @@ elements.forEach((element) => {
     })
     .on('dragmove', function (event) {
       console.log(event)
-      x += event.dx / scale
-      y += event.dy / scale
+      x += event.dx / scale;
+      y += event.dy / scale;
 
       event.target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
     })
@@ -222,36 +222,113 @@ const headDraw = (ax, ay, bx, by) => {
 
 // DRAWING ARROWS
 
+const arrowData = [
+  {
+    xPoints: [0, 200, 300, 400, 500],
+    yPoints: [0, 300, 100, 600, 700],
+    origin: null,
+    destination: null,
+    type: null
+  }
+]
+
 // const arrows = axios.get("URL");
 // const arrowData = arrows.data;
 
-const arrowData = {
-  arrow: {
-    xPoints: [0, 200, 300, 400, 500],
-    yPoints: [0, 300, 100, 600, 700]
-  }
-}
-
-for (let arrow in arrowData) {
-  for (let i = 0; i < arrowData[arrow].xPoints.length - 1; i++) {
-    let x1 = arrowData[arrow].xPoints[i];
-    let y1 = arrowData[arrow].yPoints[i];
-
-    let x2 = arrowData[arrow].xPoints[i + 1];
-    let y2 = arrowData[arrow].yPoints[i + 1];
-
-    lineDraw(x1, y1, x2, y2, "SOLID")
-    pointDraw(x1, y1)
-
-    if (i === arrowData[arrow].xPoints.length - 2) {
-      headDraw(x1, y1, x2, y2)
+const drawArrows = (arrowData) => {
+  for (let arrow of arrowData) {
+    console.log(arrow)
+    for (let i = 0; i < arrow.xPoints.length - 1; i++) {
+      let x1 = arrow.xPoints[i];
+      let y1 = arrow.yPoints[i];
+  
+      let x2 = arrow.xPoints[i + 1];
+      let y2 = arrow.yPoints[i + 1];
+  
+      lineDraw(x1, y1, x2, y2, arrow.type)
+      pointDraw(x1, y1)
+  
+      if (i === arrow.xPoints.length - 2) {
+        headDraw(x1, y1, x2, y2)
+      }
     }
+  
+  }
+}
+
+// ADDING ARROWS
+const addArrow = (arrowData, vertices, type) => {
+  const originX = grid.offsetWidth/2 - grid.offsetLeft;
+  const originY = grid.offsetHeight/2 - grid.offsetTop;
+
+  if (vertices === 0) {
+    arrowData.push({
+      xPoints: [originX - 100, originX + 100],
+      yPoint: [originY, originY],
+      origin: null,
+      destination: null,
+      type: type
+    })
   }
 
+  else if (vertices === 1) {
+    arrowData.push({
+      xPoints: [originX - 100, originX, originX + 100],
+      yPoint: [originY, originY, originY],
+      origin: null,
+      destination: null,
+      type: type
+    })
+  }
+
+  else if (vertices === 2) {
+    arrowData.push({
+      xPoints: [originX - 100, originX - 33, originX + 33, originX + 100],
+      yPoint: [originY, originY, originY, originY],
+      origin: null,
+      destination: null,
+      type: type
+    })
+  } else if (vertices === 3) {
+    arrowData.push({
+      xPoints: [originX - 100, originX - 50, originX, originX + 50, originX + 100],
+      yPoint: [originY, originY, originY, originY, originY],
+      origin: null,
+      destination: null,
+      type: type
+    })
+  }
+
+  else if (vertices === 4) {
+    arrowData.push({
+    xPoints: [originX - 100, originX - 60, originX - 20, originX + 20, originX + 60, originX + 100],
+    yPoint: [originY, originY, originY, originY, originY, originY],
+    origin: null,
+    destination: null,
+    type: type
+  })
+
+  drawArrows();
+  }
 }
+
+document.querySelector("#inheritancearrow").addEventListener("click", (e) => {
+  addArrow(arrowData, document.querySelector("form > select").value, "INHERITANCE")
+
+})
+document.querySelector("#compositionarrow").addEventListener("click", (e) => {
+  addArrow(arrowData, document.querySelector("form > select").value, "COMPOSITION")
+})
+document.querySelector("#implementationarrow").addEventListener("click", (e) => {
+  addArrow(arrowData, document.querySelector("form > select").value, "IMPLEMENTATION")
+})
+
+console.log(arrowData[0].xPoints.length)
+
+drawArrows();
 
 let pointIndex = null;
-let arrowID = null;
+let selectedArrow = null;
 let end = null;
 let move = null;
 let dragging = false;
@@ -263,15 +340,16 @@ let y = e.y - grid.offsetTop;
 
 console.log(x, y)
 
-  for (let arrow in arrowData) {
-    for (let i = 0; i < arrowData[arrow].xPoints.length ; i++) {
-      let xPoint = arrowData[arrow].xPoints[i];
-      let yPoint = arrowData[arrow].yPoints[i];
+  for (let arrow of arrowData) {
+    console.log(arrow)
+    for (let i = 0; i < arrow.xPoints.length ; i++) {
+      let xPoint = arrow.xPoints[i];
+      let yPoint = arrow.yPoints[i];
 
       if (Math.sqrt((xPoint - x)**2 + (yPoint - y)**2) <= 20) {
         pointIndex = i;
         dragging = true;
-        arrowID = arrow;
+        selectedArrow = arrow;
       }
     }
   }
@@ -282,23 +360,23 @@ console.log(x, y)
 grid.addEventListener("mousemove", (e) => {
   if (dragging) {
 
-    arrowData[arrowID].xPoints[pointIndex] = e.x - grid.offsetLeft;
-    arrowData[arrowID].yPoints[pointIndex] = e.y - grid.offsetTop;
+    selectedArrow.xPoints[pointIndex] = e.x - grid.offsetLeft;
+    selectedArrow.yPoints[pointIndex] = e.y - grid.offsetTop;
 
     document.querySelector("#arrows").innerHTML = "";
 
-    for (let arrow in arrowData) {
-      for (let i = 0; i < arrowData[arrow].xPoints.length - 1; i++) {
-        let x1 = arrowData[arrow].xPoints[i];
-        let y1 = arrowData[arrow].yPoints[i];
+    for (let selectedArrow of arrowData) {
+      for (let i = 0; i < selectedArrow.xPoints.length - 1; i++) {
+        let x1 = selectedArrow.xPoints[i];
+        let y1 = selectedArrow.yPoints[i];
     
-        let x2 = arrowData[arrow].xPoints[i + 1];
-        let y2 = arrowData[arrow].yPoints[i + 1];
+        let x2 = selectedArrow.xPoints[i + 1];
+        let y2 = selectedArrow.yPoints[i + 1];
     
         lineDraw(x1, y1, x2, y2, "SOLID")
         pointDraw(x1, y1)
 
-        if (i === arrowData[arrow].xPoints.length - 2) {
+        if (i === selectedArrow.xPoints.length - 2) {
           headDraw(x1, y1, x2, y2)
         }
       }
@@ -326,7 +404,7 @@ grid.addEventListener('mouseup', (e) => {
 
   dragging = false;
   pointIndex = null;
-  arrowID = 0;
+  selectedArrow = null;
 })
 
 // ARROW SNAPPING (NOT IMPLEMENTED)
@@ -395,7 +473,7 @@ const addDiagram = (x, y, diagramWidth, type) => {
     border: 2px solid black;
     position: absolute;
 
-    scale: 1;
+    scale: ${scale};
     z-index: 2;
   }`
 
@@ -580,17 +658,35 @@ const addDiagram = (x, y, diagramWidth, type) => {
   console.dir(diagram)
 }
 
-addDiagram(500, 500, "CLASS")
-addDiagram(700, 800, "EXCEPTION")
-
-const diagrams = axios.get("SERVERURL")
+let diagrams = axios.get("SERVERURL")
 const diagramsData = diagrams.data;
 
-diagrams = {
-  data: {
-    
-  }
-}
+// let diagram = {
+//   external: {
+//     type: "class",
+//     xPosition: 750,
+//     yPosition: 250,
+//     width: 164,
+//     height: 190,
+//   }
+// }
+
+// diagrams = {
+//   data: [
+//     diagram = {
+//       external: {
+//         type: "class",
+//         xPosition: 750,
+//         yPosition: 250,
+//         width: 164,
+//         height: 190,
+//       },
+//       internal: {
+
+//       }
+//     }
+//   ]
+// }
 
 // for (let diagram in diagramsData) {
 //   // need to add diagram.ySize in relation to the lines
@@ -598,28 +694,34 @@ diagrams = {
 // }
 document.querySelector("#addclass > img").addEventListener("click", (e) => {
   addDiagram((grid.offsetWidth - (defaultDiagramWidth*scale)/2) + grid.offsetLeft,
-   ((grid.offsetHeight - defaultLineHeight*11*scale)/2) + grid.offsetTop, defaultDiagramWidth*scale,
+   ((grid.offsetHeight - defaultLineHeight*11*scale)/2) + grid.offsetTop, defaultDiagramWidth,
    "CLASSDIAGRAM")
   
-   console.dir(diagramsData);
+   // ADD DIAGRAM TO LIST
    snap();
 })
 document.querySelector("#addinterface > img").addEventListener("click", (e) => {
   addDiagram((grid.offsetWidth - (defaultDiagramWidth*scale)/2) + grid.offsetLeft,
-  ((grid.offsetHeight -defaultLineHeight*6*scale)/2) + grid.offsetTop, defaultDiagramWidth*scale,
+  ((grid.offsetHeight -defaultLineHeight*6*scale)/2) + grid.offsetTop, defaultDiagramWidth,
   "INTERFACEDIAGRAM")
+
+  // ADD DIAGRAM TO LIST
   snap();
 })
 document.querySelector("#addabstractclass > img").addEventListener("click", (e) => {
   addDiagram((grid.offsetWidth - (defaultDiagramWidth*scale)/2) + grid.offsetLeft,
-  ((grid.offsetHeight - defaultLineHeight*11*scale)/2) + grid.offsetTop, defaultDiagramWidth*scale,
+  ((grid.offsetHeight - defaultLineHeight*11*scale)/2) + grid.offsetTop, defaultDiagramWidth,
   "ABSTRACTCLASSDIAGRAM")
+
+  // ADD DIAGRAM TO LIST
   snap();
 })
 document.querySelector("#addexception > img").addEventListener("click", (e) => {
   addDiagram((grid.offsetWidth - (defaultDiagramWidth*scale)/2) + grid.offsetLeft,
-  ((grid.offsetHeight - defaultLineHeight*1*scale)/2) + grid.offsetTop, defaultDiagramWidth*scale,
+  ((grid.offsetHeight - defaultLineHeight*1*scale)/2) + grid.offsetTop, defaultDiagramWidth,
   "EXCEPTIONDIAGRAM")
+
+  // ADD DIAGRAM TO LIST
   snap();
 })
 
