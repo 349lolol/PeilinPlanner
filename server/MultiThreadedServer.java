@@ -3,7 +3,7 @@ import java.io.*;
 import java.net.*;
 
 class MultiThreadedServer {
-    final int PORT = 5000;       
+    final int PORT = 5069;       
     
     ServerSocket serverSocket;
     Socket clientSocket;
@@ -60,12 +60,12 @@ class MultiThreadedServer {
                         //use the httphandler functions to deal with it 
                         output.flush();         
                         //after completing the communication close the streams but do not close the socket!
+                        try {
+                            Thread.sleep(10000);
+                        }catch(Exception f){
+                            f.printStackTrace();
+                        }
                     }
-                try {
-                    Thread.sleep(10000);
-                }catch(Exception f){
-                    f.printStackTrace();
-                }
                 input.close();
                 output.close();
             }catch (IOException e) {
