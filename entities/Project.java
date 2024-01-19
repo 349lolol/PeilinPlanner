@@ -69,15 +69,22 @@ public class Project{
                 temp = lines[currentIndex].split("[")[1];
                 temp = temp.substring(0, temp.length() - 2);
                 String[] fieldStrings = temp.split(", ");
-                ArrayList<String> fields = new ArrayList<String>();
+                ArrayList<Field> fields = new ArrayList<Field>();
+                for(int i = 0; i < fieldStrings.length; i++){
+                    fields.add(new Field(fieldStrings[i]));
+                }
 
                 currentIndex = currentIndex + 1;
                 temp = lines[currentIndex].split("[")[1];
                 temp = temp.substring(0, temp.length() - 2);
-                ArrayList<String> methods = new ArrayList<String>();;
-                
-
-                
+                String[] methodStrings = temp.split(", ");
+                ArrayList<Method> methods = new ArrayList<Method>();
+                for(int i = 0; i < methodStrings.length; i++){
+                    methods.add(new Method(methodStrings[i]));
+                }
+            }
+            else {
+                currentIndex = currentIndex + 1;
             }
         }
 
