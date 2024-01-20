@@ -35,7 +35,7 @@ const login = async (data) => {
 
 const invalidInfo = async () => {
     form.reset();
-    document.querySelector("#incorrect").setAttribute("display", "flex");
+    document.querySelector("#incorrect").style.display = "flex";
 
 }
 

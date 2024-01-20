@@ -28,7 +28,11 @@ public class User {
         return this.username;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return this.password;
+    }
+
+    public LinkedList<Project> getSharedProjects() {
+        return this.sharedProjects;
     }
 }

@@ -1,4 +1,4 @@
-// LOAD PROJECTS IN
+// MODALS
 const createModal = document.querySelector("#createModal");
 
 document.querySelector("#create > button").addEventListener("click", (e) => {
@@ -17,8 +17,11 @@ document.querySelector("#collaborate > button").addEventListener("click", (e) =>
 
 const createForm = document.querySelector("#createForm");
 
-const login = async (data) => {
-    await fetch("http://127.0.0.1:5500/server/HttpHandler.java", {
+
+// LOADING IN PROJECTS
+
+const load = async (data) => {
+    await fetch("localhost:5069/frontend/loadProjects", {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -26,32 +29,21 @@ const login = async (data) => {
         },
         body: JSON.stringify({
             username: data.username,
-            password: data.password
         })
     })
         .then(res => {
             res.json();
         })
         .then(res => {
-            if (res.valid) {
-                window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
-            } else {
-                invalidInfo();
-            }
+            console.log(res);
         })
         .catch(err => {
             console.log("ERROR RETRIEVING USER DATA")
-        form.reset();
+            window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
         })
     
 }
 
-const invalidInfo = async () => {
-    form.reset();
-    document.querySelector("#incorrect").setAttribute("display", "flex");
-
-}
-
-form.addEventListener("submit", (e) => {
-    login(data)
+form.addEventListener("DOMContentLoaded", (e) => {
+    load(data)
 })

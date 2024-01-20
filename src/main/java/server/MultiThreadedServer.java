@@ -13,6 +13,7 @@ import user.UserBase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import entities.*;
 
 class MultiThreadedServer {
     final int PORT = 5069;       
@@ -25,7 +26,7 @@ class MultiThreadedServer {
     
     public static void main(String[] args) throws Exception { 
         // INITIALIZE userBase
-        userBase.addUser("MidtrickWei", "IMADECAKID");
+        // userBase.addUser("MidtrickWei", "IMADECAKID");
         MultiThreadedServer server = new MultiThreadedServer();
         HttpHandler e = new HttpHandler();
         MultiThreadedServer.assets = new Assets();
@@ -98,6 +99,9 @@ class MultiThreadedServer {
                         header.put(request.get(i).split(": ")[0], request.get(i).split(": ")[1]);
                     }
 
+                    // ------------------------- REQUEST HANDLING ------------------------------------
+
+                    // WEBPAGE LOADING
                     if ((type.equals("GET")) && (assets.getAssets().containsKey(url))) {
                         byte[] content = assets.getAssets().get(url);
                         String mimeType = url.substring(url.lastIndexOf('.') + 1);
@@ -117,9 +121,10 @@ class MultiThreadedServer {
                         output.flush();   
                     }
 
-                    if ((type.equals("POST")) && (url.equals("/frontend/verify"))) {
+                    // LOGIN VERIFICATION
+                    else if ((type.equals("POST")) && (url.equals("/frontend/verify"))) {
                         System.out.println(request);
-                        byte[] content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
+                        byte[] content;
                         String usernameObject = request.get(line).split(",")[0];
                         String usernameValue = usernameObject.split(":")[1];
                         String username = usernameValue.substring(1, usernameValue.length() - 1);
@@ -127,20 +132,97 @@ class MultiThreadedServer {
                         String passwordObject = request.get(line).split(",")[1];
                         String passwordValue = passwordObject.split(":")[1];
                         String password = passwordValue.substring(1, passwordValue.length() - 2);
+                        
+                        output.write(
+                            ("HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: application/json\r\n" +
+                            "Vary: Accept-Encoding\r\n" +
+                            "Accept-Ranges: none\r\n").getBytes(StandardCharsets.UTF_8)
+                        );
 
-
-                        if (userBase.verifyUser(username, password)) {
-                            output.write(
-                                ("HTTP/1.1 200 OK\r\n" +
-                                "Content-Type: application/json\r\n" +
-                                "Vary: Accept-Encoding\r\n" +
-                                "Accept-Ranges: none\r\n" +
-                                "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
-                            );
-                            
+                        if (userBase.verifyUser(username, password))  {
+                            content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
+                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
                             output.write(content);
         
                             output.flush();   
+                        } else {
+                            content = "{\"valid\": false}".getBytes(StandardCharsets.UTF_8);
+                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+                            output.write(content);
+
+                            output.flush();
+                        }
+                    }
+
+                    // NEW USER
+                    else if ((type.equals("POST")) && (url.equals("/frontend/newUser"))) {
+                        System.out.println(request);
+                        byte[] content;
+                        String usernameObject = request.get(line).split(",")[0];
+                        String usernameValue = usernameObject.split(":")[1];
+                        String username = usernameValue.substring(1, usernameValue.length() - 1);
+
+                        String passwordObject = request.get(line).split(",")[1];
+                        String passwordValue = passwordObject.split(":")[1];
+                        String password = passwordValue.substring(1, passwordValue.length() - 2);
+                        
+                        output.write(
+                            ("HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: application/json\r\n" +
+                            "Vary: Accept-Encoding\r\n" +
+                            "Accept-Ranges: none\r\n").getBytes(StandardCharsets.UTF_8)
+                        );
+
+                        if (userBase.addUser(username, password))  {
+                            content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
+                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+                            output.write(content);
+        
+                            output.flush();   
+                        } else {
+                            content = "{\"valid\": false}".getBytes(StandardCharsets.UTF_8);
+                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+                            output.write(content);
+
+                            output.flush();
+                        }
+                    }
+
+                    // LOADING PROJECTS IN
+                    else if ((type.equals("POST")) && (url.equals("/frontend/loadProjects"))) {
+                        System.out.println(request);
+                        byte[] content;
+                        String usernameObject = request.get(line).split(",")[0];
+                        String usernameValue = usernameObject.split(":")[1];
+                        String username = usernameValue.substring(1, usernameValue.length() - 2);
+
+                        User user = userBase.getUser(username);
+
+                        for (Project project : user.getSharedProjects()) {
+
+                        }
+
+                        
+                        output.write(
+                            ("HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: application/json\r\n" +
+                            "Vary: Accept-Encoding\r\n" +
+                            "Accept-Ranges: none\r\n").getBytes(StandardCharsets.UTF_8)
+                        );
+
+                        if (userBase.addUser(username, password))  {
+                            content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
+                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+                            output.write(content);
+        
+                            output.flush();   
+                        } else {
+                            content = "{\"valid\": false}".getBytes(StandardCharsets.UTF_8);
+                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+                            output.write(content);
+
+                            output.flush();
                         }
                     }
                 input.close();

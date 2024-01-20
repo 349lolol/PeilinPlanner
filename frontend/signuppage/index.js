@@ -20,7 +20,7 @@ const login = async (data) => {
         .then(res => {
             console.log(res)
             if (res.valid) {
-                window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+                window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
             } else {
                 invalidInfo();
             }
@@ -35,7 +35,7 @@ const login = async (data) => {
 
 const invalidInfo = async () => {
     form.reset();
-    document.querySelector("#incorrect").setAttribute("display", "flex");
+    document.querySelector("#incorrect").style.display = "flex";
 
 }
 
