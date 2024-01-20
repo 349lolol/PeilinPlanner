@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class Project{
+public class Project {
     private String projectName;
     private int diagramIdCount;
     private final HashMap<Integer, Diagram> diagrams;
@@ -24,7 +24,7 @@ public class Project{
      * creates a complete new project based on json data
      * @param data the json string being converted
      */
-    public void JsonToJava(String data){
+    public void JsonToJava(String data) {
         String[] lines = data.split("\n");
         this.projectName = lines[1].split(": ")[1];
         this.projectName = this.projectName.substring(0, this.projectName.length()-1);
@@ -35,11 +35,11 @@ public class Project{
 
         ArrayList<Integer> listStartIndices = new ArrayList<Integer>();
         ArrayList<Integer> listEndIndices = new ArrayList<Integer>();
-        for(int i = 1; i < lines.length; i++){
-            if(lines[i].startsWith("    [")){
+        for(int i = 1; i < lines.length; i++) {
+            if(lines[i].startsWith("    [")) {
                 listStartIndices.add(i);
             }
-            if(lines[i].startsWith("    ]")){
+            if(lines[i].startsWith("    ]")) {
                 listEndIndices.add(i);
             }
         }
@@ -47,7 +47,7 @@ public class Project{
         //classDiagram
         int currentIndex = listStartIndices.get(0) + 1;
         while(currentIndex < listEndIndices.get(0) - 3) {
-            if(lines[currentIndex].startsWith("        {")){
+            if(lines[currentIndex].startsWith("        {")) {
                 currentIndex = currentIndex + 1;
                 String temp = lines[currentIndex].split(": ")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
@@ -75,7 +75,7 @@ public class Project{
                 temp = temp.substring(0, temp.length() - 2);
                 String[] fieldStrings = temp.split(", ");
                 LinkedList<Field> fields = new LinkedList<Field>();
-                for(int i = 0; i < fieldStrings.length; i++){
+                for(int i = 0; i < fieldStrings.length; i++) {
                     fields.add(new Field(fieldStrings[i]));
                 }
 
@@ -84,7 +84,7 @@ public class Project{
                 temp = temp.substring(0, temp.length() - 2);
                 String[] methodStrings = temp.split(", ");
                 LinkedList<Method> methods = new LinkedList<Method>();
-                for(int i = 0; i < methodStrings.length; i++){
+                for(int i = 0; i < methodStrings.length; i++) {
                     methods.add(new Method(methodStrings[i]));
                 }
                 diagrams.put(classId, new ClassDiagram(className, isAbstract, fields, methods, xPosition, yPosition, xSize, ySize));
@@ -96,7 +96,7 @@ public class Project{
         //interfaceDiagram
         currentIndex = listStartIndices.get(1) + 1;
         while(currentIndex < listEndIndices.get(1) - 3) {
-            if(lines[currentIndex].startsWith("        {")){
+            if(lines[currentIndex].startsWith("        {")) {
                 currentIndex = currentIndex + 1;
                 String temp = lines[currentIndex].split(": ")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
@@ -121,7 +121,7 @@ public class Project{
                 temp = temp.substring(0, temp.length() - 2);
                 String[] methodStrings = temp.split(", ");
                 LinkedList<Method> methods = new LinkedList<Method>();
-                for(int i = 0; i < methodStrings.length; i++){
+                for(int i = 0; i < methodStrings.length; i++) {
                     methods.add(new Method(methodStrings[i]));
                 }
 
@@ -135,7 +135,7 @@ public class Project{
         //exceptionDiagram
         currentIndex = listStartIndices.get(2) + 1;
         while(currentIndex < listEndIndices.get(2) - 3) {
-            if(lines[currentIndex].startsWith("        {")){
+            if(lines[currentIndex].startsWith("        {")) {
                 currentIndex = currentIndex + 1;
                 String temp = lines[currentIndex].split(": ")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
@@ -165,7 +165,7 @@ public class Project{
         //all types of arrows
         currentIndex = listStartIndices.get(3) + 1;
         while(currentIndex < listEndIndices.get(3) - 3) {
-            if(lines[currentIndex].startsWith("        {")){
+            if(lines[currentIndex].startsWith("        {")) {
                 currentIndex = currentIndex + 1;
                 String temp = lines[currentIndex].split(": ")[1];
                 String originName = temp.substring(0, temp.length() - 1);
@@ -191,7 +191,7 @@ public class Project{
                 
                 ArrayList<Integer> xCoordinates = new ArrayList<Integer>();
                 ArrayList<Integer> yCoordinates = new ArrayList<Integer>();
-                for(int i = 0; i < xCoordinateStrings.length; i++){
+                for(int i = 0; i < xCoordinateStrings.length; i++) {
                     xCoordinates.add(Integer.parseInt(xCoordinateStrings[i]));
                     yCoordinates.add(Integer.parseInt(yCoordinateStrings[i]));
                 }

@@ -10,7 +10,7 @@ package entities;
 
 import java.util.LinkedList;
 
-public class InterfaceDiagram extends Diagram{
+public class InterfaceDiagram extends Diagram {
     private final LinkedList<Method> methods;
 
     /**

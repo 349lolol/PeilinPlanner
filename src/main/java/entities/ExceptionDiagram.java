@@ -8,7 +8,7 @@
 
 package entities;
 
-public class ExceptionDiagram extends Diagram{
+public class ExceptionDiagram extends Diagram {
 
     /**
      * ExceptionDiagram
