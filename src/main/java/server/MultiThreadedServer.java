@@ -20,11 +20,12 @@ class MultiThreadedServer {
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private int clientCounter = 0;
-    private UserBase userBase = new UserBase(new HashMap<String, User>());
+    private static UserBase userBase = new UserBase(new HashMap<String, User>());
     private static Assets assets;
     
     public static void main(String[] args) throws Exception { 
         // INITIALIZE userBase
+        userBase.addUser("MidtrickWei", "IMADECAKID");
         MultiThreadedServer server = new MultiThreadedServer();
         HttpHandler e = new HttpHandler();
         MultiThreadedServer.assets = new Assets();
@@ -65,24 +66,24 @@ class MultiThreadedServer {
 
             List<String> request = new ArrayList<>();
             String msg = "";
-            int emptyLines = 0;
             
                 try {
                     input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     output = socket.getOutputStream();
-                    while(emptyLines != 2) {
+                    while(msg != null) {
                         //receive a message from the client
                         msg = input.readLine();
                         System.out.println("message:" + msg);
                         line++;
                         request.add(msg);
-                        if (msg.equals("") && emptyLines == 0) {
-                            emptyLines++;
+                        System.out.println(request);
+                        if (msg.equals("")) {
+                            System.out.println("E");
                             emptyLine = line;
                         }
-                        if (msg.equals("") && emptyLines == 1) {
-                            emptyLines++;
-                        }
+                        // else if (msg.equals("")  && emptyLines == 1) {
+                        //     emptyLines++;
+                        // }
 
                     }
 
@@ -112,11 +113,11 @@ class MultiThreadedServer {
                         output.flush();   
                     }
 
-                    if ((type.equals("POST")) && (url.equals("/frontend1"))) {
+                    if ((type.equals("POST")) && (url.equals("/frontend/verify"))) {
                         System.out.println(request);
                         byte[] content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
                         String username = request.get(emptyLine + 1);
-                        String password = request.get(emptyLine + 2);
+                        String password = request.get(emptyLine);
                         if (userBase.verifyUser(username, password)) {
                             output.write(
                                 ("HTTP/1.1 200 OK\r\n" +

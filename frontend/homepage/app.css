@@ -219,3 +219,84 @@ main {
     background-color: #857f7f;
     transition: background-color 0.05s linear 0s;
 }
+
+form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: lightgray;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 2rem;
+}
+
+dialog {
+    padding: 1rem;
+    background-color: lightgray;
+    width: 40%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    display: none;
+}
+
+#information {
+    display: flex;
+    justify-content: space-around;
+    height: 4rem;
+}
+
+#labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+label:nth-of-type(1) {
+    margin-top: 0.6rem;
+}
+
+input {
+    height: 3rem;
+    width: 15rem;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 2.5rem;
+    border: 1px solid gray;
+}
+
+dialog button {
+    width: 80%;
+    height: 4rem;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5rem;
+}
+
+#account {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#warning {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid darkred;
+    background-color: red;
+}

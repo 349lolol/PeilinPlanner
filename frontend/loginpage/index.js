@@ -1,17 +1,19 @@
 const form = document.querySelector("form");
 
 const login = async (data) => {
-    
-    await fetch("http://127.0.0.1:5500/server/HttpHandler.java", {
+    await fetch("http://localhost:5069/frontend/verify", {
         method: "POST",
+        mode: 'cors',
         headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
+            // "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Origin": "*",
         },
-        body: JSON.stringify({
-            username: data.username,
-            password: data.password
-        })
+        // body: JSON.stringify({
+        //     username: data.username,
+        //     password: data.password
+        // })
+        body: JSON.stringify({cheese: "Parmesan"})
     })
         .then(res => {
             res.json();
@@ -37,5 +39,11 @@ const invalidInfo = async () => {
 }
 
 form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let data = {
+        username: document.querySelector("#username").value,
+        password: document.querySelector("#password").value
+    }
+
     login(data)
 })

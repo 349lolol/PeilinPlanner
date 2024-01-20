@@ -16,16 +16,16 @@ public class UserBase implements Serializable {
     private HashMap<String, User> userBase;
 
     public UserBase(HashMap<String, User> userBase) {
-        userBase = new HashMap<String, User>();
+        this.userBase = new HashMap<String, User>();
     }
 
     public User getUser(String username) {
-        return userBase.get(username);
+        return this.userBase.get(username);
     }
 
     public boolean addUser(String username, String password) {
-        if(userBase.get(username) == null) {
-            userBase.put(username, new User(username, password));
+        if(this.userBase.get(username) == null) {
+            this.userBase.put(username, new User(username, password));
             return true;
         }
         else {
@@ -35,6 +35,6 @@ public class UserBase implements Serializable {
     }
 
     public boolean verifyUser(String username, String password) {
-        return (password.equals(userBase.get(username).getPassword()));
+        return (password.equals(this.userBase.get(username).getPassword()));
     }
 }
