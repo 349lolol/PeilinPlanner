@@ -2,18 +2,32 @@ const form = document.querySelector("form");
 
 const login = async (data) => {
     
-    await axios.post("LOGINPAGEURL", data)
-    .then(res => {
-        window.location.href = "HOMEPAGEURL"
-
-        // use res data to load user projects and stuff
-        const projects = JSON.parse(res.json());
-
-        // use projects to make HTML stuff
-    }).catch(err => {
-        console.log("ERROR RETRIEVING USER DATA")
-        form.reset();
+    await fetch("http://127.0.0.1:5500/server/HttpHandler.java", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: data.username,
+            password: data.password
+        })
     })
+        .then(res => {
+            res.json();
+        })
+        .then(res => {
+            if (res.valid) {
+                window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+            } else {
+                invalidInfo();
+            }
+        })
+        .catch(err => {
+            console.log("ERROR RETRIEVING USER DATA")
+        form.reset();
+        })
+    
 }
 
 const invalidInfo = async () => {
@@ -23,25 +37,5 @@ const invalidInfo = async () => {
 }
 
 form.addEventListener("submit", (e) => {
-    const userBase = axios.get("LOGINPAGEURL");
-    const userBaseData = userBase.data;
-
-    e.preventDefault()
-    const username = document.querySelector("#username").value;
-    const password = document.querySelector("#password").value;
-
-    for (let userData in userBaseData) {
-        if ((username === userData) && (password === userData.user.password)) {
-            const data = {
-                username: `${username}`,
-                password: `${password}`
-            };
-
-            login(data);
-        }
-    }
-    // invalid username or password
-    invalidInfo();
-
-    
+    login(data)
 })

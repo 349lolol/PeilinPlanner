@@ -13,9 +13,9 @@ import java.io.Serializable;
 import entities.ProjectBase;
 
 public class UserBase implements Serializable {
-    HashMap<String, User> userBase;
+    private HashMap<String, User> userBase;
 
-    UserBase(HashMap<String, User> userBase) {
+    public UserBase(HashMap<String, User> userBase) {
         userBase = new HashMap<String, User>();
     }
 

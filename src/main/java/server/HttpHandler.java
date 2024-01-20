@@ -1,5 +1,11 @@
+package server;
+
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import entities.Arrow;
 import entities.ClassDiagram;
@@ -16,12 +22,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class HttpHandler {
+
+    ServerSocket serverSocket;
+    Socket clientSocket;
+    PrintWriter output;
+    BufferedReader input;
+    
     public HttpHandler() {
 
     }
 
     public String handleRequest(String request, UserBase userBase) {
         if(request.startsWith("LoginRequest:")) {
+            System.out.println(request);
+            
             //use java.split() to extract username and password out of request
             if(userBase.verifyUser("Username", "Password")) {
                 //send them to home page of user, have to send appropriate UML projects
