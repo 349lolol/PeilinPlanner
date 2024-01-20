@@ -40,4 +40,12 @@ public class UserBase implements Serializable {
         }
         return (password.equals(this.userBase.get(username).getPassword()));
     }
+
+    public boolean addProjectToUser(String username, Project project) {
+        return userBase.get(username).addProject(project);
+    }
+
+    public LinkedList<Project> getAvailableProjects(String username) {
+        return userBase.get(username).getSharedProjects();
+    }
 }

@@ -35,4 +35,8 @@ public class User {
     public LinkedList<Project> getSharedProjects() {
         return this.sharedProjects;
     }
+
+    public boolean addProject(Project project) {
+        return sharedProjects.add(project);
+    }
 }
