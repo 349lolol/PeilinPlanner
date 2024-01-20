@@ -27,11 +27,18 @@ public class ProjectBase {
      * addProject
      * @param project new project being added
      */
-    public void addProject(Project project) {
+    public String addProject(Project project) {
         projects.put(project.getProjectName(), project);
         isInUse.put(project.getProjectName(), false);
+        return "{\n    \"ProjectName\":" + project.getProjectName() +  ",\n    \"diagramIdCount\": 0,\n    \"arrowIdCount\": 0,\n    [],\n    [],\n    [],\n    [],\n}";
     }
     
+    public String addProject(String projectName) {
+        projects.put(projectName, new Project(projectName));
+        isInUse.put(projectName, false);
+        return "{\n    \"ProjectName\":" + projectName +  ",\n    \"diagramIdCount\": 0,\n    \"arrowIdCount\": 0,\n    [],\n    [],\n    [],\n    [],\n}";
+    }
+
     /**
      * getProject
      * gets project by name of the project

@@ -215,6 +215,14 @@ public class Project {
         arrows = new HashMap<Integer, Arrow>();
     }
 
+    public Project(String name) {
+        this.diagramIdCount = 0;
+        this.projectName = name;
+        diagrams = new HashMap<Integer, Diagram>();
+        this.arrowIdCount = 0;
+        arrows = new HashMap<Integer, Arrow>();
+    }
+
     /**
      * getDiagram
      * gets the matching diagram from this project
