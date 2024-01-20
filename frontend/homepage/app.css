@@ -70,7 +70,7 @@ h1 {
 }
 
 aside {
-    width: 55rem;
+    width: 25rem;
     height: 100%;
     background-color: #968f8f;
     display: flex;
@@ -299,4 +299,15 @@ dialog button {
     align-items: center;
     border: 2px solid darkred;
     background-color: red;
+}
+
+.project {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#projectIcon {
+    font-size: 12rem;
+    color: rgb(110, 110, 110);
 }

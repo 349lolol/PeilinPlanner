@@ -1,7 +1,7 @@
 const form = document.querySelector("form");
 
 const login = async (data) => {
-    await fetch("http://localhost:5069/frontend/verify", {
+    await fetch("/frontend/verify", {
         method: "POST",
         mode: 'cors',
         headers: {
@@ -20,7 +20,8 @@ const login = async (data) => {
         .then(res => {
             console.log(res)
             if (res.valid) {
-                window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+                localStorage.setItem("username", data.username)
+                window.location.href = "/frontend/homepage/homepage.html"
             } else {
                 invalidInfo();
             }
@@ -28,15 +29,13 @@ const login = async (data) => {
         .catch(err => {
             console.log(err)
             console.log("ERROR RETRIEVING USER DATA")
-        form.reset();
         })
     
 }
 
-const invalidInfo = async () => {
+const invalidInfo = () => {
     form.reset();
     document.querySelector("#incorrect").style.display = "flex";
-
 }
 
 form.addEventListener("submit", (e) => {

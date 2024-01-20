@@ -1,3 +1,32 @@
+// LOADING IN PROJECTS
+
+const load = async (username) => {
+    await fetch("/frontend/loadProjects", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+        })
+    })
+        .then(res => {
+            res.json();
+        })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log("ERROR RETRIEVING USER DATA")
+            window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
+        })
+}
+
+window.addEventListener("DOMContentLoaded", (e) => {
+    load(localStorage.getItem("username"))
+})
+
 // MODALS
 const createModal = document.querySelector("#createModal");
 
@@ -17,18 +46,20 @@ document.querySelector("#collaborate > button").addEventListener("click", (e) =>
 
 const createForm = document.querySelector("#createForm");
 
+createForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-// LOADING IN PROJECTS
+})
 
-const load = async (data) => {
-    await fetch("localhost:5069/frontend/loadProjects", {
+const create = async (projectName) => {
+    await fetch("/frontend/createProject", {
         method: "POST",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            username: data.username,
+            projectName: projectName,
         })
     })
         .then(res => {
@@ -39,11 +70,6 @@ const load = async (data) => {
         })
         .catch(err => {
             console.log("ERROR RETRIEVING USER DATA")
-            window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
+            // window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
         })
-    
 }
-
-form.addEventListener("DOMContentLoaded", (e) => {
-    load(data)
-})
