@@ -44,10 +44,10 @@ class MultiThreadedServer {
             System.out.println("Error deserializing");
         }
         // INITIALIZE userBase
-        userBase.addUser("MidtrickWei", "IMADECAKID");
-        userBase.addUser("Parmesan", "Cheese");
+        // userBase.addUser("MidtrickWei", "IMADECAKID");
+        // userBase.addUser("Parmesan", "Cheese");
         
-        userBase.getUser("MidtrickWei").createProject(null);
+        // userBase.getUser("MidtrickWei").createProject();
         MultiThreadedServer server = new MultiThreadedServer();
         HttpHandler e = new HttpHandler();
         MultiThreadedServer.assets = new Assets();
@@ -275,13 +275,18 @@ class MultiThreadedServer {
                         System.out.println(request);
                         byte[] content;
                         String usernameString = request.get(line).split(",")[0];
-                        String usernameValue = usernameString.split(":")[1].substring(1, usernameString.length() - 1);
+                        String usernameValue = usernameString.split(":")[1];
+                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 1);
 
                         String projectString = request.get(line).split(",")[1];
-                        String projectName = projectString.split(":")[1].substring(1, projectString.length() - 2);
+                        String projectNameValue = projectString.split(":")[1];
+                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
 
-                        // if user's shared projects contain the project with the name
-                        if (userBase.getUser(usernameValue).getSharedProjects().contains(projectBase.getProject(projectName))) {
+                        // if user's owned projects contain the project with the name
+                        if (projectBase.getProject(projectName) == null) {
+                            content = "{\"valid\": true}".getBytes();
+
+                        } else if (!userBase.getUser(username).getOwnedProjects().contains(projectBase.getProject(projectName))) {
                             content = "{\"valid\": true}".getBytes();
                         } else {
                             content = "{\"valid\": false}".getBytes();
@@ -305,7 +310,7 @@ class MultiThreadedServer {
                         System.out.println(request);
                         String requestString = request.get(line).split(":")[1];
                         String requestValue = requestString.substring(1, requestString.length() - 2);
-                        if ()
+                        // if ()
 
                         byte[] content = projectBase.addProject(requestValue).getBytes();
 

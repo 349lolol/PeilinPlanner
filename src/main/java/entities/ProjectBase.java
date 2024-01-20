@@ -58,7 +58,7 @@ public class ProjectBase {
      * @return the project structure
      */
     public Project getProject(String name) {
-        if(isInUse.get(name) == false){
+        if(isInUse.containsKey(name)){
             isInUse.put(name, true);
             return projects.get(name);
         }
@@ -77,4 +77,9 @@ public class ProjectBase {
 
     //needs lockproject feature so multiple users dont conflict on the same one 
     //needs to be threaded
+
+    @Override
+    public String toString() {
+        return this.projects.toString() + " | " + this.isInUse.toString();
+    }
 }

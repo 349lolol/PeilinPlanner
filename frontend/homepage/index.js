@@ -58,7 +58,7 @@ closeCollaborate.addEventListener("click", (e) => {
 
 // CREATING PROJECTS
 
-const create = async (projectName) => {
+const create = async (username, projectName) => {
     await fetch("/frontend/createProject", {
         method: "POST",
         headers: {
@@ -66,6 +66,7 @@ const create = async (projectName) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
+            username: username,
             projectName: projectName
         })
     })
@@ -109,7 +110,7 @@ const createForm = document.querySelector("#createForm");
 
 createForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    create(document.querySelector("#createForm input").value);
+    create(localStorage.getItem("username"), document.querySelector("#createForm input").value);
 
 })
 
