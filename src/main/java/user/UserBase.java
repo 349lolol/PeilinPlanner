@@ -35,6 +35,9 @@ public class UserBase implements Serializable {
     }
 
     public boolean verifyUser(String username, String password) {
+        if (this.userBase.get(username) == null) {
+            return false;
+        }
         return (password.equals(this.userBase.get(username).getPassword()));
     }
 }

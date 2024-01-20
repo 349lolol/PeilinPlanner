@@ -73,22 +73,28 @@ class MultiThreadedServer {
                 try {
                     input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     output = socket.getOutputStream();
-                    while(msg != null) {
-                        //receive a message from the client
-                        msg = input.readLine();
-                        System.out.println("message:" + msg);
-                        line++;
-                        request.add(msg);
-                        System.out.println(request);
-                        if (msg.equals("")) {
-                            System.out.println("E");
-                            emptyLine = line;
-                        }
-                        // else if (msg.equals("")  && emptyLines == 1) {
-                        //     emptyLines++;
-                        // }
+                    String currentLine = input.readLine();
 
+                    while ((currentLine != null) && (currentLine.length() != 0)) {
+                        request.add(currentLine);
+                        line++;
+
+                        currentLine = input.readLine();
                     }
+
+                    StringBuilder requestBody = new StringBuilder();
+
+                    try {
+                        while (this.input.ready()) {
+                            requestBody.append((char) this.input.read());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+        
+                    // Append request body to the request list
+                    request.add(requestBody.toString());
 
                     String type = request.get(0).split(" ")[0];
                     String url = request.get(0).split(" ")[1];
@@ -119,8 +125,15 @@ class MultiThreadedServer {
                     if ((type.equals("POST")) && (url.equals("/frontend/verify"))) {
                         System.out.println(request);
                         byte[] content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
-                        String username = request.get(emptyLine + 1);
-                        String password = request.get(emptyLine);
+                        String usernameObject = request.get(line).split(",")[0];
+                        String usernameValue = usernameObject.split(":")[1];
+                        String username = usernameValue.substring(1, usernameValue.length() - 1);
+
+                        String passwordObject = request.get(line).split(",")[1];
+                        String passwordValue = passwordObject.split(":")[1];
+                        String password = passwordValue.substring(1, passwordValue.length() - 2);
+
+
                         if (userBase.verifyUser(username, password)) {
                             output.write(
                                 ("HTTP/1.1 200 OK\r\n" +
@@ -129,7 +142,7 @@ class MultiThreadedServer {
                                 "Accept-Ranges: none\r\n" +
                                 "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
                             );
-
+                            
                             output.write(content);
         
                             output.flush();   

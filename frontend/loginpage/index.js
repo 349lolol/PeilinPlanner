@@ -9,16 +9,16 @@ const login = async (data) => {
             "Content-Type": "application/json",
             "Access-Control-Origin": "*",
         },
-        // body: JSON.stringify({
-        //     username: data.username,
-        //     password: data.password
-        // })
-        body: JSON.stringify({cheese: "Parmesan"})
+        body: JSON.stringify({
+            username: data.username,
+            password: data.password
+        })
     })
         .then(res => {
-            res.json();
+            return res.json();
         })
         .then(res => {
+            console.log(res)
             if (res.valid) {
                 window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
             } else {
@@ -26,6 +26,7 @@ const login = async (data) => {
             }
         })
         .catch(err => {
+            console.log(err)
             console.log("ERROR RETRIEVING USER DATA")
         form.reset();
         })

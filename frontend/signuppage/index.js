@@ -1,15 +1,36 @@
 const form = document.querySelector("form");
 
-const signup = async (data) => {
-    
-    await axios.post("SIGNUPPAGE", data)
-    .then(res => {
-        window.location.href = "LOGINPAGEURL"
-        // server will add new user
-    }).catch(err => {
-        console.log("ERROR RETRIEVING USER DATA")
-        form.reset();
+const login = async (data) => {
+    await fetch("http://localhost:5069/frontend/newUser", {
+        method: "POST",
+        mode: 'cors',
+        headers: {
+            // "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Origin": "*",
+        },
+        body: JSON.stringify({
+            username: data.username,
+            password: data.password
+        })
     })
+        .then(res => {
+            return res.json();
+        })
+        .then(res => {
+            console.log(res)
+            if (res.valid) {
+                window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+            } else {
+                invalidInfo();
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            console.log("ERROR RETRIEVING USER DATA")
+        form.reset();
+        })
+    
 }
 
 const invalidInfo = async () => {
@@ -19,23 +40,11 @@ const invalidInfo = async () => {
 }
 
 form.addEventListener("submit", (e) => {
-    const userBase = axios.get("LOGINPAGEURL");
-    const userBaseData = userBase.data;
-
-    e.preventDefault()
-    const username = document.querySelector("#username").value;
-    const password = document.querySelector("#password").value;
-
-    if (!Object.hasOwn(userBaseData.users, username)) {
-        const data = {
-            username: `${username}`,
-            password: `${password}`
-        }
-
-        signup(data)
+    e.preventDefault();
+    let data = {
+        username: document.querySelector("#username").value,
+        password: document.querySelector("#password").value
     }
-    // invalid username
-    invalidInfo();
 
-    
+    login(data)
 })

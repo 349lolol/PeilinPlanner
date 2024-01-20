@@ -18,7 +18,6 @@ document.querySelector("#collaborate > button").addEventListener("click", (e) =>
 const createForm = document.querySelector("#createForm");
 
 const login = async (data) => {
-    console.log("FAJKFHK")
     await fetch("http://127.0.0.1:5500/server/HttpHandler.java", {
         method: "POST",
         headers: {
