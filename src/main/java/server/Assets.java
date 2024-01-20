@@ -1,3 +1,11 @@
+/**
+ * [Assets.java]
+ * process assets
+ * @author Perry Xu & Patrick Wei
+ * @version 1.1
+ * 01/09/24
+ */
+
 package server;
 
 import java.io.IOException;

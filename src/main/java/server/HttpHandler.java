@@ -1,5 +1,12 @@
-package server;
+/**
+ * [HttpHandler.java]
+ * Class representing all created projects
+ * @author Perry Xu & Patrick Wei
+ * @version 1.1
+ * 01/09/24
+ */
 
+package server;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
