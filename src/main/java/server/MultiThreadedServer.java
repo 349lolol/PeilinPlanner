@@ -13,6 +13,8 @@ import user.UserBase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 
 class MultiThreadedServer {
     final int PORT = 5069;       
@@ -29,6 +31,7 @@ class MultiThreadedServer {
         HttpHandler e = new HttpHandler();
         MultiThreadedServer.assets = new Assets();
         server.go();
+        ObjectMapper objectMapper = new ObjectMapper();
 
 
     }

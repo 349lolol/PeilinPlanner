@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 public class toJava {
     public static void printToJava(Project project) throws FileNotFoundException{
         //initialize the new folder
-        String path = "C:\\Users\\patri\\Documents\\PeilinPlanner\\PeilinPlanner\\"+project.getProjectName();
+        String path = "./"+project.getProjectName();
         File folder = new File(path);
         if (!folder.exists()) {
             folder.mkdirs();
