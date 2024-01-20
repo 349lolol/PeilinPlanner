@@ -16,14 +16,14 @@ import entities.ProjectBase;
 public class User {
     private final String username;
     private final String password;
-    private final LinkedList<Project> ownedProjects;
-    private final LinkedList<Project> sharedProjects;
+    private final LinkedList<String> ownedProjects;
+    private final LinkedList<String> sharedProjects;
 
     User(String username, String password) {
         this.username = username;
         this.password = password;
-        ownedProjects = new LinkedList<Project>();
-        sharedProjects = new LinkedList<Project>();
+        ownedProjects = new LinkedList<String>();
+        sharedProjects = new LinkedList<String>();
     }
 
     public String getUserName() {
@@ -34,19 +34,19 @@ public class User {
         return this.password;
     }
 
-    public LinkedList<Project> getSharedProjects() {
+    public LinkedList<String> getSharedProjects() {
         return this.sharedProjects;
     }
 
-    public LinkedList<Project> getOwnedProjects() {
+    public LinkedList<String> getOwnedProjects() {
         return this.ownedProjects;
     }
 
-    public boolean addSharedProject(Project project) {
+    public boolean addSharedProject(String project) {
         return sharedProjects.add(project);
     }
 
-    public boolean createProject(Project project) {
+    public boolean createProject(String project) {
         return ownedProjects.add(project);
     }
 }

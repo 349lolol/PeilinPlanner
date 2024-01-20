@@ -42,14 +42,18 @@ public class UserBase implements Serializable {
     }
 
     public boolean addToSharedProject(String username, Project project) {
-        return userBase.get(username).addSharedProject(project);
+        return userBase.get(username).addSharedProject(project.getProjectName());
     }
 
     public boolean addToOwnedProjects(String username, Project project) {
-        return userBase.get(username).createProject(project);
+        return userBase.get(username).createProject(project.getProjectName());
     }
 
-    public LinkedList<Project> getAvailableProjects(String username) {
+    public LinkedList<String> getSharedProjects(String username) {
+        return userBase.get(username).getSharedProjects();
+    }
+
+    public LinkedList<String> getSOwnedProjects(String username) {
         return userBase.get(username).getSharedProjects();
     }
 }
