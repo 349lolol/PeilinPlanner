@@ -51,7 +51,7 @@ public class toJava {
                     
                 }
                 else {
-                    code = code + "public class " + ((ClassDiagram)newObject).getName() + " {\n";
+                    code = code + "public class " + ((ClassDiagram)newObject).getName() + " ";
                 }
                 for(int j = 0; j < arrows.size(); j++) {
                     if(arrows.get(j).getArrowType().equals("INHERIT")) {
