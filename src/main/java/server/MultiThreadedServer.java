@@ -192,7 +192,9 @@ class MultiThreadedServer {
                     // LOADING PROJECTS IN
                     else if ((type.equals("POST")) && (url.equals("/frontend/loadProjects"))) {
                         System.out.println(request);
-                        byte[] content;
+                        byte[] content = "{{\"projectName\": \"PROJECTNAME\"}}".getBytes(StandardCharsets.UTF_8);
+                        StringBuilder stringContent;
+
                         String usernameObject = request.get(line).split(",")[0];
                         String usernameValue = usernameObject.split(":")[1];
                         String username = usernameValue.substring(1, usernameValue.length() - 2);
@@ -200,10 +202,16 @@ class MultiThreadedServer {
                         User user = userBase.getUser(username);
 
                         for (Project project : user.getSharedProjects()) {
+                            String projectName = project.getProjectName();
+                            String image = "\\frontend\\homepage\\images\\" + projectName + ".png";
 
+                            String projectContent = "{\"projectName\": " + "\"" + projectName + "\"}, ";
+                            
+                            stringContent.append(projectContent);
                         }
 
-                        
+                        stringContent
+
                         output.write(
                             ("HTTP/1.1 200 OK\r\n" +
                             "Content-Type: application/json\r\n" +
