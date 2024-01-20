@@ -8,13 +8,22 @@
 
 package entities;
 
-public class Diagram {
+public abstract class Diagram {
     private String name;
     private int xPosition;
     private int yPosition;
     private int xSize;
     private int ySize;
 
+    /**
+     * Diagram
+     * constructs a new diagram
+     * @param name name of diagram
+     * @param xPosition x poisiton of diagram
+     * @param yPosition y position of diagram
+     * @param xSize x size of diagram
+     * @param ySize y size of diagram
+     */
     public Diagram(String name, int xPosition, int yPosition, int xSize, int ySize) {
         this.name = name;
         this.xPosition = xPosition;

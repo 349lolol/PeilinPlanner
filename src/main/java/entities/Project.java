@@ -11,7 +11,6 @@ package entities;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Project{
     private String projectName;
@@ -20,6 +19,11 @@ public class Project{
     private int arrowIdCount;
     private final HashMap<Integer, Arrow> arrows;
 
+    /**
+     * JsonToJava
+     * creates a complete new project based on json data
+     * @param data the json string being converted
+     */
     public void JsonToJava(String data){
         String[] lines = data.split("\n");
         this.projectName = lines[1].split(": ")[1];
@@ -199,6 +203,10 @@ public class Project{
         }
     }
 
+    /**
+     * Project
+     * empty constructor
+     */
     public Project() {
         this.diagramIdCount = 0;
         this.projectName = "";
@@ -207,6 +215,12 @@ public class Project{
         arrows = new HashMap<Integer, Arrow>();
     }
 
+    /**
+     * getDiagram
+     * gets the matching diagram from this project
+     * @param diagramName name being searched
+     * @return the diagram, or null if not found
+     */
     public Diagram getDiagram(String diagramName) {
         for(int i = 0; i < diagramIdCount; i++) {
             if(diagrams.get(i).getName().equals(diagramName)) {
@@ -216,15 +230,32 @@ public class Project{
         return null;
     }
 
+    /**
+     * addDiagram
+     * adds a diagram to the system
+     * @param diagram diagram being added
+     */
     public void addDiagram(Diagram diagram) {   
         diagrams.put(diagramIdCount, diagram);
         diagramIdCount++;
     }
 
+    /**
+     * getDiagram
+     * gets a diagram based on the map's id system
+     * @param id id being searched by
+     * @return desired diagram, or null if not found
+     */
     public Diagram getDiagram(int id) {
         return diagrams.get(id);
     }
 
+    /**
+     * getId
+     * gets an id based on the diagram
+     * @param diagram diagram whose id is being searched for
+     * @return the diagram id, or -1 if not found
+     */
     public int getId(Diagram diagram) {
         for(int i = 0; i < diagramIdCount; i++) {
             if(diagrams.get(i).equals(diagram)) {
@@ -234,6 +265,11 @@ public class Project{
         return -1;
     }
 
+    /**
+     * getALlDiagrams
+     * gets all of the diagrams as a linkedList
+     * @return all diagrams
+     */
     public LinkedList<Diagram> getAllDiagrams() {
         LinkedList<Diagram> allDiagrams = new LinkedList<Diagram>();
         for(int i = 0; i < diagramIdCount; i++) {
@@ -244,11 +280,22 @@ public class Project{
         return allDiagrams;
     }
 
+    /**
+     * addArrow
+     * adds an arrow to the system
+     * @param arrow arrow being added
+     */
     public void addArrow(Arrow arrow) {
         arrows.put(arrowIdCount, arrow);
         arrowIdCount++;
     }
 
+    /**
+     * getArrow
+     * gets an arrow based on the map id
+     * @param id map id
+     * @return the arrow
+     */
     public Arrow getArrow(int id) {
         return arrows.get(id);
     }
@@ -263,10 +310,20 @@ public class Project{
         return allArrows;
     }
 
+    /**
+     * getProjectName
+     * gets the name of this project
+     * @return name of this project
+     */
     public String getProjectName() {
         return this.projectName;
     }
 
+    /**
+     * setProjectName
+     * sets a new name for this project
+     * @param name the new name
+     */
     public void setProjectName(String name) {
         this.projectName = name;
     }

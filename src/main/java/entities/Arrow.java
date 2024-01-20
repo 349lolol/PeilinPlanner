@@ -1,6 +1,3 @@
-package entities;
-import java.util.ArrayList;
-
 /**
  * [Arrow.java]
  * Class representing any arrow in UML
@@ -9,6 +6,10 @@ import java.util.ArrayList;
  * 01/09/24
  */
 
+package entities;
+
+import java.util.ArrayList;
+
 public class Arrow {
     private Diagram origin;
     private Diagram destination;
@@ -16,23 +17,12 @@ public class Arrow {
     private ArrayList<Integer> xPoints;
     private ArrayList<Integer> yPoints;
 
-    public String toString(Project project) {
-        String data = "<OBJECTTYPE> ARROW </OBJECTTYPE>\n";
-        data = data + "<Origin> " + project.getId(origin) + " </Origin>\n";  //only getname, not actual one for tostring
-        data = data + "<Destination> " + project.getId(origin) + " </Destination>\n";
-        data = data + "<ArrowType> " + this.arrowType + " </ArrowType>\n";
-        String xList = "";
-        String yList = "";
-        for(int i = 0; i < xPoints.size(); i++) {
-            xList = xList + Integer.toString(xPoints.get(i)) + ",";
-            yList = yList + Integer.toString(yPoints.get(i)) + ",";
-        }
-        xList.substring(0, xList.length() - 2);
-        yList.substring(0, yList.length() - 2);
-        data = data + "<XPoints> " + xList + " </XPoints>\n";
-        data = data + "<YPoints> " + yList + " </YPoints>\n";
-        return data;
-    }
+    /**
+     * arrow constructor
+     * @param origin name of hte origin diagram
+     * @param destination name of the destination diagram
+     * @param arrowType arrow identifier
+     */
     Arrow(Diagram origin, Diagram destination, String arrowType) {
         this.origin = origin;
         this.destination = destination;
@@ -41,6 +31,14 @@ public class Arrow {
         yPoints = new ArrayList<Integer>();
     }
 
+    /**
+     * arrow constructor
+     * @param origin name of hte origin diagram
+     * @param destination name of the destination diagram
+     * @param arrowType arrow identifier
+     * @param xPoints list of x points
+     * @param yPoints list of y points
+     */
     Arrow(Diagram origin, Diagram destination, String arrowType, ArrayList<Integer> xPoints, ArrayList<Integer> yPoints) {
         this.origin = origin;
         this.destination = destination;
@@ -49,6 +47,10 @@ public class Arrow {
         this.yPoints = yPoints;
     }
 
+    /**
+     * arrow
+     * empty constructor
+     */
     Arrow() {
         this.origin = null;
         this.destination = null;
@@ -57,51 +59,112 @@ public class Arrow {
         yPoints = new ArrayList<Integer>();
     }
 
+    /**
+     * getOrigin
+     * gets the name of the origin
+     * @return the name of the origin diagram
+     */
     public Diagram getOrigin() {
         return this.origin;
     }
 
+    /**
+     * addXpoints
+     * sets a new arraylist of xpoints as coordinates
+     * @param xPoints list of coordinates
+     */
     public void addXPoints(ArrayList<Integer> xPoints) {
         this.xPoints = xPoints;
     }
 
+    /**
+     * addYpoints
+     * sets a new arraylist of ypoints as coordinates
+     * @param yPoints list of coordinates
+     */
     public void addYPoints(ArrayList<Integer> yPoints) {
         this.yPoints = yPoints;
     }
 
+    /**
+     * setOrigin
+     * sets a new origin for the diagram
+     * @param diagram the new origin name
+     */
     public void setOrigin(Diagram diagram) {
         this.origin = diagram;
     }
 
+    /**
+     * getDestination
+     * gets the name of the destination
+     * @return destination name
+     */
     public Diagram getDestination() {
         return this.destination;
     }
 
+    /**
+     * setDestination
+     * sets a new destination for the diagram
+     * @param diagram the new destination name
+     */
     public void setDestination(Diagram diagram) {
         this.origin = diagram;
     }
 
+    /**
+     * getArrowType
+     * gets the arrow type identifier
+     * @return arrow type identifier
+     */
     public String getArrowType() {
         return this.arrowType;
     }
 
+    /**
+     * setARrowType
+     * sets a new arrow type
+     * @param arrowType the new arrow identifier
+     */
     public void setArrowType(String arrowType) {
         this.arrowType = arrowType;
     }
 
+    /**
+     * getXPoint
+     * returns the list of x coordiantes
+     * @return list of x coordinates
+     */
     public ArrayList<Integer> getXPoints() {
         return this.xPoints;
     }
 
+    /**
+     * getYPoint 
+     * returns the list of y coordinates
+     * @return list of y coordinates
+     */
     public ArrayList<Integer> getYPoints() {
         return this.yPoints;
     }
 
+    /**
+     * addPoint
+     * adds a new point to the arrow
+     * @param x x coordinate
+     * @param y y coordinate
+     */
     public void addPoint(int x, int y) {
         this.xPoints.add(x);
         this.yPoints.add(y);
     }
 
+    /**
+     * removePoints
+     * removes n points from the arrow
+     * @param n number of points being removed
+     */
     public void removePoints(int n) {
         while(n>0) {
             n--;
@@ -110,6 +173,13 @@ public class Arrow {
         }
     }
 
+    /**
+     * removePoint
+     * removes a point if it exists
+     * @param x x coordiante of point
+     * @param y y coordinate of point
+     * @return if operation was successful or not 
+     */
     public boolean removePoint(int x, int y) {
         for(int i = 0; i < xPoints.size(); i++) {
             if((xPoints.get(i) == x) && (yPoints.get(i) == y)) {
