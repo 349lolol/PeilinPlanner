@@ -29,6 +29,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
 // MODALS
 const createModal = document.querySelector("#createModal");
+const closeCreate = document.querySelector("#createModal .close")
 
 document.querySelector("#create > button").addEventListener("click", (e) => {
     e.preventDefault();
@@ -36,7 +37,13 @@ document.querySelector("#create > button").addEventListener("click", (e) => {
     createModal.style.display = "flex"
 })
 
+closeCreate.addEventListener("click", (e) => {
+    console.log(e)
+    createModal.close();
+})
+
 const collaborateModal = document.querySelector("#collaborateModal");
+const closeCollaborate = document.querySelector("#collaborateModal .close")
 
 document.querySelector("#collaborate > button").addEventListener("click", (e) => {
     e.preventDefault();
@@ -44,12 +51,12 @@ document.querySelector("#collaborate > button").addEventListener("click", (e) =>
     collaborateModal.style.display = "flex"
 })
 
-const createForm = document.querySelector("#createForm");
-
-createForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
+closeCollaborate.addEventListener("click", (e) => {
+    console.log(e)
+    collaborateModal.close();
 })
+
+// CREATING PROJECTS
 
 const create = async (projectName) => {
     await fetch("/frontend/createProject", {
@@ -59,14 +66,72 @@ const create = async (projectName) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            projectName: projectName,
+            projectName: projectName
         })
     })
         .then(res => {
-            res.json();
+            return res.json();
         })
         .then(res => {
-            console.log(res);
+            if (res !== undefined) {
+            //     <button type="submit" class="project" id="project1">
+            //     <p>[Project Name]</p>
+
+            //     <i class="ri-article-line" id="projectIcon"></i>
+            //     </button>
+                const projects = document.querySelector(".projects");
+
+                const project = document.createElement("button");
+                project.style.type = "submit";
+                project.classList.add("project");
+                project.id = projectName;
+
+                const title = document.createElement("p");
+                title.append(projectName);
+                project.append(title);
+
+                const icon = document.createElement("i");
+                icon.classList.add("ri-article-line");
+                icon.id = "projectIcon";
+
+                project.append(icon);
+
+                projects.append(project);
+            }
+        })
+        .catch(err => {
+            console.log("ERROR RETRIEVING USER DATA")
+            window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+        })
+}
+
+const createForm = document.querySelector("#createForm");
+
+createForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    create(document.querySelector("#createForm input").value);
+
+})
+
+// COLLABORATION
+
+const collaborate = async (username, projectName) => {
+    await fetch("/frontend/createProject", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            projectName: projectName
+        })
+    })
+        .then(res => {
+            return res.json();
+        })
+        .then(res => {
+           console.log(res)
         })
         .catch(err => {
             console.log("ERROR RETRIEVING USER DATA")

@@ -30,13 +30,25 @@ public class ProjectBase {
     public String addProject(Project project) {
         projects.put(project.getProjectName(), project);
         isInUse.put(project.getProjectName(), false);
-        return "{\n    \"ProjectName\":" + project.getProjectName() +  ",\n    \"diagramIdCount\": 0,\n    \"arrowIdCount\": 0,\n    [],\n    [],\n    [],\n    [],\n}";
+        return "{\n\"ProjectName\":" + "\"" + project.getProjectName() +  "\"" + ",\n" +
+            "\"diagramIdCount\": 0,\n" +
+            "\"arrowIdCount\": 0,\n" +
+            "\"classDiagrams\": [],\n" +
+            "\"interfaceDiagrams\": [],\n" +
+            "\"exceptionDiagrams\": [],\n" +
+            "\"arrows\": [],\n}";
     }
     
     public String addProject(String projectName) {
         projects.put(projectName, new Project(projectName));
         isInUse.put(projectName, false);
-        return "{\n    \"ProjectName\":" + projectName +  ",\n    \"diagramIdCount\": 0,\n    \"arrowIdCount\": 0,\n    [],\n    [],\n    [],\n    [],\n}";
+        return "{\n\"ProjectName\":" + "\"" + projectName +  "\"" + ",\n" +
+            "\"diagramIdCount\": 0,\n" +
+            "\"arrowIdCount\": 0,\n" +
+            "\"classDiagrams\": [],\n" +
+            "\"interfaceDiagrams\": [],\n" +
+            "\"exceptionDiagrams\": [],\n" +
+            "\"arrows\": []\n}";
     }
 
     /**

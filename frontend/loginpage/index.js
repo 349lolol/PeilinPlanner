@@ -1,7 +1,7 @@
 const form = document.querySelector("form");
 
 const login = async (data) => {
-    await fetch("/frontend/verify", {
+    await fetch("/frontend/collaborate", {
         method: "POST",
         mode: 'cors',
         headers: {

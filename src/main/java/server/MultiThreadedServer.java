@@ -22,11 +22,15 @@ class MultiThreadedServer {
     private Socket clientSocket;
     private int clientCounter = 0;
     private static UserBase userBase = new UserBase(new HashMap<String, User>());
+    private static ProjectBase projectBase = new ProjectBase();
     private static Assets assets;
     
     public static void main(String[] args) throws Exception { 
         // INITIALIZE userBase
-        // userBase.addUser("MidtrickWei", "IMADECAKID");
+        userBase.addUser("MidtrickWei", "IMADECAKID");
+        userBase.addUser("Parmesan", "Cheese");
+        
+        userBase.getUser("MidtrickWei").addProject(null)
         MultiThreadedServer server = new MultiThreadedServer();
         HttpHandler e = new HttpHandler();
         MultiThreadedServer.assets = new Assets();
@@ -233,34 +237,21 @@ class MultiThreadedServer {
                     }
 
                     // CREATING A PROJECT
-                    else if ((type.equals("POST")) && (url.equals("/frontend/loadProjects"))) {
+                    else if ((type.equals("POST")) && (url.equals("/frontend/createProject"))) {
                         System.out.println(request);
-                        // byte[] content = "{\"projectNames\": [ \"PROJECTNAME\", ]}".getBytes(StandardCharsets.UTF_8);
                         byte[] content;
-                        StringBuilder stringContent = new StringBuilder();
-                        stringContent.append("{\"projectName\": [");
+                        String usernameString = request.get(line).split(",")[0];
+                        String usernameValue = usernameString.split(":")[1].substring(1, usernameString.length() - 1);
 
-                        String usernameObject = request.get(line).split(",")[0];
-                        String usernameValue = usernameObject.split(":")[1];
-                        String username = usernameValue.substring(1, usernameValue.length() - 2);
+                        String projectString = request.get(line).split(",")[1];
+                        String projectName = projectString.split(":")[1].substring(1, projectString.length() - 2);
 
-                        User user = userBase.getUser(username);
-
-                        for (int i = 0; i < user.getSharedProjects().size(); i++) {
-                            String projectName = user.getSharedProjects().get(i).getProjectName();
-
-                            String projectContent = "\"" + projectName + "\"";
-                            
-                            stringContent.append(projectContent);
-
-                            if (i != user.getSharedProjects().size() - 1) {
-                                stringContent.append(",");
-                            } else {
-                                stringContent.append("]}");
-                            }
+                        // if user's shared projects contain the project with the name
+                        if (userBase.getUser(usernameValue).getSharedProjects().contains(projectBase.getProject(projectName))) {
+                            content = "{\"valid\": true}".getBytes();
+                        } else {
+                            content = "{\"valid\": false}".getBytes();
                         }
-
-                        content = stringContent.toString().getBytes(StandardCharsets.UTF_8);
 
                         output.write(
                             ("HTTP/1.1 200 OK\r\n" +
@@ -271,6 +262,29 @@ class MultiThreadedServer {
                         );
 
                         output.write(content);
+
+                        output.flush();
+                    }
+
+                    // COLLABORATION
+                    else if ((type.equals("POST")) && (url.equals("/frontend/collaborate"))) {
+                        System.out.println(request);
+                        String requestString = request.get(line).split(":")[1];
+                        String requestValue = requestString.substring(1, requestString.length() - 2);
+                        if ()
+
+                        byte[] content = projectBase.addProject(requestValue).getBytes();
+
+                        output.write(
+                            ("HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: application/json\r\n" +
+                            "Vary: Accept-Encoding\r\n" +
+                            "Accept-Ranges: none\r\n" +
+                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
+                        );
+
+                        output.write(content);
+                        System.out.println(projectBase.addProject(requestValue));
 
                         output.flush();
                     }
