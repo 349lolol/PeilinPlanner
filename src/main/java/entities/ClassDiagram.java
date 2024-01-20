@@ -16,32 +16,6 @@ public class ClassDiagram extends Diagram {
     private final LinkedList<Method> methods;
 
     /**
-     * toString
-     * constructs XML structure for class diagram
-     */
-    @Override
-    public String toString() {
-        String data = "<OBJECTTYPE> CLASSDIAGRAM </OBJECTTYPE>\n";
-        data = data +  "<name> " + super.getName() + " </name>\n";
-        data = data +  "<xPosition> " + super.getXPosition() + " </xPosition>\n";
-        data = data +  "<yPosition> " + super.getYPosition() + " </yPosition>\n";
-        data = data +  "<xSize> " + super.getYSize() + " </xSize>\n";
-        data = data +  "<ySize> " + super.getYSize() + " </ySize>\n";
-        data = data + "<isAbstract> " + this.isAbstract() + " </isAbstract>\n";
-        data = data + "<fields=" + fields.size() + ">\n";
-            for(Field field : fields) {
-                data = data + field.toString();
-            }
-        data = data + "</fields>\n";
-        data = data + "<methods= " + methods.size() + ">\n";
-            for(Method method : methods) {
-                data = data + method.toString();
-            }
-        data = data + "</methods>\n";
-        return data;
-    }
-
-    /**
      * ClassDiagram
      * Constructor for the ClassDiagram class
      * @param name the name of the class

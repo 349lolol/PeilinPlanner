@@ -1,5 +1,5 @@
 /**
- * [Parameter.java]
+ * [Method.java]
  * Class representing a method
  * @author Perry Xu & Patrick Wei
  * @version 1.0
@@ -11,12 +11,10 @@ package entities;
 public class Method {
     private String data;
 
-    @Override
-    public String toString() {
-        return "<Line> " + this.data + "</Line>\n";
-        
-    }
-
+    /**
+     * toJava
+     * prints the method out in a java style
+     */
     public String toJava() {
         if(data.contains("abstract")) {
             return this.data + ";\n";
@@ -25,18 +23,35 @@ public class Method {
         }
     }
 
+    /**
+     * Method
+     * @param data the method the object stores
+     */
     public Method(String data) {
         this.data = data;
     }
 
+    /**
+     * Method
+     * empty constructor
+     */
     public Method() {
         this.data = "EMPTY";
     }
 
+    /**
+     * getData
+     * retrieves the method stored in the object
+     */
     public String getData() {
         return this.data;
     }
 
+    /**
+     * setData
+     * updates the stored method of the class
+     * @param xPosition the new method in the class
+     */
     public void setData(String data) {
         this.data = data;
     }

@@ -1,4 +1,13 @@
+/**
+ * [ToJava.java]
+ * Class that converts a uml to a workable java project
+ * @author Perry Xu & Patrick Wei
+ * @version 1.1
+ * 01/09/24
+ */
+
 package entities;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
@@ -6,9 +15,14 @@ import java.util.HashMap;
 import java.io.PrintWriter;
 
 public class toJava {
+    
+    /**
+     * PrintToJava
+     * Converts an entire uml project to a workable folder with 1 file per class object
+     *  */ 
     public static void printToJava(Project project) throws FileNotFoundException{
         //initialize the new folder
-        String path = "C:\\Users\\patri\\Documents\\PeilinPlanner\\PeilinPlanner\\"+project.getProjectName();
+        String path = "./"+project.getProjectName();
         File folder = new File(path);
         if (!folder.exists()) {
             folder.mkdirs();
