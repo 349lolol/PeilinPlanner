@@ -40,6 +40,7 @@ public class Project{
             }
         }
 
+        //classDiagram
         int currentIndex = listStartIndices.get(0) + 1;
         while(currentIndex < listEndIndices.get(0) - 3) {
             if(lines[currentIndex].startsWith("        {")){
@@ -69,7 +70,7 @@ public class Project{
                 temp = lines[currentIndex].split("[")[1];
                 temp = temp.substring(0, temp.length() - 2);
                 String[] fieldStrings = temp.split(", ");
-                ArrayList<Field> fields = new ArrayList<Field>();
+                LinkedList<Field> fields = new LinkedList<Field>();
                 for(int i = 0; i < fieldStrings.length; i++){
                     fields.add(new Field(fieldStrings[i]));
                 }
@@ -78,16 +79,124 @@ public class Project{
                 temp = lines[currentIndex].split("[")[1];
                 temp = temp.substring(0, temp.length() - 2);
                 String[] methodStrings = temp.split(", ");
-                ArrayList<Method> methods = new ArrayList<Method>();
+                LinkedList<Method> methods = new LinkedList<Method>();
                 for(int i = 0; i < methodStrings.length; i++){
                     methods.add(new Method(methodStrings[i]));
                 }
+                diagrams.put(classId, new ClassDiagram(className, isAbstract, fields, methods, xPosition, yPosition, xSize, ySize));
+            }
+            else {
+                currentIndex = currentIndex + 1;
+            }
+        }
+        //interfaceDiagram
+        currentIndex = listStartIndices.get(1) + 1;
+        while(currentIndex < listEndIndices.get(1) - 3) {
+            if(lines[currentIndex].startsWith("        {")){
+                currentIndex = currentIndex + 1;
+                String temp = lines[currentIndex].split(": ")[1];
+                int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                String className = temp.substring(0, temp.length() - 1);
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int xPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int yPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int xSize = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int ySize = Integer.parseInt(temp.substring(0, temp.length() - 1));
+
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split("[")[1];
+                temp = temp.substring(0, temp.length() - 2);
+                String[] methodStrings = temp.split(", ");
+                LinkedList<Method> methods = new LinkedList<Method>();
+                for(int i = 0; i < methodStrings.length; i++){
+                    methods.add(new Method(methodStrings[i]));
+                }
+
+                diagrams.put(classId, new InterfaceDiagram(className, methods, xPosition, yPosition, xSize, ySize));
             }
             else {
                 currentIndex = currentIndex + 1;
             }
         }
 
+        //exceptionDiagram
+        currentIndex = listStartIndices.get(2) + 1;
+        while(currentIndex < listEndIndices.get(2) - 3) {
+            if(lines[currentIndex].startsWith("        {")){
+                currentIndex = currentIndex + 1;
+                String temp = lines[currentIndex].split(": ")[1];
+                int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                String className = temp.substring(0, temp.length() - 1);
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int xPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int yPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int xSize = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int ySize = Integer.parseInt(temp.substring(0, temp.length() - 1));
+
+                diagrams.put(classId, new ExceptionDiagram(className, xPosition, yPosition, xSize, ySize));
+            }
+            else {
+                currentIndex = currentIndex + 1;
+            }
+        }
+
+        //all types of arrows
+        currentIndex = listStartIndices.get(3) + 1;
+        while(currentIndex < listEndIndices.get(3) - 3) {
+            if(lines[currentIndex].startsWith("        {")){
+                currentIndex = currentIndex + 1;
+                String temp = lines[currentIndex].split(": ")[1];
+                String originName = temp.substring(0, temp.length() - 1);
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                String destinationName = temp.substring(0, temp.length() - 1);
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                String arrowType = temp.substring(0, temp.length() - 1);
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                int arrowId = Integer.parseInt(temp.substring(0, temp.length() - 1));
+
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                temp = temp.substring(1, temp.length()-1);
+                String[] xCoordinateStrings = temp.split(", ");
+                
+                currentIndex = currentIndex + 1;
+                temp = lines[currentIndex].split(": ")[1];
+                temp = temp.substring(1, temp.length()-1);
+                String[] yCoordinateStrings = temp.split(", ");
+                
+                ArrayList<Integer> xCoordinates = new ArrayList<Integer>();
+                ArrayList<Integer> yCoordinates = new ArrayList<Integer>();
+                for(int i = 0; i < xCoordinateStrings.length; i++){
+                    xCoordinates.add(Integer.parseInt(xCoordinateStrings[i]));
+                    yCoordinates.add(Integer.parseInt(yCoordinateStrings[i]));
+                }
+                arrows.put(arrowId, new Arrow(this.getDiagram(originName), this.getDiagram(destinationName), arrowType, xCoordinates, yCoordinates));                
+            }
+            else {
+                currentIndex = currentIndex + 1;
+            }
+        }
     }
 
     public Project() {

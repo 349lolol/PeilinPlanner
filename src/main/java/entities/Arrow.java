@@ -41,6 +41,14 @@ public class Arrow {
         yPoints = new ArrayList<Integer>();
     }
 
+    Arrow(Diagram origin, Diagram destination, String arrowType, ArrayList<Integer> xPoints, ArrayList<Integer> yPoints) {
+        this.origin = origin;
+        this.destination = destination;
+        this.arrowType = arrowType;
+        this.xPoints = xPoints;
+        this.yPoints = yPoints;
+    }
+
     Arrow() {
         this.origin = null;
         this.destination = null;
