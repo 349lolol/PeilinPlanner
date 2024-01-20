@@ -1,25 +1,13 @@
 package server;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import entities.Arrow;
-import entities.ClassDiagram;
-import entities.Diagram;
-import entities.ExceptionDiagram;
-import entities.Field;
-import entities.InterfaceDiagram;
-import entities.Method;
 import entities.Project;
-import entities.ProjectBase;
-import user.User;
 import user.UserBase;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class HttpHandler {
 
@@ -73,7 +61,7 @@ public class HttpHandler {
         return null;
     }
 
-    public String createResponse(String responseType, ArrayList<String> data){
+    public String createResponse(String responseType, ArrayList<String> data) {
         //pass in an arraylist of data needed for everything, use arraylist for flexibility in
         if(responseType.equals("LoginSuccess")) {
 

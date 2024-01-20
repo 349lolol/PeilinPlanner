@@ -17,7 +17,7 @@ public class ProjectBase {
      * ProjectBase
      * empty constructor
      */
-    public ProjectBase(){
+    public ProjectBase() {
         projects = new HashMap<String, Project>();
     }
 
@@ -25,7 +25,7 @@ public class ProjectBase {
      * addProject
      * @param project new project being added
      */
-    public void addProject(Project project){
+    public void addProject(Project project) {
         projects.put(project.getProjectName(), project);
     }
     
@@ -35,7 +35,7 @@ public class ProjectBase {
      * @param name name of the project
      * @return the project structure
      */
-    public Project getProject(String name){
+    public Project getProject(String name) {
         return projects.get(name);
     }
 
