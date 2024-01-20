@@ -26,15 +26,49 @@ class MultiThreadedServer {
     private static Assets assets;
     
     public static void main(String[] args) throws Exception { 
+
+        try
+        {   
+            // Reading the object from a file
+            FileInputStream file = new FileInputStream("./userStorage.txt");
+            ObjectInputStream in = new ObjectInputStream(file);
+             
+            // Method for deserialization of object
+            userBase = (UserBase)in.readObject();
+             
+            in.close();
+            file.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("Error deserializing");
+        }
         // INITIALIZE userBase
         userBase.addUser("MidtrickWei", "IMADECAKID");
         userBase.addUser("Parmesan", "Cheese");
         
-        userBase.getUser("MidtrickWei").addProject(null)
+        userBase.getUser("MidtrickWei").createProject(null);
         MultiThreadedServer server = new MultiThreadedServer();
         HttpHandler e = new HttpHandler();
         MultiThreadedServer.assets = new Assets();
         server.go();
+
+        try
+        {   
+            //Saving of object in a file
+            FileOutputStream file = new FileOutputStream("./userStorage.txt");
+            ObjectOutputStream out = new ObjectOutputStream(file);
+             
+            // Method for serialization of object
+            out.writeObject(userBase);
+             
+            out.close();
+            file.close();
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Error serializing");
+        }
     }
     
     public void go() throws Exception { 
@@ -208,7 +242,7 @@ class MultiThreadedServer {
                         User user = userBase.getUser(username);
 
                         for (int i = 0; i < user.getSharedProjects().size(); i++) {
-                            String projectName = user.getSharedProjects().get(i).getProjectName();
+                            String projectName = user.getSharedProjects().get(i);
 
                             String projectContent = "\"" + projectName + "\"";
                             
