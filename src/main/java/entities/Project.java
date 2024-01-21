@@ -120,10 +120,10 @@ public class Project {
         ArrayList<Integer> listStartIndices = new ArrayList<Integer>();
         ArrayList<Integer> listEndIndices = new ArrayList<Integer>();
         for(int i = 1; i < lines.length; i++) {
-            if(lines[i].startsWith("\"[")) {
+            if(lines[i].startsWith("[")) {
                 listStartIndices.add(i);
             }
-            if(lines[i].startsWith("]\"")) {
+            if(lines[i].startsWith("]")) {
                 listEndIndices.add(i);
             }
         }
