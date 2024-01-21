@@ -56,7 +56,7 @@ public class Project {
         }
 
         String[] lines = new String[linesCount];
-        int lastRecordedEnter = 3;
+        int lastRecordedEnter = 1;
         int linesIndex = 0;
         for(int i = 3; i < data.length(); i++) {
             if(data.charAt(i) == '[') {
@@ -68,6 +68,8 @@ public class Project {
             else if((data.charAt(i) == ',') && (layersDeep < 2)) {
                 lines[linesIndex] = data.substring(lastRecordedEnter, i + 1);
                 lastRecordedEnter = i + 1;
+                System.out.println(lines[linesIndex]);
+                
             }
         }
         return lines;
@@ -129,7 +131,7 @@ public class Project {
         //classDiagram
         int currentIndex = listStartIndices.get(0) + 1;
         while(currentIndex < listEndIndices.get(0) - 3) {
-            if(lines[currentIndex].startsWith("        {")) {
+            if(lines[currentIndex].startsWith("{")) {
                 currentIndex = currentIndex + 1;
                 String temp = lines[currentIndex].split(":")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
@@ -178,7 +180,7 @@ public class Project {
         //interfaceDiagram
         currentIndex = listStartIndices.get(1) + 1;
         while(currentIndex < listEndIndices.get(1) - 3) {
-            if(lines[currentIndex].startsWith("        {")) {
+            if(lines[currentIndex].startsWith("{")) {
                 currentIndex = currentIndex + 1;
                 String temp = lines[currentIndex].split(":")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
@@ -286,7 +288,7 @@ public class Project {
     }
 
     public String javaToJson() {
-        String data = "{\n" + "\"ProjectName\": \""  + this.projectName + "\", ";
+        String data = "{\n" + "\"ProjectName\": "  + this.projectName + ", ";
         data = data + "\"diagramIdCount\": "  + this.diagramIdCount + ", ";
         data = data + "\"arrowIdCount\": "  + this.arrowIdCount + ", ";
         data = data + "\"classDiagrams\": [";
