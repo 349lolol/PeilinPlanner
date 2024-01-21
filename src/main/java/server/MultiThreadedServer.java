@@ -343,6 +343,21 @@ class MultiThreadedServer {
                     // LOADING UML
                     else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
                         System.out.println(request);
+                        
+                        byte[] content;
+                        String projectString = request.get(line).split(",")[0];
+                        String projectNameValue = projectString.split(":")[1];
+                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
+
+                        projectBase.getProject(projectName).JsonToJava(request.get(line));
+
+                        System.out.println(projectBase.getProject(projectName).getAllDiagrams());
+                    }
+
+                    // SENDING UML
+                    else if ((type.equals("POST")) && (url.equals("/frontend/saveUML"))) {
+                        System.out.println("HI");
+                        System.out.println(request);
                         byte[] content;
                         String usernameString = request.get(line).split(",")[0];
                         String usernameValue = usernameString.split(":")[1];

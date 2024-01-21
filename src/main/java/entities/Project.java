@@ -78,12 +78,12 @@ public class Project {
      * @param data the json string being converted
      */
     public void JsonToJava(String data) {
-        String[] lines = this.splitUML(data);;
-        this.projectName = lines[1].split(": ")[1];
+        String[] lines = this.splitUML(data);
+        this.projectName = lines[1].split(":")[1];
         this.projectName = this.projectName.substring(0, this.projectName.length()-1);
-        String diagramCountString = lines[2].split(": ")[1];
+        String diagramCountString = lines[2].split(":")[1];
         this.diagramIdCount = Integer.parseInt(diagramCountString.substring(0, diagramCountString.length()-1));
-        String arrowCountString = lines[2].split(": ")[1];
+        String arrowCountString = lines[2].split(":")[1];
         this.arrowIdCount = Integer.parseInt(arrowCountString.substring(0, arrowCountString.length()-1));
 
         ArrayList<Integer> listStartIndices = new ArrayList<Integer>();
@@ -102,31 +102,31 @@ public class Project {
         while(currentIndex < listEndIndices.get(0) - 3) {
             if(lines[currentIndex].startsWith("        {")) {
                 currentIndex = currentIndex + 1;
-                String temp = lines[currentIndex].split(": ")[1];
+                String temp = lines[currentIndex].split(":")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 String className = temp.substring(0, temp.length() - 1);
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int xPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int yPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int xSize = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int ySize = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 boolean isAbstract = temp.equals("true,");
                 
                 currentIndex = currentIndex + 1;
                 temp = lines[currentIndex].split("[")[1];
                 temp = temp.substring(0, temp.length() - 2);
-                String[] fieldStrings = temp.split(", ");
+                String[] fieldStrings = temp.split(",");
                 LinkedList<Field> fields = new LinkedList<Field>();
                 for(int i = 0; i < fieldStrings.length; i++) {
                     fields.add(new Field(fieldStrings[i]));
@@ -135,7 +135,7 @@ public class Project {
                 currentIndex = currentIndex + 1;
                 temp = lines[currentIndex].split("[")[1];
                 temp = temp.substring(0, temp.length() - 2);
-                String[] methodStrings = temp.split(", ");
+                String[] methodStrings = temp.split(",");
                 LinkedList<Method> methods = new LinkedList<Method>();
                 for(int i = 0; i < methodStrings.length; i++) {
                     methods.add(new Method(methodStrings[i]));
@@ -151,28 +151,28 @@ public class Project {
         while(currentIndex < listEndIndices.get(1) - 3) {
             if(lines[currentIndex].startsWith("        {")) {
                 currentIndex = currentIndex + 1;
-                String temp = lines[currentIndex].split(": ")[1];
+                String temp = lines[currentIndex].split(":")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 String className = temp.substring(0, temp.length() - 1);
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int xPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int yPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int xSize = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int ySize = Integer.parseInt(temp.substring(0, temp.length() - 1));
 
                 currentIndex = currentIndex + 1;
                 temp = lines[currentIndex].split("[")[1];
                 temp = temp.substring(0, temp.length() - 2);
-                String[] methodStrings = temp.split(", ");
+                String[] methodStrings = temp.split(",");
                 LinkedList<Method> methods = new LinkedList<Method>();
                 for(int i = 0; i < methodStrings.length; i++) {
                     methods.add(new Method(methodStrings[i]));
@@ -190,22 +190,22 @@ public class Project {
         while(currentIndex < listEndIndices.get(2) - 3) {
             if(lines[currentIndex].startsWith("        {")) {
                 currentIndex = currentIndex + 1;
-                String temp = lines[currentIndex].split(": ")[1];
+                String temp = lines[currentIndex].split(":")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 String className = temp.substring(0, temp.length() - 1);
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int xPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int yPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int xSize = Integer.parseInt(temp.substring(0, temp.length() - 1));
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int ySize = Integer.parseInt(temp.substring(0, temp.length() - 1));
 
                 diagrams.put(classId, new ExceptionDiagram(className, xPosition, yPosition, xSize, ySize));
@@ -220,27 +220,27 @@ public class Project {
         while(currentIndex < listEndIndices.get(3) - 3) {
             if(lines[currentIndex].startsWith("        {")) {
                 currentIndex = currentIndex + 1;
-                String temp = lines[currentIndex].split(": ")[1];
+                String temp = lines[currentIndex].split(":")[1];
                 String originName = temp.substring(0, temp.length() - 1);
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 String destinationName = temp.substring(0, temp.length() - 1);
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 String arrowType = temp.substring(0, temp.length() - 1);
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 int arrowId = Integer.parseInt(temp.substring(0, temp.length() - 1));
 
                 currentIndex = currentIndex + 1;
                 temp = lines[currentIndex].split(": ")[1];
                 temp = temp.substring(1, temp.length()-1);
-                String[] xCoordinateStrings = temp.split(", ");
+                String[] xCoordinateStrings = temp.split(",");
                 
                 currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
+                temp = lines[currentIndex].split(":")[1];
                 temp = temp.substring(1, temp.length()-1);
-                String[] yCoordinateStrings = temp.split(", ");
+                String[] yCoordinateStrings = temp.split(",");
                 
                 ArrayList<Integer> xCoordinates = new ArrayList<Integer>();
                 ArrayList<Integer> yCoordinates = new ArrayList<Integer>();
