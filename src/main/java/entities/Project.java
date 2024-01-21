@@ -40,16 +40,16 @@ public class Project {
     }
 
     public String[] splitUML(String data) {
-        boolean isInList = false;
+        int layersDeep = 0;
         int linesCount = 2;
         for(int i = 3; i < data.length(); i++){
             if(data.charAt(i) == '[') {
-                isInList = true;
+                layersDeep = layersDeep + 1;
             }
             else if(data.charAt(i) == ']') {
-                isInList = false;
+                layersDeep = layersDeep - 1;
             }
-            else if((data.charAt(i) == ',') && (!isInList)) {
+            else if((data.charAt(i) == ',') && (layersDeep < 2)) {
                 linesCount = linesCount + 1;
             }
         }
@@ -59,12 +59,12 @@ public class Project {
         int linesIndex = 0;
         for(int i = 3; i < data.length(); i++) {
             if(data.charAt(i) == '[') {
-                isInList = true;
+                layersDeep = layersDeep + 1;
             }
             else if(data.charAt(i) == ']') {
-                isInList = false;
+                layersDeep = layersDeep - 1;
             }
-            else if((data.charAt(i) == ',') && (!isInList)) {
+            else if((data.charAt(i) == ',') && (layersDeep < 2)) {
                 lines[linesIndex] = data.substring(lastRecordedEnter, i + 1);
                 lastRecordedEnter = i + 1;
             }
