@@ -59,6 +59,25 @@ public class Arrow {
         yPoints = new ArrayList<Integer>();
     }
 
+    public String toJson() {
+        String data = "\"origin\": " + origin + ",\n";
+        data = data + "\"destination\": " + destination + ",\n";
+        data = data + "\"arrowType\": " + arrowType + ",\n";
+        data = data + "\"xPoints\": " + arrayListToJson(xPoints) + ",\n";
+        data = data + "\"yPoints\": " + arrayListToJson(yPoints);
+        return data;
+    }
+
+    private String arrayListToJson(ArrayList<Integer> points) {
+        String data = "[";
+        for(int i = 0; i < points.size(); i++) {
+            data = data + points + ", ";
+        }
+        data = data.substring(0, data.length()-2);
+        data = data + "]";
+        return data;
+    }
+
     /**
      * getOrigin
      * gets the name of the origin
