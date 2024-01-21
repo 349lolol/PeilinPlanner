@@ -1094,3 +1094,26 @@ document.querySelector("#homeForm").addEventListener("submit", (e) => {
   e.preventDefault();
   window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
 })
+
+const shareModal = document.querySelector("dialog")
+
+document.querySelector("#share").addEventListener("click", (e) => {
+  e.preventDefault();
+  shareModal.showModal();
+})
+
+const shareForm = document.querySelector("#shareForm");
+
+shareForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    share(window.localStorage.getItem("projectName"), window.localStorage.getItem("username"), document.querySelector("#shareForm input").value);
+    shareModal.close();
+    shareForm.reset();
+})
+
+const closeShare = document.querySelector("#shareModal .close")
+
+closeShare.addEventListener("click", (e) => {
+    console.log(e);
+    shareModal.close();
+})

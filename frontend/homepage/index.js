@@ -149,8 +149,6 @@ createForm.addEventListener("submit", (e) => {
     create(localStorage.getItem("username"), document.querySelector("#createForm input").value);
     createModal.close();
     createModal.style.display = "none";
-    
-
 })
 
 // COLLABORATION

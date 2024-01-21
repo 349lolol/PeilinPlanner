@@ -28,7 +28,7 @@ public class ProjectBase {
      * @param project new project being added
      */
     public String addProject(Project project) {
-        projects.put(project.getProjectName(), project);
+        projects.putIfAbsent(project.getProjectName(), project);
         isInUse.put(project.getProjectName(), false);
         return "{\"ProjectName\":" + "\"" + project.getProjectName() +  "\"" + ", " +
             "\"diagramIdCount\": 0, " +
@@ -40,7 +40,7 @@ public class ProjectBase {
     }
     
     public String addProject(String projectName) {
-        projects.put(projectName, new Project(projectName));
+        projects.putIfAbsent(projectName, new Project(projectName));
         isInUse.put(projectName, false);
         return "{\"ProjectName\":" + "\"" + projectName +  "\"" + ", " +
             "\"diagramIdCount\": 0, " +

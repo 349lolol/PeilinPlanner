@@ -320,6 +320,48 @@ class MultiThreadedServer {
                         output.flush();
                     }
 
+                    // SHARING A PROJECT
+                    else if ((type.equals("POST")) && (url.equals("/frontend/shareProject"))) {
+                        System.out.println(request);
+                        byte[] content;
+                        String projectString = request.get(line).split(",")[0];
+                        String projectValue = projectString.split(":")[1];
+                        String projectName = projectValue.split(":")[1].substring(1, projectValue.length() - 1);
+
+                        String sharerString = request.get(line).split(",")[1];
+                        String sharerValue = sharerString.split(":")[1];
+                        String sharerName = sharerValue.substring(1, sharerValue.length() - 1);
+
+                        String shareeString = request.get(line).split(",")[2];
+                        String shareeValue = shareeString.split(":")[1];
+                        String shareeName = shareeValue.substring(1, shareeValue.length() - 2);
+
+                        // if user's owned projects contain the project with the name
+                        User sharer = userBase.getUser(sharerName);
+                        User sharee = userBase.getUser(shareeName);
+
+                        if (sharee != null) {
+                            sharee.getSharedProjects().add(projectName);
+                        }
+
+                        System.out.println(projectBase.getProject(projectName));
+                        System.out.println(userBase.getUser(username).getOwnedProjects());
+
+                        System.out.println(new String(content, StandardCharsets.UTF_8));
+
+                        output.write(
+                            ("HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: application/json\r\n" +
+                            "Vary: Accept-Encoding\r\n" +
+                            "Accept-Ranges: none\r\n" +
+                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
+                        );
+
+                        output.write(content);
+
+                        output.flush();
+                    }
+
                     // COLLABORATION
                     else if ((type.equals("POST")) && (url.equals("/frontend/collaborate"))) {
                         System.out.println(request);
