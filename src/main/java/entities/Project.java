@@ -20,6 +20,59 @@ public class Project {
     private final HashMap<Integer, Arrow> arrows;
 
     /**
+     * Project
+     * empty constructor
+     */
+    public Project() {
+        this.diagramIdCount = 0;
+        this.projectName = "";
+        diagrams = new HashMap<Integer, Diagram>();
+        this.arrowIdCount = 0;
+        arrows = new HashMap<Integer, Arrow>();
+    }
+
+    public Project(String name) {
+        this.diagramIdCount = 0;
+        this.projectName = name;
+        diagrams = new HashMap<Integer, Diagram>();
+        this.arrowIdCount = 0;
+        arrows = new HashMap<Integer, Arrow>();
+    }
+
+    public String[] splitUML(String data) {
+        boolean isInList = false;
+        int linesCount = 2;
+        for(int i = 3; i < data.length(); i++){
+            if(data.charAt(i) == '[') {
+                isInList = true;
+            }
+            else if(data.charAt(i) == ']') {
+                isInList = false;
+            }
+            else if((data.charAt(i) == ',') && (!isInList)) {
+                linesCount = linesCount + 1;
+            }
+        }
+
+        String[] lines = new String[linesCount];
+        int lastRecordedEnter = 3;
+        int linesIndex = 0;
+        for(int i = 3; i < data.length(); i++) {
+            if(data.charAt(i) == '[') {
+                isInList = true;
+            }
+            else if(data.charAt(i) == ']') {
+                isInList = false;
+            }
+            else if((data.charAt(i) == ',') && (!isInList)) {
+                lines[linesIndex] = data.substring(lastRecordedEnter, i + 1);
+                lastRecordedEnter = i + 1;
+            }
+        }
+        return lines;
+    }
+
+    /**
      * JsonToJava
      * creates a complete new project based on json data
      * @param data the json string being converted
@@ -240,25 +293,7 @@ public class Project {
         return data;
     }
 
-    /**
-     * Project
-     * empty constructor
-     */
-    public Project() {
-        this.diagramIdCount = 0;
-        this.projectName = "";
-        diagrams = new HashMap<Integer, Diagram>();
-        this.arrowIdCount = 0;
-        arrows = new HashMap<Integer, Arrow>();
-    }
 
-    public Project(String name) {
-        this.diagramIdCount = 0;
-        this.projectName = name;
-        diagrams = new HashMap<Integer, Diagram>();
-        this.arrowIdCount = 0;
-        arrows = new HashMap<Integer, Arrow>();
-    }
 
     /**
      * getDiagram
