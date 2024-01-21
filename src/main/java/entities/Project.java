@@ -67,6 +67,8 @@ public class Project {
             else if((data.charAt(i) == ',') && (layersDeep < 2)) {
                 lines[linesIndex] = data.substring(lastRecordedEnter, i + 1);
                 lastRecordedEnter = i + 1;
+                System.out.println(lines[linesIndex]);
+                
             }
         }
         return lines;
@@ -79,9 +81,9 @@ public class Project {
      */
     public void JsonToJava(String data) {
         String[] lines = this.splitUML(data);
-        this.projectName = lines[1].split(":")[1];
-        this.projectName = this.projectName.substring(0, this.projectName.length()-1);
-        String diagramCountString = lines[2].split(":")[1];
+        this.projectName = lines[0].split(":")[1];
+        this.projectName = this.projectName.substring(1, this.projectName.length()-1);
+        String diagramCountString = lines[1].split(":")[1];
         this.diagramIdCount = Integer.parseInt(diagramCountString.substring(0, diagramCountString.length()-1));
         String arrowCountString = lines[2].split(":")[1];
         this.arrowIdCount = Integer.parseInt(arrowCountString.substring(0, arrowCountString.length()-1));
@@ -89,10 +91,10 @@ public class Project {
         ArrayList<Integer> listStartIndices = new ArrayList<Integer>();
         ArrayList<Integer> listEndIndices = new ArrayList<Integer>();
         for(int i = 1; i < lines.length; i++) {
-            if(lines[i].startsWith("    [")) {
+            if(lines[i].startsWith("[")) {
                 listStartIndices.add(i);
             }
-            if(lines[i].startsWith("    ]")) {
+            if(lines[i].startsWith("]")) {
                 listEndIndices.add(i);
             }
         }
@@ -100,7 +102,7 @@ public class Project {
         //classDiagram
         int currentIndex = listStartIndices.get(0) + 1;
         while(currentIndex < listEndIndices.get(0) - 3) {
-            if(lines[currentIndex].startsWith("        {")) {
+            if(lines[currentIndex].startsWith("{")) {
                 currentIndex = currentIndex + 1;
                 String temp = lines[currentIndex].split(":")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
@@ -149,7 +151,7 @@ public class Project {
         //interfaceDiagram
         currentIndex = listStartIndices.get(1) + 1;
         while(currentIndex < listEndIndices.get(1) - 3) {
-            if(lines[currentIndex].startsWith("        {")) {
+            if(lines[currentIndex].startsWith("{")) {
                 currentIndex = currentIndex + 1;
                 String temp = lines[currentIndex].split(":")[1];
                 int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
