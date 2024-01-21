@@ -8,6 +8,7 @@
 
 package entities;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class InterfaceDiagram extends Diagram {
@@ -27,6 +28,26 @@ public class InterfaceDiagram extends Diagram {
         super(name, xPosition, yPosition, xSize, ySize);
         this.methods = methods;
         
+    }
+
+    public String toJson(){
+        String data = "\"name\": " + getName() + ", ";
+        data = data + "\"xPosition\": " + super.getXPosition() + ", ";
+        data = data + "\"yPosition\": " + super.getYPosition() + ", ";
+        data = data + "\"xSize\": " + super.getXSize() + ", ";
+        data = data + "\"ySize\": " + super.getYSize() + ", ";
+        data = data + "\"methods\": " + linkedListToJson(this.methods);
+        return data;
+    }
+
+    private String linkedListToJson(LinkedList<Method> points) {
+        String data = "[";
+        for(int i = 0; i < points.size(); i++) {
+            data = data + points + ", ";
+        }
+        data = data.substring(0, data.length()-2);
+        data = data + "]";
+        return data;
     }
 
     /**

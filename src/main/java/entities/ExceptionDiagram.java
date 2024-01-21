@@ -23,6 +23,15 @@ public class ExceptionDiagram extends Diagram {
         super(name, xPosition, yPosition, xSize, ySize);
     }
 
+    public String toJson(){
+        String data = "\"name\": " + getName() + ", ";
+        data = data + "\"xPosition\": " + super.getXPosition() + ", ";
+        data = data + "\"yPosition\": " + super.getYPosition() + ", ";
+        data = data + "\"xSize\": " + super.getXSize() + ", ";
+        data = data + "\"ySize\": " + super.getYSize();
+        return data;
+    }
+
        /**
      * getName
      * returns the name of the exception

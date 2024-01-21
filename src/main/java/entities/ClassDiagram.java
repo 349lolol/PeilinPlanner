@@ -35,6 +35,38 @@ public class ClassDiagram extends Diagram {
         this.methods = methods;
     }
 
+    public String toJson(){
+        String data = "\"name\": " + getName() + ", ";
+        data = data + "\"xPosition\": " + super.getXPosition() + ", ";
+        data = data + "\"yPosition\": " + super.getYPosition() + ", ";
+        data = data + "\"xSize\": " + super.getXSize() + ", ";
+        data = data + "\"ySize\": " + super.getYSize() + ", ";
+        data = data + "\"isAbstract\": " + this.isAbstract + ", ";
+        data = data + "\"fields\": " + fieldsToJson(this.fields) + ", ";
+        data = data + "\"methods\": " + methodsToJson(this.methods);
+        return data;
+    }
+
+    private String methodsToJson(LinkedList<Method> points) {
+        String data = "[";
+        for(int i = 0; i < points.size(); i++) {
+            data = data + points + ", ";
+        }
+        data = data.substring(0, data.length()-2);
+        data = data + "]";
+        return data;
+    }
+
+    private String fieldsToJson(LinkedList<Field> points) {
+        String data = "[";
+        for(int i = 0; i < points.size(); i++) {
+            data = data + points + ", ";
+        }
+        data = data.substring(0, data.length()-2);
+        data = data + "]";
+        return data;
+    }
+
     /**
      * getName
      * returns the name of the exception
