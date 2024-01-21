@@ -3,6 +3,8 @@
 // ADD DELETE
 // ARROWS DRAG ALONG WITH THE DIAGRAM
 
+const arrowID = 0;
+const diagramID = 0;
 const grid = document.getElementById('grid');
 const gridBounds = grid.getBoundingClientRect();
 let scale = 1;
@@ -225,7 +227,7 @@ const drawArrows = (arrowData) => {
 }
 
 // ADDING ARROWS
-const addArrow = (arrowData, vertices, type, id) => {
+const addArrow = (arrowData, vertices, type) => {
   const originX = grid.offsetWidth/2
   const originY = grid.offsetHeight/2;
 
@@ -236,7 +238,7 @@ const addArrow = (arrowData, vertices, type, id) => {
       origin: null,
       destination: null,
       type: type,
-      id: id
+      id: arrowID
     })
   }
   else if (vertices === "1") {
@@ -246,7 +248,7 @@ const addArrow = (arrowData, vertices, type, id) => {
       origin: null,
       destination: null,
       type: type,
-      id: id
+      id: arrowID
     })
 
   }
@@ -257,7 +259,7 @@ const addArrow = (arrowData, vertices, type, id) => {
       origin: null,
       destination: null,
       type: type,
-      id: id
+      id: arrowID
     })
   } else if (vertices === "3") {
     arrowData.push({
@@ -266,7 +268,7 @@ const addArrow = (arrowData, vertices, type, id) => {
       origin: null,
       destination: null,
       type: type,
-      id: id
+      id: arrowID
     })
   }
   else if (vertices === "4") {
@@ -276,25 +278,27 @@ const addArrow = (arrowData, vertices, type, id) => {
     origin: null,
     destination: null,
     type: type,
-    id: id
+    id: arrowID
   })
 }
+
+  arrowID++;
 
   drawArrows(arrowData);
 
 }
 
 document.querySelector("#inheritancearrow").addEventListener("click", (e) => {
-  addArrow(arrowData, document.querySelector("form > select").value, "INHERITANCE")
+  addArrow(arrowData, document.querySelector("form > select").value, "INHERITANCE", arrowID)
   drawArrows();
 
 })
 document.querySelector("#compositionarrow").addEventListener("click", (e) => {
-  addArrow(arrowData, document.querySelector("form > select").value, "COMPOSITION")
+  addArrow(arrowData, document.querySelector("form > select").value, "COMPOSITION", arrowID)
   drawArrows();
 })
 document.querySelector("#implementationarrow").addEventListener("click", (e) => {
-  addArrow(arrowData, document.querySelector("form > select").value, "IMPLEMENTATION")
+  addArrow(arrowData, document.querySelector("form > select").value, "IMPLEMENTATION", arrowID)
   drawArrows();
 })
 
@@ -484,7 +488,7 @@ grid.addEventListener('mouseup', (e) => {
 
 let diagramNum = 0;
 
-const addDiagram = (diagrams, x, y, diagramWidth, type) => {
+const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText="", fieldsText="") => {
   diagramNum++;
   const diagram = document.createElement("div");
   diagram.id = "diagram" + diagramNum;
@@ -522,6 +526,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     name.name = "name";
     name.cols = "20";
     name.rows = "1";
+    name.value = nameText;
     name.placeholder = "name";
     name.classList.add("name")
 
@@ -537,6 +542,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     fields.name = "fields";
     fields.cols = "20";
     fields.rows = "5";
+    fields.value = fieldsText
     fields.placeholder = "fields";
     fields.classList.add("fields")
     
@@ -553,6 +559,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     methods.name = "methods";
     methods.cols = "20";
     methods.rows = "5";
+    methods.value = methodsText
     methods.placeholder = "methods";
     methods.classList.add("methods")
 
@@ -578,6 +585,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     name.name = "name";
     name.cols = "20";
     name.rows = "1";
+    name.value = nameText
     name.placeholder = "name";
     name.classList.add("name")
     
@@ -594,6 +602,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     methods.name = "methods";
     methods.cols = "20";
     methods.rows = "5";
+    methods.value = methodsText
     methods.placeholder = "methods";
     methods.classList.add("methods")
 
@@ -618,6 +627,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     name.name = "name";
     name.cols = "20";
     name.rows = "1";
+    name.value = nameText
     name.placeholder = "name";
     name.classList.add("name")
 
@@ -633,6 +643,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     fields.name = "fields";
     fields.cols = "20";
     fields.rows = "5";
+    fields.value = fieldsText
     fields.placeholder = "fields";
     fields.classList.add("fields")
     
@@ -649,6 +660,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     methods.name = "methods";
     methods.cols = "20";
     methods.rows = "5";
+    methods.value = methodsText;
     methods.placeholder = "methods";
     methods.classList.add("methods")
 
@@ -674,6 +686,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
     name.name = "name";
     name.cols = "20";
     name.rows = "1";
+    name.value = nameText;
     name.placeholder = "name";
     name.classList.add("name")
 
@@ -689,7 +702,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
       yPosition: y,
       width: diagramWidth,
       height: 190, // change later
-      id: diagramNum
+      id: diagramID
     },
     internal: {
       name: "",
@@ -697,6 +710,8 @@ const addDiagram = (diagrams, x, y, diagramWidth, type) => {
       methods: ""
     }
   }
+
+  diagramID++;
 
   console.log(diagrams.data)
   diagrams.data.push(diagramInfo)
@@ -909,7 +924,72 @@ const zoom = (e, factor) => {
 grid.addEventListener("wheel", (e) => {
   zoom(e, 2)
 
-
 })
 
+const loadUML = async (username, projectName) => {
+  await fetch("/frontend/loadUML", {
+      method: "POST",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          username: username,
+          projectName: projectName
+      })
+  })
+      .then(res => {
+          return res.json();
+      })
+      .then(res => {
+        // return "{\n\"ProjectName\":" + "\"" + project.getProjectName() +  "\"" + ",\n" +
+        // "\"diagramIdCount\": 0,\n" +
+        // "\"arrowIdCount\": 0,\n" +
+        // "\"classDiagrams\": [],\n" +
+        // "\"interfaceDiagrams\": [],\n" +
+        // "\"exceptionDiagrams\": [],\n" +
+        // "\"arrows\": [],\n}";
 
+        for (let classDiagram of res.classDiagram) {
+
+          let fieldsText = "";
+          for (let field of classDiagram.fields) {
+            fieldsText += field + "\n";
+          }
+
+          let methodsText = "";
+          for (let method of classDiagram.methods) {
+            methodsText += method + "\n";
+          }
+
+          if (!classDiagram.isAbstract) {
+            addDiagram(classDiagram.xPosition, classDiagram.yPosition, classDiagram.width, "CLASS", classDiagram.name,
+             methodsText, fieldsText)
+          } else {
+            addDiagram(classDiagram.xPosition, classDiagram.yPosition, classDiagram.width, "ABSTRACTCLASS", classDiagram.name,
+            methodsText, fieldsText)
+          }
+        }
+
+        for (let interfaceDiagram of res.interfaceDiagrams) {
+
+          let methodsText = "";
+          for (let method of interfaceDiagram.methods) {
+            methodsText += method + "\n";
+          }
+
+          addDiagram(interfaceDiagram.xPosition, interfaceDiagram.yPosition, interfaceDiagram.width, "INTERFACE", interfaceDiagram.name,
+             fieldsText)
+        }
+        
+        for (let exceptionDiagram of res.exceptionDiagrams) {
+
+          addDiagram(exceptionDiagram.xPosition, exceptionDiagram.yPosition, exceptionDiagram.width, "EXCEPTION", exceptionDiagram.name)
+        }
+
+      })
+      .catch(err => {
+          console.log("ERROR RETRIEVING USER DATA")
+          window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+      })
+}

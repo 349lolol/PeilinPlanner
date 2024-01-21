@@ -191,6 +191,17 @@ public class ClassDiagram extends Diagram {
     }
 
     /**
+     * 
+     * @return
+     */
+    public String fieldsToJson() {
+        StringBuilder fieldsJson = new StringBuilder();
+        for (int i = 0; i < this.fields.size(); i++) {
+            
+        }
+    }
+
+    /**
      * getMethods
      * returns the methods of the class
      * @return the methods of the class

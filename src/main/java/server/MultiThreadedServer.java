@@ -283,10 +283,45 @@ class MultiThreadedServer {
                         String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
 
                         // if user's owned projects contain the project with the name
-                        if (projectBase.getProject(projectName) == null) {
-                            content = "{\"valid\": true}".getBytes();
+                        if (projectName.equals("")) {
+                            content = "{\"valid\": false}".getBytes();
 
-                        } else if (!userBase.getUser(username).getOwnedProjects().contains(projectBase.getProject(projectName))) {
+                        } else if (!userBase.getUser(username).getOwnedProjects().contains(projectName)) {
+                            content = "{\"valid\": true}".getBytes();
+                            projectBase.addProject(projectName);
+                            userBase.getUser(username).getOwnedProjects().add(projectName);
+                        } else {
+                            content = "{\"valid\": false}".getBytes();
+                        }
+
+                        System.out.println(new String(content, StandardCharsets.UTF_8));
+
+                        output.write(
+                            ("HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: application/json\r\n" +
+                            "Vary: Accept-Encoding\r\n" +
+                            "Accept-Ranges: none\r\n" +
+                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
+                        );
+
+                        output.write(content);
+
+                        output.flush();
+                    }
+
+                    // COLLABORATION
+                    else if ((type.equals("POST")) && (url.equals("/frontend/collaborate"))) {
+                        System.out.println(request);
+                        byte[] content;
+                        String usernameString = request.get(line).split(",")[0];
+                        String usernameValue = usernameString.split(":")[1];
+                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 1);
+
+                        String projectString = request.get(line).split(",")[1];
+                        String projectNameValue = projectString.split(":")[1];
+                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
+
+                        if (userBase.getUser(username).getSharedProjects().contains(projectName)) {
                             content = "{\"valid\": true}".getBytes();
                         } else {
                             content = "{\"valid\": false}".getBytes();
@@ -305,14 +340,23 @@ class MultiThreadedServer {
                         output.flush();
                     }
 
-                    // COLLABORATION
-                    else if ((type.equals("POST")) && (url.equals("/frontend/collaborate"))) {
+                    // LOADING UML
+                    else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
                         System.out.println(request);
-                        String requestString = request.get(line).split(":")[1];
-                        String requestValue = requestString.substring(1, requestString.length() - 2);
-                        // if ()
+                        byte[] content;
+                        String usernameString = request.get(line).split(",")[0];
+                        String usernameValue = usernameString.split(":")[1];
+                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 1);
 
-                        byte[] content = projectBase.addProject(requestValue).getBytes();
+                        String projectString = request.get(line).split(",")[1];
+                        String projectNameValue = projectString.split(":")[1];
+                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
+
+                        if (userBase.getUser(username).getSharedProjects().contains(projectName)) {
+                            content = "{\"valid\": true}".getBytes();
+                        } else {
+                            content = "{\"valid\": false}".getBytes();
+                        }
 
                         output.write(
                             ("HTTP/1.1 200 OK\r\n" +
@@ -323,7 +367,6 @@ class MultiThreadedServer {
                         );
 
                         output.write(content);
-                        System.out.println(projectBase.addProject(requestValue));
 
                         output.flush();
                     }

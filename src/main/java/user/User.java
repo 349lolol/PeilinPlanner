@@ -1,6 +1,7 @@
 package user;
 
 import java.util.LinkedList;
+import java.util.HashSet;
 
 import entities.Arrow;
 import entities.ClassDiagram;
@@ -16,13 +17,13 @@ import entities.ProjectBase;
 public class User {
     private final String username;
     private final String password;
-    private final LinkedList<String> ownedProjects;
+    private final HashSet<String> ownedProjects;
     private final LinkedList<String> sharedProjects;
 
     User(String username, String password) {
         this.username = username;
         this.password = password;
-        ownedProjects = new LinkedList<String>();
+        ownedProjects = new HashSet<String>();
         sharedProjects = new LinkedList<String>();
     }
 
@@ -38,7 +39,7 @@ public class User {
         return this.sharedProjects;
     }
 
-    public LinkedList<String> getOwnedProjects() {
+    public HashSet<String> getOwnedProjects() {
         return this.ownedProjects;
     }
 

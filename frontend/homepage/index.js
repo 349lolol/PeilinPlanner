@@ -74,7 +74,7 @@ const create = async (username, projectName) => {
             return res.json();
         })
         .then(res => {
-            if (res !== undefined) {
+            if (res.valid) {
             //     <button type="submit" class="project" id="project1">
             //     <p>[Project Name]</p>
 
@@ -98,6 +98,10 @@ const create = async (username, projectName) => {
                 project.append(icon);
 
                 projects.append(project);
+
+                window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
+            } else {
+                createModal.close();
             }
         })
         .catch(err => {
@@ -111,13 +115,16 @@ const createForm = document.querySelector("#createForm");
 createForm.addEventListener("submit", (e) => {
     e.preventDefault();
     create(localStorage.getItem("username"), document.querySelector("#createForm input").value);
+    createModal.close();
+    createModal.style.display = "none";
+    
 
 })
 
 // COLLABORATION
 
 const collaborate = async (username, projectName) => {
-    await fetch("/frontend/createProject", {
+    await fetch("/frontend/collaborate", {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -133,9 +140,24 @@ const collaborate = async (username, projectName) => {
         })
         .then(res => {
            console.log(res)
+           if (res.valid) {
+            window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
+           } else {
+            collaborateModal.close();
+            collaborateModal.style.display = "none";
+            
+           }
         })
         .catch(err => {
             console.log("ERROR RETRIEVING USER DATA")
-            // window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
+            window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
         })
 }
+
+const collaborateForm = document.querySelector("#collaborateForm");
+
+collaborateForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    collaborate(localStorage.getItem("username"), document.querySelector("#collaborateForm input").value);
+    collaborateModal.close();
+})
