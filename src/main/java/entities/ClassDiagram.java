@@ -191,14 +191,22 @@ public class ClassDiagram extends Diagram {
     }
 
     /**
-     * 
-     * @return
+     * fieldsToJson
+     * converts all fields into JSON
+     * @return a String in JSON representing the fields of the class diagram
      */
     public String fieldsToJson() {
         StringBuilder fieldsJson = new StringBuilder();
+        fieldsJson.append("\"fields\": [");
         for (int i = 0; i < this.fields.size(); i++) {
-            
+            if (i != this.fields.size() - 1) {
+                fieldsJson.append("\"" + this.fields.get(i) + "\",");
+            } else {
+                fieldsJson.append("\"" + this.fields.get(i) + "\"],");
+            }
         }
+
+        return fieldsJson.toString();
     }
 
     /**
@@ -236,5 +244,24 @@ public class ClassDiagram extends Diagram {
      */
     public void updateMethod(Method oldMethod, Method newMethod) {
         this.methods.set(this.methods.indexOf(oldMethod), newMethod);
+    }
+
+    /**
+     * methodsToJson
+     * converts all methods into JSON
+     * @return a String in JSON representing the methods of the class diagram
+     */
+    public String methodsToJson() {
+        StringBuilder methodsJson = new StringBuilder();
+        methodsJson.append("\"fields\": [");
+        for (int i = 0; i < this.methods.size(); i++) {
+            if (i != this.methods.size() - 1) {
+                methodsJson.append("\"" + this.methods.get(i) + "\",");
+            } else {
+                methodsJson.append("\"" + this.methods.get(i) + "\"],");
+            }
+        }
+
+        return methodsJson.toString();
     }
 }

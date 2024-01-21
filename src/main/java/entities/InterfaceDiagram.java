@@ -165,4 +165,23 @@ public class InterfaceDiagram extends Diagram {
     public void updateMethod(Method oldMethod, Method newMethod) {
         this.methods.set(this.methods.indexOf(oldMethod), newMethod);
     }
+
+        /**
+     * methodsToJson
+     * converts all methods into JSON
+     * @return a String in JSON representing the methods of the class diagram
+     */
+    public String methodsToJson() {
+        StringBuilder methodsJson = new StringBuilder();
+        methodsJson.append("\"fields\": [");
+        for (int i = 0; i < this.methods.size(); i++) {
+            if (i != this.methods.size() - 1) {
+                methodsJson.append("\"" + this.methods.get(i) + "\",");
+            } else {
+                methodsJson.append("\"" + this.methods.get(i) + "\"],");
+            }
+        }
+
+        return methodsJson.toString();
+    }
 }
