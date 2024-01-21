@@ -1,5 +1,7 @@
 // LOADING IN PROJECTS
 
+const projectsList = [];
+
 const load = async (username) => {
     await fetch("/frontend/loadProjects", {
         method: "POST",
@@ -12,14 +14,38 @@ const load = async (username) => {
         })
     })
         .then(res => {
-            res.json();
+            return res.json();
         })
         .then(res => {
-            console.log(res);
+            for (let projectName in res.projectName) {
+                const projects = document.querySelector(".projects");
+
+                const project = document.createElement("button");
+                project.style.type = "submit";
+                project.classList.add("project");
+                project.id = res.projectName[projectName];
+
+                const title = document.createElement("p");
+                title.append(res.projectName[projectName]);
+                project.append(title);
+
+                const icon = document.createElement("i");
+                icon.classList.add("ri-article-line");
+                icon.id = "projectIcon";
+
+                project.append(icon);
+
+                projects.append(project);
+
+                projectsList.push(res.projectName[projectName])
+                window.localStorage.setItem("projectsList", JSON.stringify(projectsList));
+
+                addProjectListeners()
+            }
         })
         .catch(err => {
             console.log("ERROR RETRIEVING USER DATA")
-            window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
+            console.log(err)
         })
 }
 
@@ -98,9 +124,14 @@ const create = async (username, projectName) => {
                 project.append(icon);
 
                 projects.append(project);
+
+                projectsList.push(projectName)
                 
                 window.localStorage.setItem("projectName", projectName);
+                window.localStorage.setItem("projectsList", projectsList);
                 window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
+
+                addProjectListeners()
             } else {
                 createModal.close();
             }
@@ -142,6 +173,7 @@ const collaborate = async (username, projectName) => {
         .then(res => {
            console.log(res)
            if (res.valid) {
+            window.localStorage.setItem("projectName", projectName)
             window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
            } else {
             collaborateModal.close();
@@ -162,3 +194,18 @@ collaborateForm.addEventListener("submit", (e) => {
     collaborate(localStorage.getItem("username"), document.querySelector("#collaborateForm input").value);
     collaborateModal.close();
 })
+
+const addProjectListeners = () => {
+    const projects = document.querySelectorAll(".project")
+    projects.forEach(project => project.addEventListener("click", (e) => {
+        console.log(e)
+
+
+
+        projectsList.push(e.target.parentNode.id)
+                    
+        window.localStorage.setItem("projectName", e.target.parentNode.id);
+        window.localStorage.setItem("projectsList", projectsList);
+        window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
+    }))
+}

@@ -12,6 +12,7 @@ import user.UserBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import entities.*;
 
@@ -241,18 +242,24 @@ class MultiThreadedServer {
 
                         User user = userBase.getUser(username);
 
-                        for (int i = 0; i < user.getSharedProjects().size(); i++) {
-                            String projectName = user.getSharedProjects().get(i);
+                        Iterator<String> projectIterator = user.getOwnedProjects().iterator();
+
+                        int i = 0;
+
+                        while (projectIterator.hasNext()) {
+                            String projectName = projectIterator.next();
 
                             String projectContent = "\"" + projectName + "\"";
                             
                             stringContent.append(projectContent);
 
-                            if (i != user.getSharedProjects().size() - 1) {
+                            if (i != user.getOwnedProjects().size() - 1) {
                                 stringContent.append(",");
                             } else {
                                 stringContent.append("]}");
                             }
+
+                            i++;
                         }
 
                         content = stringContent.toString().getBytes(StandardCharsets.UTF_8);
@@ -265,6 +272,7 @@ class MultiThreadedServer {
                             "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
                         );
 
+                        System.out.println(stringContent.toString());
                         output.write(content);
 
                         output.flush();
@@ -293,6 +301,9 @@ class MultiThreadedServer {
                         } else {
                             content = "{\"valid\": false}".getBytes();
                         }
+
+                        System.out.println(projectBase.getProject(projectName));
+                        System.out.println(userBase.getUser(username).getOwnedProjects());
 
                         System.out.println(new String(content, StandardCharsets.UTF_8));
 
@@ -371,7 +382,6 @@ class MultiThreadedServer {
                         String projectNameValue = projectString.split(":")[1];
                         System.out.println(projectNameValue);
                         String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
-    
 
                         System.out.println(projectBase.getProject(projectName).javaToJson());
 

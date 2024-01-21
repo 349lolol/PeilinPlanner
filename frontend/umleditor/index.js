@@ -1089,3 +1089,8 @@ document.querySelector("#menu > form:nth-of-type(1)").addEventListener("submit",
   console.log(e)
   saveUML();
 })
+
+document.querySelector("#homeForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+})
