@@ -78,7 +78,7 @@ public class Project {
      * @param data the json string being converted
      */
     public void JsonToJava(String data) {
-        String[] lines = data.split("\n");
+        String[] lines = this.splitUML(data);;
         this.projectName = lines[1].split(": ")[1];
         this.projectName = this.projectName.substring(0, this.projectName.length()-1);
         String diagramCountString = lines[2].split(": ")[1];
