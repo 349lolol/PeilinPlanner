@@ -285,7 +285,21 @@ const addArrow = (arrowData, vertices, type) => {
   arrowID++;
 
   drawArrows(arrowData);
+}
 
+const loadArrow = (xPoints, yPoints, origin, destination, type) => {
+  arrowData.push({
+    xPoints: [...xPoints],
+    yPoints: [...yPoints],
+    origin: origin,
+    destination: destination,
+    type: type,
+    id: arrowID
+  })
+
+  arrowID++;
+
+  drawArrows(arrowData);
 }
 
 document.querySelector("#inheritancearrow").addEventListener("click", (e) => {
@@ -987,9 +1001,18 @@ const loadUML = async (username, projectName) => {
           addDiagram(exceptionDiagram.xPosition, exceptionDiagram.yPosition, exceptionDiagram.width, "EXCEPTION", exceptionDiagram.name)
         }
 
+        for (let arrow of res.arrows) {
+          loadArrow(arrow.xPoints, arrow.yPoints, arrow.origin, arrow.destination, arrow.type);
+        }
+
       })
       .catch(err => {
+        console.log(err)
           console.log("ERROR RETRIEVING USER DATA")
-          window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+          // window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
       })
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadUML(window.localStorage.getItem("username"), window.localStorage.getItem("projectName"))
+})

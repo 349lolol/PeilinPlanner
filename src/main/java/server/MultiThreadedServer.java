@@ -352,11 +352,9 @@ class MultiThreadedServer {
                         String projectNameValue = projectString.split(":")[1];
                         String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
 
-                        if (userBase.getUser(username).getSharedProjects().contains(projectName)) {
-                            content = "{\"valid\": true}".getBytes();
-                        } else {
-                            content = "{\"valid\": false}".getBytes();
-                        }
+                        System.out.println(projectBase.getProject(projectName).javaToJson());
+
+                        content = projectBase.getProject(projectName).javaToJson().getBytes();
 
                         output.write(
                             ("HTTP/1.1 200 OK\r\n" +

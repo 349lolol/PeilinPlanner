@@ -98,7 +98,8 @@ const create = async (username, projectName) => {
                 project.append(icon);
 
                 projects.append(project);
-
+                
+                window.localStorage.setItem("projectName", projectName);
                 window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
             } else {
                 createModal.close();

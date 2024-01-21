@@ -257,7 +257,7 @@ public class Project {
     }
 
     public String javaToJson() {
-        String data = "{\n" + "\"ProjectName\": "  + this.projectName + ", ";
+        String data = "{\n" + "\"ProjectName\": \""  + this.projectName + "\", ";
         data = data + "\"diagramIdCount\": "  + this.diagramIdCount + ", ";
         data = data + "\"arrowIdCount\": "  + this.arrowIdCount + ", ";
         data = data + "\"classDiagrams\": [";
@@ -266,7 +266,7 @@ public class Project {
                 data = data + ((ClassDiagram)diagrams.get(i)).toJson() + ", ";
             }
         }
-        data = data.substring(0, data.length() - 2);
+        data = data.substring(0, data.length());
         data = data + "], ";
         data = data + "\"interfaceDiagrams\": [";
         for(int i = 0; i < diagramIdCount; i++) {
@@ -274,7 +274,7 @@ public class Project {
                 data = data + ((InterfaceDiagram)diagrams.get(i)).toJson() + ", ";
             }
         }
-        data = data.substring(0, data.length() - 2);
+        data = data.substring(0, data.length());
         data = data + "], ";
         data = data + "\"exceptionDiagrams\": [";
         for(int i = 0; i < diagramIdCount; i++) {
@@ -282,13 +282,13 @@ public class Project {
                 data = data + ((ExceptionDiagram)diagrams.get(i)).toJson() + ", ";
             }
         }
-        data = data.substring(0, data.length() - 2);
+        data = data.substring(0, data.length());
         data = data + "], ";
         data = data + "\"arrows\": [";
         for(int i = 0; i < arrowIdCount; i++) {
             data = data + arrows.get(i).toJson() + ", ";
         }
-        data = data.substring(0, data.length() - 2);
+        data = data.substring(0, data.length());
         data = data + "]}";
         return data;
     }
