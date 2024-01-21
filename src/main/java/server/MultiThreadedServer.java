@@ -340,32 +340,38 @@ class MultiThreadedServer {
                         output.flush();
                     }
 
-                    // LOADING UML
-                    else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
+                    // SAVING UML
+                    else if ((type.equals("POST")) && (url.equals("/frontend/saveUML"))) {
                         System.out.println(request);
                         
                         byte[] content;
                         String projectString = request.get(line).split(",")[0];
                         String projectNameValue = projectString.split(":")[1];
-                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
+                        System.out.println(projectNameValue);
+                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 3);
+                        System.out.println(projectName);
 
+                        System.out.println(request.get(line));
                         projectBase.getProject(projectName).JsonToJava(request.get(line));
 
                         System.out.println(projectBase.getProject(projectName).getAllDiagrams());
                     }
 
-                    // SENDING UML
-                    else if ((type.equals("POST")) && (url.equals("/frontend/saveUML"))) {
+                    // LOADING UML
+                    else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
                         System.out.println("HI");
                         System.out.println(request);
                         byte[] content;
                         String usernameString = request.get(line).split(",")[0];
                         String usernameValue = usernameString.split(":")[1];
-                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 1);
+                        System.out.println(usernameValue);
+                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 2);
 
                         String projectString = request.get(line).split(",")[1];
                         String projectNameValue = projectString.split(":")[1];
+                        System.out.println(projectNameValue);
                         String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
+    
 
                         System.out.println(projectBase.getProject(projectName).javaToJson());
 

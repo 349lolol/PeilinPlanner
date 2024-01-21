@@ -11,6 +11,7 @@ package entities;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Project {
     private String projectName;
@@ -72,27 +73,55 @@ public class Project {
         return lines;
     }
 
+    public boolean isInteger(String numString) {
+        try {
+            Integer.parseInt(numString);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * JsonToJava
      * creates a complete new project based on json data
      * @param data the json string being converted
      */
     public void JsonToJava(String data) {
-        String[] lines = this.splitUML(data);
+        data = data.replace("\\", "");
+        String[] lines = data.split("##\",");
+        for (int i = 0; i < lines.length; i++) {
+            lines[i] = lines[i] + "\"";
+
+            String value = lines[i].split(":", 2)[1];
+            if ((isInteger(value.substring(1, value.length() - 1))) || (value.substring(1, value.length() - 1).startsWith("["))) {
+                lines[i] = lines[i].split(":")[0] + ":" + value.substring(1, value.length() - 1);
+            }
+        }
+
+        // fixes the last line
+        lines[0] = lines[0].substring(1);
+        lines[lines.length - 1] = lines[lines.length - 1].replace("##\"}", "");
+
+
+        for (String line : lines) {
+            System.out.println(line);
+        }
+
         this.projectName = lines[1].split(":")[1];
         this.projectName = this.projectName.substring(0, this.projectName.length()-1);
         String diagramCountString = lines[2].split(":")[1];
-        this.diagramIdCount = Integer.parseInt(diagramCountString.substring(0, diagramCountString.length()-1));
+        this.diagramIdCount = Integer.parseInt(diagramCountString.substring(1, diagramCountString.length()-1));
         String arrowCountString = lines[2].split(":")[1];
-        this.arrowIdCount = Integer.parseInt(arrowCountString.substring(0, arrowCountString.length()-1));
+        this.arrowIdCount = Integer.parseInt(arrowCountString.substring(1, arrowCountString.length()-1));
 
         ArrayList<Integer> listStartIndices = new ArrayList<Integer>();
         ArrayList<Integer> listEndIndices = new ArrayList<Integer>();
         for(int i = 1; i < lines.length; i++) {
-            if(lines[i].startsWith("    [")) {
+            if(lines[i].startsWith("\"[")) {
                 listStartIndices.add(i);
             }
-            if(lines[i].startsWith("    ]")) {
+            if(lines[i].startsWith("]\"")) {
                 listEndIndices.add(i);
             }
         }

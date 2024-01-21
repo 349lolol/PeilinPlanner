@@ -979,6 +979,10 @@ window.addEventListener("DOMContentLoaded", () => {
   loadUML(window.localStorage.getItem("username"), window.localStorage.getItem("projectName"))
 })
 
+const UMLFormat = () => {
+
+}
+
 // SENDING BACK UML INFO TO THE SERVER
 
 const saveUML = async () => {
@@ -1052,20 +1056,20 @@ const saveUML = async () => {
     })
   }
 
-  await fetch("/frontend/loadUML", {
+  await fetch("/frontend/saveUML", {
     method: "POST",
     headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
     },
     body: JSON.stringify({
-        projectName: window.localStorage.getItem("projectName"),
-        diagramCount: diagramID,
-        arrowCount: arrowID,
-        classDiagrams: classes,
-        interfaceDiagrams: interfaces,
-        exceptionDiagrams: exceptions,
-        arrows: arrows
+        projectName: window.localStorage.getItem("projectName") + "##",
+        diagramCount: diagramID + "##",
+        arrowCount: arrowID + "##",
+        classDiagrams: JSON.stringify(classes) + "##",
+        interfaceDiagrams: JSON.stringify(interfaces) + "##",
+        exceptionDiagrams: JSON.stringify(exceptions) + "##",
+        arrows: JSON.stringify(arrows) + "##"
     })
 })
     .then(res => {
