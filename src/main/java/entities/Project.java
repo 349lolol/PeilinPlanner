@@ -55,7 +55,7 @@ public class Project {
         }
 
         String[] lines = new String[linesCount];
-        int lastRecordedEnter = 3;
+        int lastRecordedEnter = 1;
         int linesIndex = 0;
         for(int i = 3; i < data.length(); i++) {
             if(data.charAt(i) == '[') {
@@ -257,7 +257,7 @@ public class Project {
     }
 
     public String javaToJson() {
-        String data = "{\n" + "\"ProjectName\": \""  + this.projectName + "\", ";
+        String data = "{\n" + "\"ProjectName\": "  + this.projectName + ", ";
         data = data + "\"diagramIdCount\": "  + this.diagramIdCount + ", ";
         data = data + "\"arrowIdCount\": "  + this.arrowIdCount + ", ";
         data = data + "\"classDiagrams\": [";
