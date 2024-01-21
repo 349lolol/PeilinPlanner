@@ -172,7 +172,7 @@ const collaborate = async (username, projectName) => {
            console.log(res)
            if (res.valid) {
             window.localStorage.setItem("projectName", projectName)
-            window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
+            window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
            } else {
             collaborateModal.close();
             collaborateModal.style.display = "none";

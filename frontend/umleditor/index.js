@@ -1083,6 +1083,38 @@ const saveUML = async () => {
     })
 }
 
+const share = async (projectName, sharee) => {
+  await fetch("/frontend/shareProject", {
+    method: "POST",
+    headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        projectName: projectName,
+        sharee: sharee,
+    })
+})
+    .then(res => {
+        return res.json();
+    })
+    .then(res => {
+       console.log(res)
+       if (!res.valid) {
+         document.querySelector("#incorrect").style.display = "flex";
+         document.querySelector("#warning").style.display = "flex";
+      } else {
+        document.querySelector("#incorrect").style.display = "none";
+        document.querySelector("#warning").style.display = "none";
+        shareModal.close();
+      }
+    })
+    .catch(err => {
+        console.log("ERROR RETRIEVING USER DATA")
+        window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+    })
+}
+
 document.querySelector("#menu > form:nth-of-type(1)").addEventListener("submit", (e) => {
   e.preventDefault();
   console.log(diagrams.data);
@@ -1106,14 +1138,17 @@ const shareForm = document.querySelector("#shareForm");
 
 shareForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    share(window.localStorage.getItem("projectName"), window.localStorage.getItem("username"), document.querySelector("#shareForm input").value);
-    shareModal.close();
+    document.querySelector("#incorrect").style.display = "none";
+    document.querySelector("#warning").style.display = "none";
+    share(window.localStorage.getItem("projectName"), document.querySelector("#shareForm input").value);
     shareForm.reset();
 })
 
 const closeShare = document.querySelector("#shareModal .close")
 
 closeShare.addEventListener("click", (e) => {
+    document.querySelector("#incorrect").style.display = "flex";
+    document.querySelector("#warning").style.display = "flex";
     console.log(e);
     shareModal.close();
 })

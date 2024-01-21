@@ -371,7 +371,7 @@ input {
 }
 
 dialog button {
-    width: 80%;
+    width: 32rem;
     height: 4rem;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -380,10 +380,22 @@ dialog button {
     font-size: 2.5rem;
 }
 
+#information {
+    display: flex;
+    gap: 2rem;
+}
+
 #account {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#incorrect {
+    display: none;
+    justify-content: center;
+    height: 20%;
+    width: 32rem;
 }
 
 #warning {
@@ -392,6 +404,13 @@ dialog button {
     align-items: center;
     border: 2px solid darkred;
     background-color: red;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5rem;
+    width: 100%;
+    height: 100%;
 }
 
 .project {
@@ -451,4 +470,5 @@ dialog button {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-items: center;
 }
