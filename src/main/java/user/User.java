@@ -39,43 +39,25 @@ public class User {
     }
 
     /**
-     * getPassword
-     * @return password
+     * getPass
+     * @return
      */
     public String getPassword() {
         return this.password;
     }
 
-    /**
-     * getSharedProjects
-     * @return linkedlist of projects
-     */
     public LinkedList<String> getSharedProjects() {
         return this.sharedProjects;
     }
 
-    /**
-     * getOwnedProjects
-     * @return linkedlist of projects
-     */
     public HashSet<String> getOwnedProjects() {
         return this.ownedProjects;
     }
 
-    /**
-     * addShared project
-     * @param project project being shared
-     * @return if successful or not
-     */
     public boolean addSharedProject(String project) {
         return sharedProjects.add(project);
     }
 
-    /**
-     * createproject
-     * @param project project being created by user
-     * @return if operation is successful or not 
-     */
     public boolean createProject(String project) {
         return ownedProjects.add(project);
     }
