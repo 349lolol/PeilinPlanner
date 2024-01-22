@@ -35,6 +35,11 @@ class MultiThreadedServer {
     private static ProjectBase projectBase = new ProjectBase();
     private static Assets assets;
     
+    /**
+     * amin method
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception { 
 
         try
@@ -88,6 +93,9 @@ class MultiThreadedServer {
         }
     }
     
+    /**
+     * ConnectionHandler class
+     */
 //------------------------------------------------------------------------------
     class ConnectionHandler extends Thread { 
         Socket socket;

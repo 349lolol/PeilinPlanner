@@ -39,21 +39,35 @@ public class User {
     }
 
     /**
-     * getPass
-     * @return
+     * getPassword
+     * @return the password
      */
     public String getPassword() {
         return this.password;
     }
 
+
+    /**
+     * getSharedProjects
+     * gets linkedlist of shared projects
+     */
     public LinkedList<String> getSharedProjects() {
         return this.sharedProjects;
     }
 
+    /**
+     * getOwnedProjects
+     * @return linkedlist of owned projects
+     */
     public HashSet<String> getOwnedProjects() {
         return this.ownedProjects;
     }
 
+    /**
+     * 
+     * @param project
+     * @return
+     */
     public boolean addSharedProject(String project) {
         return sharedProjects.add(project);
     }
