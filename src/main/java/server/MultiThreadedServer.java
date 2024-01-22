@@ -35,6 +35,12 @@ class MultiThreadedServer {
     private static ProjectBase projectBase = new ProjectBase();
     private static Assets assets;
     
+    /**
+     * Main method
+     * run main code
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception { 
 
         try
@@ -81,14 +87,17 @@ class MultiThreadedServer {
         serverSocket = new ServerSocket(PORT);                //create and bind a socket
         while(true) {
             clientSocket = serverSocket.accept();             //wait for connection request
-            clientCounter = clientCounter +1;
+            clientCounter = clientCounter + 1;
             System.out.println("Client "+clientCounter+" connected");
             Thread connectionThread = new Thread(new ConnectionHandler(clientSocket));
             connectionThread.start();                         //start a new thread to handle the connection
         }
     }
     
-//------------------------------------------------------------------------------
+
+    /**
+     * ConnectionHandler
+     */
     class ConnectionHandler extends Thread { 
         Socket socket;
         OutputStream output;
@@ -97,7 +106,10 @@ class MultiThreadedServer {
         public ConnectionHandler(Socket socket) { 
             this.socket = socket;
         }
-//------------------------------------------------------------------------------        
+
+        /**
+         * run server method 
+         */       
         @Override
         public void run() {
             int line = 0;
