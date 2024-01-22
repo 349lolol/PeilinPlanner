@@ -402,7 +402,7 @@ public class Project {
                 }
                 String origin = classParameters.get(0).split("\":")[1];
                 String destination = classParameters.get(1).split("\":")[1];
-                int arrowId = Integer.parseInt(classParameters.get(2).split("\":")[1]);
+                String arrowType =  classParameters.get(2).split("\":")[1];
 
                 String xPointsString = classParameters.get(3).split("\":")[1];
                 xPointsString.substring(1, xPointsString.length() - 1);
@@ -419,7 +419,7 @@ public class Project {
                 for(int j = 0; j < yPointsArray.length; j++) {
                     yPoints.add(Integer.parseInt(yPointsArray[j]));
                 }
-                arrows.put(i, origin, destination, arrowId, xPoints, yPoints);
+                arrows.put(i, new Arrow(this.getDiagram(origin), this.getDiagram(destination), arrowType, xPoints, yPoints));
             }
         }
     }
