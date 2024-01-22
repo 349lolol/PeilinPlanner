@@ -896,79 +896,16 @@ const snap = () => {
 
       diagrams.data[Number(element.id.slice(7))].external.xPosition = x + (grid.offsetWidth - diagrams.data[Number(element.id.slice(7))].external.width)/2;
       diagrams.data[Number(element.id.slice(7))].external.yPosition = y + (grid.offsetHeight - diagrams.data[Number(element.id.slice(7))].external.height)/2;
-    
-      // for (let arrow of arrowData) {
-      //   console.log(arrow.destination)
-      //   console.log(diagrams.data[Number(element.id.slice(7))].external.id)
-      //   if (arrow.destination === diagrams.data[Number(element.id.slice(7))].external.id) {
-      //     arrow.xPoints[-1] += event.dx / scale;
-      //     arrow.yPoints[-1] += event.dy / scale;
-      //   }
-      // }
-
-      // console.log(arrowData.length)
-      // for (let i = 0; i < arrowData.length; i++) {
-      //   // console.log(Number(arrowData[i].destination))
-      //   // console.log(diagrams.data[Number(element.id.slice(7))].external.id)
-      //   if ((arrowData[i].destination !== null) && (Number(arrowData[i].destination) === diagrams.data[Number(element.id.slice(7))].external.id)) {
-      //     // console.log(arrowData[i])
-      //     // console.log(arrowData[i].xPoints[-1], arrowData[i].yPoints[-1])
-      //     arrowData[i].xPoints[arrowData[i].xPoints.length - 1] += event.dx / scale;
-      //     arrowData[i].yPoints[arrowData[i].xPoints.length - 1] += event.dy / scale;
-      //     arrowData[i].destination = diagrams.data[Number(element.id.slice(7))].external.id
-      //     drawArrows(arrowData)
-      //   }
-      // }
-
-      // const childArrows = document.querySelector("#arrows").children;
-
-      // // console.log(arrowData)
-      // // console.log(childArrows)
-
-      // for (let i = 0; i < arrowData.length; i++) {
-      //   const currentArrowData = arrowData[i];
-      //   // console.log(currentArrowData)
-        
-      //   // console.log("cheese", currentArrowData.destination, diagrams.data[Number(element.id.slice(7))].external.id)
-
-      //   if (currentArrowData.destination === diagrams.data[Number(element.id.slice(7))].external.id) {
-      //     for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
-      //       const childArrow = childArrows[0];
-      //       childArrow.remove()
-      //     }
-      //   }
-      // }
     })
   })
 }
 
-
-
-// ADDING DIAGRAMS TO THE GRID
-// for (let diagram in diagramsData) {
-//   // need to add diagram.ySize in relation to the lines
-//   addDiagram(diagram.xPosition, diagram.yPosition, diagram.xSize, diagram.objecttype)
-// }
 document.querySelector("#addclass > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
    ((grid.offsetHeight - (20*11*scale))/2), defaultDiagramWidth,
    "CLASSDIAGRAM")
   
   
-  // diagrams.data.push({
-  //   external: {
-  //     type: "class",
-  //     xPosition: (grid.offsetWidth - (defaultDiagramWidth*scale))/2,
-  //     yPosition: (grid.offsetHeight - (defaultLineHeight*11*scale))/2,
-  //     width: defaultDiagramWidth*scale,
-  //     height: defaultLineHeight*21*scale,
-  //     id: id
-  //   },
-  //   internal: {
-
-  //   }
-  // })
-
   snap();
 })
 document.querySelector("#addinterface > img").addEventListener("click", (e) => {
@@ -976,18 +913,7 @@ document.querySelector("#addinterface > img").addEventListener("click", (e) => {
   ((grid.offsetHeight -20*6*scale)/2), defaultDiagramWidth,
   "INTERFACEDIAGRAM")
 
-  // diagrams.data.push({
-  //   external: {
-  //     type: "interface",
-  //     xPosition: (grid.offsetWidth - (defaultDiagramWidth*scale))/2,
-  //     yPosition: (grid.offsetHeight - (defaultLineHeight*11*scale))/2,
-  //     width: defaultDiagramWidth*scale,
-  //     height: defaultLineHeight*6*scale,
-  //   },
-  //   internal: {
 
-  //   }
-  // })
   snap();
 })
 document.querySelector("#addabstractclass > img").addEventListener("click", (e) => {
@@ -995,18 +921,7 @@ document.querySelector("#addabstractclass > img").addEventListener("click", (e) 
   ((grid.offsetHeight - 20*11*scale)/2), defaultDiagramWidth,
   "ABSTRACTCLASSDIAGRAM")
 
-  // diagrams.data.push({
-  //   external: {
-  //     type: "abstractclass",
-  //     xPosition: (grid.offsetWidth - (defaultDiagramWidth*scale))/2,
-  //     yPosition: (grid.offsetHeight - (defaultLineHeight*11*scale))/2,
-  //     width: defaultDiagramWidth*scale,
-  //     height: defaultLineHeight*11*scale,
-  //   },
-  //   internal: {
 
-  //   }
-  // })
   snap();
 })
 document.querySelector("#addexception > img").addEventListener("click", (e) => {
@@ -1014,84 +929,11 @@ document.querySelector("#addexception > img").addEventListener("click", (e) => {
   ((grid.offsetHeight - 20*1*scale)/2), defaultDiagramWidth,
   "EXCEPTIONDIAGRAM")
 
-  // diagrams.data.push({
-  //   external: {
-  //     type: "exception",
-  //     xPosition: (grid.offsetWidth - (defaultDiagramWidth*scale))/2,
-  //     yPosition: (grid.offsetHeight - (defaultLineHeight*11*scale))/2,
-  //     width: defaultDiagramWidth*scale,
-  //     height: defaultLineHeight*1*scale,
-  //   },
-  //   internal: {
-
-  //   }
-  // })
   snap();
 })
 
 snap();
 
-// DIAGRAM SNAPPING
-
- // ZOOMING
-
-// const zoom = (e, factor) => {
-//   for (let child of grid.children) {
-//     const width = child.offsetWidth;
-//     const height = child.offsetHeight;
-
-//     const clientX = e.clientX - grid.offsetLeft;
-//     const clientY = e.clientY - grid.offsetTop;
-
-//     let x1 = 0;
-//     let y1 = grid.offsetHeight;
-//     if (!(child.style.transform === "")) {
-//       const position = child.style.transform.slice(10, -1); // __px, __px)
-//       x1 = Number(position.split(", ")[0].slice(0, -2)) // px
-//       y1 = grid.offsetHeight - Number(position.split(", ")[1].slice(0, -2)) // px
-//     }
-
-//     const x2 = x1 + width;
-//     const y2 = y1;
-
-//     const m1 = (y1 - clientY)/(x1 - clientX);
-//     const m2 = (y2 - clientY)/(x2 - clientX);
-
-//     const b1 = y1 - m1*x1;
-//     const b2 = y2 - m2*x2;
-
-//     const xDisplacement1 = clientX - x1;
-
-//     if (e.deltaY < 0) {
-//       scale *= factor
-//       child.style.scale = scale
-
-//       const newXPosition = (factor*((m2*xDisplacement1) - (m1*xDisplacement1) - b1 + b2) + b1 - b2)/(m2 - m1);
-//       const newYPosition = m1*newXPosition + b1;
-//       const xTranslation = newXPosition - x1;
-//       const yTranslation = newYPosition - y1;
-
-//       child.style.transform = `translate(${ x1 + xTranslation}px, ${y1 - yTranslation}px)`;
-      
-//     } else {
-//       scale /= factor
-//       child.style.scale = scale
-
-//       const newXPosition = (((m2*xDisplacement1) - (m1*xDisplacement1) - b1 + b2) + b1 - b2)/(factor*(m2 - m1));
-//       const newYPosition = m1*newXPosition + b1;
-
-//       const xTranslation = newXPosition - xDisplacement1;
-//       const yTranslation = newYPosition - y1;
-
-//       child.style.transform = `translate(${x1 + xTranslation}px, ${y1 - yTranslation}px)`;
-//     }
-//   }
-// }
-
-// grid.addEventListener("wheel", (e) => {
-//   zoom(e, 2)
-
-// })
 
 const loadUML = async (username, projectName) => {
   await fetch("/frontend/loadUML", {
@@ -1109,13 +951,7 @@ const loadUML = async (username, projectName) => {
           return res.json();
       })
       .then(res => {
-        // return "{\n\"ProjectName\":" + "\"" + project.getProjectName() +  "\"" + ",\n" +
-        // "\"diagramIdCount\": 0,\n" +
-        // "\"arrowIdCount\": 0,\n" +
-        // "\"classDiagrams\": [],\n" +
-        // "\"interfaceDiagrams\": [],\n" +
-        // "\"exceptionDiagrams\": [],\n" +
-        // "\"arrows\": [],\n}";
+
 
         for (let classDiagram in res.classDiagram) {
 
