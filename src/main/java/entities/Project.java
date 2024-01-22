@@ -41,6 +41,7 @@ public class Project {
     }
 
     public String[] splitUML(String data) {
+        System.out.println("\n\n\n\n");
         int layersDeep = 0;
         int linesCount = 2;
         for(int i = 3; i < data.length(); i++){
@@ -71,6 +72,13 @@ public class Project {
                 System.out.println(lines[linesIndex]);
                 
             }
+        }
+        //
+        //bug test
+        
+        System.out.println("\n\n\n");
+        for(int i = 0; i < lines.length; i++) {
+            System.out.println(lines[i]);
         }
         return lines;
     }
@@ -105,184 +113,313 @@ public class Project {
         lines[0] = lines[0].substring(1);
         lines[lines.length - 1] = lines[lines.length - 1].replace("##\"}", "");
 
-
+        System.out.println("\n\n\n");
         for (String line : lines) {
             System.out.println(line);
         }
 
-        this.projectName = lines[1].split(":")[1];
+        this.projectName = lines[0].split("\":\"")[1];
         this.projectName = this.projectName.substring(0, this.projectName.length()-1);
-        String diagramCountString = lines[2].split(":")[1];
-        this.diagramIdCount = Integer.parseInt(diagramCountString.substring(1, diagramCountString.length()-1));
-        String arrowCountString = lines[2].split(":")[1];
-        this.arrowIdCount = Integer.parseInt(arrowCountString.substring(1, arrowCountString.length()-1));
+        String diagramCountString = lines[1].split("\":")[1];
+        this.diagramIdCount = Integer.parseInt(diagramCountString);
+        String arrowCountString = lines[2].split("\":")[1];
+        this.arrowIdCount = Integer.parseInt(arrowCountString);
 
-        ArrayList<Integer> listStartIndices = new ArrayList<Integer>();
-        ArrayList<Integer> listEndIndices = new ArrayList<Integer>();
-        for(int i = 1; i < lines.length; i++) {
-            if(lines[i].startsWith("[")) {
-                listStartIndices.add(i);
-            }
-            if(lines[i].startsWith("]")) {
-                listEndIndices.add(i);
-            }
-        }
+        //line 2 is classes
+        //line 3 is interfaces
+        //line 4 is exceptions
+        //line 5 is arrows
 
-        //classDiagram
-        int currentIndex = listStartIndices.get(0) + 1;
-        while(currentIndex < listEndIndices.get(0) - 3) {
-            if(lines[currentIndex].startsWith("{")) {
-                currentIndex = currentIndex + 1;
-                String temp = lines[currentIndex].split(":")[1];
-                int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                String className = temp.substring(0, temp.length() - 1);
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int xPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int yPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int xSize = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int ySize = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                boolean isAbstract = temp.equals("true,");
-                
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split("[")[1];
-                temp = temp.substring(0, temp.length() - 2);
-                String[] fieldStrings = temp.split(",");
-                LinkedList<Field> fields = new LinkedList<Field>();
-                for(int i = 0; i < fieldStrings.length; i++) {
-                    fields.add(new Field(fieldStrings[i]));
+        //classes
+        {
+            int layersDeep = 0;
+            int objectCount = 0;
+            for(int i = 0; i < lines[3].length(); i++) {
+                if(lines[3].charAt(i) == '{') {
+                    layersDeep = layersDeep + 1;
                 }
+                else if(lines[3].charAt(i) == '}') {
+                    layersDeep = layersDeep - 1;
+                }
+                else if((layersDeep == 0) && (lines[3].charAt(i) == ',')) {
+                    objectCount++;
+                }
+            }
 
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split("[")[1];
-                temp = temp.substring(0, temp.length() - 2);
-                String[] methodStrings = temp.split(",");
+            //split the line into classes
+            String[] classesList = new String[objectCount];
+            int lastIndex = 2;
+            int currentClassIndex = 0;
+
+            for(int i = 0; i < lines[3].length(); i++) {
+                if(lines[3].charAt(i) == '{') {
+                    layersDeep = layersDeep + 1;
+                }
+                else if(lines[3].charAt(i) == '}') {
+                    layersDeep = layersDeep - 1;
+                    if(layersDeep == 0) {
+                        classesList[currentClassIndex] = lines[3].substring(lastIndex, i);
+                        currentClassIndex = currentClassIndex + 1;
+                        lastIndex = i + 1;
+                    }
+                }
+            }
+
+            //split each class into each individual line in loop, process, and add
+            
+            
+            for(int i = 0; i < classesList.length; i++) {
+                ArrayList<String> classParameters = new ArrayList<String>();
+                layersDeep = 0;
+                lastIndex = 1;
+                for(int j = 0; j < classesList[i].length(); j++) {
+                    if(classesList[i].charAt(j) == '[') {
+                        layersDeep = layersDeep + 1;
+                    }
+                    else if(classesList[i].charAt(j) == ']') {
+                        layersDeep = layersDeep - 1;
+                    }
+                    else if((layersDeep == 0) && (classesList[i].charAt(j) == ',')) {
+                        classParameters.add(classesList[i].substring(lastIndex, j));
+                        lastIndex = j + 2;
+                    }
+                }
+                int classId = Integer.parseInt(classParameters.get(0).split("\":")[1]);
+                String className = classParameters.get(1).split("\":")[1];
+                int xPosition = Integer.parseInt(classParameters.get(2).split("\":")[1]);
+                int yPosition = Integer.parseInt(classParameters.get(3).split("\":")[1]);
+                int xSize = Integer.parseInt(classParameters.get(4).split("\":")[1]);
+                int ySize = Integer.parseInt(classParameters.get(5).split("\":")[1]);
+                boolean isAbstract = classParameters.get(6).split("\":")[1].equals("true");
+                
+                String fieldLine = classParameters.get(7).split("\":")[1]; //could cause issues with cutting off early
+                fieldLine = fieldLine.substring(1, fieldLine.length() - 1); //isolated down to "xxx","yyy","zzz"
+                String[] fieldArray = fieldLine.split("\",\"");
+                fieldArray[0].substring(1);
+                fieldArray[fieldArray.length - 1].substring(0, fieldArray[fieldArray.length - 1].length() - 1);
+                LinkedList<Field> fields = new LinkedList<Field>();
+                for(int j = 0; j < fieldArray.length; j++) {
+                    fields.add(new Field(fieldArray[j]));
+                }
+                
+                String methodLine = classParameters.get(8).split("\":")[1]; //could cause issues with cutting off early
+                methodLine = methodLine.substring(1, methodLine.length() - 1); //isolated down to "xxx","yyy","zzz"
+                String[] methodArray = methodLine.split("\",\"");
+                methodArray[0].substring(1);
+                methodArray[methodArray.length - 1].substring(0, methodArray[methodArray.length - 1].length() - 1);
                 LinkedList<Method> methods = new LinkedList<Method>();
-                for(int i = 0; i < methodStrings.length; i++) {
-                    methods.add(new Method(methodStrings[i]));
+                for(int j = 0; j < methodArray.length; j++) {
+                    methods.add(new Method(methodArray[j]));
                 }
                 diagrams.put(classId, new ClassDiagram(className, isAbstract, fields, methods, xPosition, yPosition, xSize, ySize));
             }
-            else {
-                currentIndex = currentIndex + 1;
-            }
         }
-        //interfaceDiagram
-        currentIndex = listStartIndices.get(1) + 1;
-        while(currentIndex < listEndIndices.get(1) - 3) {
-            if(lines[currentIndex].startsWith("{")) {
-                currentIndex = currentIndex + 1;
-                String temp = lines[currentIndex].split(":")[1];
-                int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                String className = temp.substring(0, temp.length() - 1);
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int xPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int yPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int xSize = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int ySize = Integer.parseInt(temp.substring(0, temp.length() - 1));
 
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split("[")[1];
-                temp = temp.substring(0, temp.length() - 2);
-                String[] methodStrings = temp.split(",");
-                LinkedList<Method> methods = new LinkedList<Method>();
-                for(int i = 0; i < methodStrings.length; i++) {
-                    methods.add(new Method(methodStrings[i]));
+
+        //interfaces
+        {
+            int layersDeep = 0;
+            int objectCount = 0;
+            for(int i = 0; i < lines[4].length(); i++) {
+                if(lines[4].charAt(i) == '{') {
+                    layersDeep = layersDeep + 1;
                 }
+                else if(lines[4].charAt(i) == '}') {
+                    layersDeep = layersDeep - 1;
+                }
+                else if((layersDeep == 0) && (lines[4].charAt(i) == ',')) {
+                    objectCount++;
+                }
+            }
 
+            //split the line into classes
+            String[] interfacesList = new String[objectCount];
+            int lastIndex = 2;
+            int currentClassIndex = 0;
+
+            for(int i = 0; i < lines[4].length(); i++) {
+                if(lines[4].charAt(i) == '{') {
+                    layersDeep = layersDeep + 1;
+                }
+                else if(lines[4].charAt(i) == '}') {
+                    layersDeep = layersDeep - 1;
+                    if(layersDeep == 0) {
+                        interfacesList[currentClassIndex] = lines[4].substring(lastIndex, i);
+                        currentClassIndex = currentClassIndex + 1;
+                        lastIndex = i + 1;
+                    }
+                }
+            }
+
+            for(int i = 0; i < interfacesList.length; i++) {
+                ArrayList<String> classParameters = new ArrayList<String>();
+                layersDeep = 0;
+                lastIndex = 1;
+                for(int j = 0; j < interfacesList[i].length(); j++) {
+                    if(interfacesList[i].charAt(j) == '[') {
+                        layersDeep = layersDeep + 1;
+                    }
+                    else if(interfacesList[i].charAt(j) == ']') {
+                        layersDeep = layersDeep - 1;
+                    }
+                    else if((layersDeep == 0) && (interfacesList[i].charAt(j) == ',')) {
+                        classParameters.add(interfacesList[i].substring(lastIndex, j));
+                        lastIndex = j + 2;
+                    }
+                }
+                int classId = Integer.parseInt(classParameters.get(0).split("\":")[1]);
+                String className = classParameters.get(1).split("\":")[1];
+                int xPosition = Integer.parseInt(classParameters.get(2).split("\":")[1]);
+                int yPosition = Integer.parseInt(classParameters.get(3).split("\":")[1]);
+                int xSize = Integer.parseInt(classParameters.get(4).split("\":")[1]);
+                int ySize = Integer.parseInt(classParameters.get(5).split("\":")[1]);
+                
+                String methodLine = classParameters.get(6).split("\":")[1]; //could cause issues with cutting off early
+                methodLine = methodLine.substring(1, methodLine.length() - 1); //isolated down to "xxx","yyy","zzz"
+                String[] methodArray = methodLine.split("\",\"");
+                methodArray[0].substring(1);
+                methodArray[methodArray.length - 1].substring(0, methodArray[methodArray.length - 1].length() - 1);
+                LinkedList<Method> methods = new LinkedList<Method>();
+                for(int j = 0; j < methodArray.length; j++) {
+                    methods.add(new Method(methodArray[j]));
+                }
                 diagrams.put(classId, new InterfaceDiagram(className, methods, xPosition, yPosition, xSize, ySize));
             }
-            else {
-                currentIndex = currentIndex + 1;
-            }
         }
 
-        //exceptionDiagram
-        currentIndex = listStartIndices.get(2) + 1;
-        while(currentIndex < listEndIndices.get(2) - 3) {
-            if(lines[currentIndex].startsWith("        {")) {
-                currentIndex = currentIndex + 1;
-                String temp = lines[currentIndex].split(":")[1];
-                int classId = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                String className = temp.substring(0, temp.length() - 1);
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int xPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int yPosition = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int xSize = Integer.parseInt(temp.substring(0, temp.length() - 1));
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int ySize = Integer.parseInt(temp.substring(0, temp.length() - 1));
+        //exceptions
+        {
+            int layersDeep = 0;
+            int objectCount = 0;
+            for(int i = 0; i < lines[5].length(); i++) {
+                if(lines[5].charAt(i) == '{') {
+                    layersDeep = layersDeep + 1;
+                }
+                else if(lines[5].charAt(i) == '}') {
+                    layersDeep = layersDeep - 1;
+                }
+                else if((layersDeep == 0) && (lines[5].charAt(i) == ',')) {
+                    objectCount++;
+                }
+            }
 
+            //split the line into classes
+            String[] exceptionsList = new String[objectCount];
+            int lastIndex = 2;
+            int currentClassIndex = 0;
+
+            for(int i = 0; i < lines[5].length(); i++) {
+                if(lines[5].charAt(i) == '{') {
+                    layersDeep = layersDeep + 1;
+                }
+                else if(lines[5].charAt(i) == '}') {
+                    layersDeep = layersDeep - 1;
+                    if(layersDeep == 0) {
+                        exceptionsList[currentClassIndex] = lines[5].substring(lastIndex, i);
+                        currentClassIndex = currentClassIndex + 1;
+                        lastIndex = i + 1;
+                    }
+                }
+            }
+
+            for(int i = 0; i < exceptionsList.length; i++) {
+                ArrayList<String> classParameters = new ArrayList<String>();
+                layersDeep = 0;
+                lastIndex = 1;
+                for(int j = 0; j < exceptionsList[i].length(); j++) {
+                    if(exceptionsList[i].charAt(j) == '[') {
+                        layersDeep = layersDeep + 1;
+                    }
+                    else if(exceptionsList[i].charAt(j) == ']') {
+                        layersDeep = layersDeep - 1;
+                    }
+                    else if((layersDeep == 0) && (exceptionsList[i].charAt(j) == ',')) {
+                        classParameters.add(exceptionsList[i].substring(lastIndex, j));
+                        lastIndex = j + 2;
+                    }
+                }
+                int classId = Integer.parseInt(classParameters.get(0).split("\":")[1]);
+                String className = classParameters.get(1).split("\":")[1];
+                int xPosition = Integer.parseInt(classParameters.get(2).split("\":")[1]);
+                int yPosition = Integer.parseInt(classParameters.get(3).split("\":")[1]);
+                int xSize = Integer.parseInt(classParameters.get(4).split("\":")[1]);
+                int ySize = Integer.parseInt(classParameters.get(5).split("\":")[1]);
+    
                 diagrams.put(classId, new ExceptionDiagram(className, xPosition, yPosition, xSize, ySize));
             }
-            else {
-                currentIndex = currentIndex + 1;
-            }
         }
-
-        //all types of arrows
-        currentIndex = listStartIndices.get(3) + 1;
-        while(currentIndex < listEndIndices.get(3) - 3) {
-            if(lines[currentIndex].startsWith("        {")) {
-                currentIndex = currentIndex + 1;
-                String temp = lines[currentIndex].split(":")[1];
-                String originName = temp.substring(0, temp.length() - 1);
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                String destinationName = temp.substring(0, temp.length() - 1);
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                String arrowType = temp.substring(0, temp.length() - 1);
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                int arrowId = Integer.parseInt(temp.substring(0, temp.length() - 1));
-
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(": ")[1];
-                temp = temp.substring(1, temp.length()-1);
-                String[] xCoordinateStrings = temp.split(",");
-                
-                currentIndex = currentIndex + 1;
-                temp = lines[currentIndex].split(":")[1];
-                temp = temp.substring(1, temp.length()-1);
-                String[] yCoordinateStrings = temp.split(",");
-                
-                ArrayList<Integer> xCoordinates = new ArrayList<Integer>();
-                ArrayList<Integer> yCoordinates = new ArrayList<Integer>();
-                for(int i = 0; i < xCoordinateStrings.length; i++) {
-                    xCoordinates.add(Integer.parseInt(xCoordinateStrings[i]));
-                    yCoordinates.add(Integer.parseInt(yCoordinateStrings[i]));
+        
+        //arrows
+        {
+            int layersDeep = 0;
+            int objectCount = 0;
+            for(int i = 0; i < lines[6].length(); i++) {
+                if(lines[6].charAt(i) == '{') {
+                    layersDeep = layersDeep + 1;
                 }
-                arrows.put(arrowId, new Arrow(this.getDiagram(originName), this.getDiagram(destinationName), arrowType, xCoordinates, yCoordinates));                
+                else if(lines[6].charAt(i) == '}') {
+                    layersDeep = layersDeep - 1;
+                }
+                else if((layersDeep == 0) && (lines[6].charAt(i) == ',')) {
+                    objectCount++;
+                }
             }
-            else {
-                currentIndex = currentIndex + 1;
+
+            //split the line into classes
+            String[] arrowsList = new String[objectCount];
+            int lastIndex = 2;
+            int currentClassIndex = 0;
+
+            for(int i = 0; i < lines[6].length(); i++) {
+                if(lines[6].charAt(i) == '{') {
+                    layersDeep = layersDeep + 1;
+                }
+                else if(lines[6].charAt(i) == '}') {
+                    layersDeep = layersDeep - 1;
+                    if(layersDeep == 0) {
+                        arrowsList[currentClassIndex] = lines[6].substring(lastIndex, i);
+                        currentClassIndex = currentClassIndex + 1;
+                        lastIndex = i + 1;
+                    }
+                }
+            }
+
+            for(int i = 0; i < arrowsList.length; i++) {
+                ArrayList<String> classParameters = new ArrayList<String>();
+                layersDeep = 0;
+                lastIndex = 1;
+                for(int j = 0; j < arrowsList[i].length(); j++) {
+                    if(arrowsList[i].charAt(j) == '[') {
+                        layersDeep = layersDeep + 1;
+                    }
+                    else if(arrowsList[i].charAt(j) == ']') {
+                        layersDeep = layersDeep - 1;
+                    }
+                    else if((layersDeep == 0) && (arrowsList[i].charAt(j) == ',')) {
+                        classParameters.add(arrowsList[i].substring(lastIndex, j));
+                        lastIndex = j + 2;
+                    }
+                }
+                String origin = classParameters.get(0).split("\":")[1];
+                String destination = classParameters.get(1).split("\":")[1];
+                int arrowId = Integer.parseInt(classParameters.get(2).split("\":")[1]);
+
+                String xPointsString = classParameters.get(3).split("\":")[1];
+                xPointsString.substring(1, xPointsString.length() - 1);
+                String[] xPointsArray = xPointsString.split(",");
+                ArrayList<Integer> xPoints = new ArrayList<Integer>();
+                for(int j = 0; j < xPointsArray.length; j++) {
+                    xPoints.add(Integer.parseInt(xPointsArray[j]));
+                }
+
+                String yPointsString = classParameters.get(3).split("\":")[1];
+                yPointsString.substring(1, yPointsString.length() - 1);
+                String[] yPointsArray = yPointsString.split(",");
+                ArrayList<Integer> yPoints = new ArrayList<Integer>();
+                for(int j = 0; j < yPointsArray.length; j++) {
+                    yPoints.add(Integer.parseInt(yPointsArray[j]));
+                }
+                arrows.put(i, origin, destination, arrowId, xPoints, yPoints);
             }
         }
     }
