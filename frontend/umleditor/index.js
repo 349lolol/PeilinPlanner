@@ -309,6 +309,12 @@ let y = e.y - grid.offsetTop;
         dragging = true;
         selectedArrow = arrow;
       }
+
+      if (i === arrow.xPoints.length - 1) {
+        arrow.destination = null;
+      } else if (i === 0) {
+        arrow.origin = null;
+      }
     }
   }
 })
@@ -396,21 +402,82 @@ grid.addEventListener('mouseup', (e) => {
   const previousX = selectedArrow.xPoints[pointIndex - 1];
   const previousY = selectedArrow.yPoints[pointIndex - 1];
 
+  for (let i = 0; i < selectedArrow.xPoints.length; i++) {
+    console.log(`(${selectedArrow.xPoints[i]},${selectedArrow.yPoints[i]})`)
+  }
+  
   for (let diagram of diagrams.data) {
     console.dir(diagram)
     const externalInfo = diagram.external;
+    console.log(document.querySelector(".diagram").offsetHeight)
+    console.log(externalInfo.height)
 
-    console.log(previousX <= externalInfo.xPosition, previousY >= externalInfo.yPosition + externalInfo.height)
     if ((pointIndex === selectedArrow.xPoints.length - 1) && (selectedArrow.destination === null)) {
       // console.log(externalInfo.xPosition, externalInfo.xPosition + externalInfo.width, externalInfo.yPosition, externalInfo.yPosition + externalInfo.height)
       // console.log(finalX, finalY)
       // console.log(finalX >= externalInfo.xPosition, finalX <= externalInfo.xPosition + externalInfo.width, finalY >= externalInfo.yPosition, finalY <= externalInfo.yPosition + externalInfo.height)
       if (((finalX >= externalInfo.xPosition) && (finalX <= externalInfo.xPosition + externalInfo.width)) && 
       ((finalY >= externalInfo.yPosition) && (finalY <= externalInfo.yPosition + externalInfo.height))) {
-
+        
         selectedArrow.destination = diagram.external.id;
-        console.dir(selectedArrow)
-        console.dir(diagram)
+
+        const left = finalX - externalInfo.xPosition;
+        const right = externalInfo.xPosition + externalInfo.width - finalX;
+        const top = finalY - externalInfo.yPosition;
+        const bottom = externalInfo.yPosition + externalInfo.height - finalY;
+
+        console.log(externalInfo.xPosition, externalInfo.yPosition)
+        console.log("he", left, right, top, bottom)
+
+        const min = Math.min(left, right, top, bottom);
+
+        if (min === left) {
+          selectedArrow.xPoints[pointIndex] = externalInfo.xPosition;
+          selectedArrow.yPoints[pointIndex] = finalY;
+          
+        } else if (min === top) {
+          selectedArrow.xPoints[pointIndex] = finalX;
+          selectedArrow.yPoints[pointIndex] = externalInfo.yPosition;
+        } else if (min === right) {
+          selectedArrow.xPoints[pointIndex] = externalInfo.xPosition + externalInfo.width;
+          selectedArrow.yPoints[pointIndex] = finalY;
+        } else if (min === bottom) {
+          selectedArrow.xPoints[pointIndex] = finalX;
+          selectedArrow.yPoints[pointIndex] = externalInfo.yPosition + externalInfo.height;
+        }
+
+        const childArrows = document.querySelector("#arrows").children;
+
+        console.log(arrowData)
+        console.log(childArrows)
+
+        for (let i = 0; i < arrowData.length; i++) {
+          const currentArrowData = arrowData[i];
+          console.log(currentArrowData)
+          
+          console.log("cheese", currentArrowData.destination, externalInfo.id)
+
+          if (currentArrowData.destination === externalInfo.id) {
+            for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
+              const childArrow = childArrows[0];
+              console.log(childArrow)
+              childArrow.remove()
+            }
+          }
+        }
+        drawArrows(arrowData)
+      } else {
+        console.log(selectedArrow.destination)
+        selectedArrow.destination = null;
+      }
+    } else if ((pointIndex === 0) && (selectedArrow.origin === null)) {
+      // console.log(externalInfo.xPosition, externalInfo.xPosition + externalInfo.width, externalInfo.yPosition, externalInfo.yPosition + externalInfo.height)
+      // console.log(finalX, finalY)
+      // console.log(finalX >= externalInfo.xPosition, finalX <= externalInfo.xPosition + externalInfo.width, finalY >= externalInfo.yPosition, finalY <= externalInfo.yPosition + externalInfo.height)
+      if (((finalX >= externalInfo.xPosition) && (finalX <= externalInfo.xPosition + externalInfo.width)) && 
+      ((finalY >= externalInfo.yPosition) && (finalY <= externalInfo.yPosition + externalInfo.height))) {
+        
+        selectedArrow.origin = diagram.external.id;
 
         const left = finalX - externalInfo.xPosition;
         const right = externalInfo.xPosition + externalInfo.width - finalX;
@@ -434,26 +501,22 @@ grid.addEventListener('mouseup', (e) => {
           selectedArrow.yPoints[pointIndex] = externalInfo.yPosition + externalInfo.height;
         }
 
-        const arrowIDs = []
-
         const childArrows = document.querySelector("#arrows").children;
-        for (let arrow in arrowData) {
-          if (arrow.destination === externalInfo.id) {
-            const deleteArrow = arrow.destination
-            document.querySelector("." + arrow.id).remove();
-          } 
-        }
 
-        for (let childArrow of childArrows) {
-          console.dir(childArrow)
-          if (childArrow.destination === externalInfo.id) {
-            childArrow.remove()
-          }
-          if (childArrow.classList.contains(selectedArrow.id)) {
-             childArrow.remove();
+        for (let i = 0; i < arrowData.length; i++) {
+          const currentArrowData = arrowData[i];
+
+          if (currentArrowData.origin === externalInfo.id) {
+            for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
+              const childArrow = childArrows[0];
+              console.log(childArrow)
+              childArrow.remove()
+            }
           }
         }
         drawArrows(arrowData)
+      } else {
+        selectedArrow.origin = null;
       }
     }
   }
@@ -682,7 +745,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
       xPosition: x,
       yPosition: y,
       width: diagramWidth,
-      height: 190, // change later
+      height: 223, // change later
       id: diagramID
     }
   }
@@ -741,17 +804,42 @@ const snap = () => {
       //   }
       // }
 
+      console.log(arrowData.length)
       for (let i = 0; i < arrowData.length; i++) {
-        console.log(Number(arrowData[i].destination))
-        console.log(diagrams.data[Number(element.id.slice(7))].external.id)
-        if (arrowData[i].destination === diagrams.data[Number(element.id.slice(7))].external.id) {
-          arrowData[i].xPoints[-1] += event.dx / scale;
-          arrowData[i].yPoints[-1] += event.dy / scale;
+        // console.log(Number(arrowData[i].destination))
+        // console.log(diagrams.data[Number(element.id.slice(7))].external.id)
+        if ((arrowData[i].destination !== null) && (Number(arrowData[i].destination) === diagrams.data[Number(element.id.slice(7))].external.id)) {
+          // console.log(arrowData[i])
+          // console.log(arrowData[i].xPoints[-1], arrowData[i].yPoints[-1])
+          arrowData[i].xPoints[arrowData[i].xPoints.length - 1] += event.dx / scale;
+          arrowData[i].yPoints[arrowData[i].xPoints.length - 1] += event.dy / scale;
+          arrowData[i].destination = diagrams.data[Number(element.id.slice(7))].external.id
+          drawArrows(arrowData)
+        }
+      }
+
+      const childArrows = document.querySelector("#arrows").children;
+
+      // console.log(arrowData)
+      // console.log(childArrows)
+
+      for (let i = 0; i < arrowData.length; i++) {
+        const currentArrowData = arrowData[i];
+        // console.log(currentArrowData)
+        
+        // console.log("cheese", currentArrowData.destination, diagrams.data[Number(element.id.slice(7))].external.id)
+
+        if (currentArrowData.destination === diagrams.data[Number(element.id.slice(7))].external.id) {
+          for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
+            const childArrow = childArrows[0];
+            childArrow.remove()
+          }
         }
       }
     })
   })
 }
+
 
 
 // ADDING DIAGRAMS TO THE GRID
@@ -761,8 +849,9 @@ const snap = () => {
 // }
 document.querySelector("#addclass > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
-   ((grid.offsetHeight - (defaultLineHeight*11*scale))/2), defaultDiagramWidth,
+   ((grid.offsetHeight - (defaultLineHeight*16*scale))/2), defaultDiagramWidth,
    "CLASSDIAGRAM")
+  
   
   // diagrams.data.push({
   //   external: {
@@ -1152,3 +1241,12 @@ closeShare.addEventListener("click", (e) => {
     console.log(e);
     shareModal.close();
 })
+
+grid.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  if (MouseEvent.shiftKey) {
+    
+  }
+})
+
+grid.addEventListener("s")
