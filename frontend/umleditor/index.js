@@ -300,8 +300,6 @@ const drawArrows = (arrowData) => {
   
       let x2 = arrowData[arrow].xPoints[i + 1];
       let y2 = arrowData[arrow].yPoints[i + 1];
-
-      console.log("cheese", arrowData[arrow].id)
   
       lineDraw(x1, y1, x2, y2, arrowData[arrow].type, arrowData[arrow].id, arrowData[arrow])
       pointDraw(x1, y1, arrowData[arrow].id, arrowData, arrowData[arrow])
@@ -391,19 +389,19 @@ const loadArrow = (xPoints, yPoints, origin, destination, type) => {
 
 document.querySelector("#inheritancearrow").addEventListener("click", (e) => {
   addArrow(arrowData, document.querySelector("form > select").value, "INHERITANCE", arrowID)
-  drawArrows();
+  drawArrows(arrowData);
 
 })
 document.querySelector("#compositionarrow").addEventListener("click", (e) => {
   addArrow(arrowData, document.querySelector("form > select").value, "COMPOSITION", arrowID)
-  drawArrows();
+  drawArrows(arrowData);
 })
 document.querySelector("#implementationarrow").addEventListener("click", (e) => {
   addArrow(arrowData, document.querySelector("form > select").value, "IMPLEMENTATION", arrowID)
-  drawArrows();
+  drawArrows(arrowData);
 })
 
-drawArrows();
+drawArrows(arrowData);
 
 
 // ARROW DRAGGING
@@ -429,11 +427,11 @@ let y = e.y - grid.offsetTop;
         selectedArrow = arrow;
       }
 
-      if (i === arrow.xPoints.length - 1) {
-        arrow.destination = null;
-      } else if (i === 0) {
-        arrow.origin = null;
-      }
+      // if (i === arrow.xPoints.length - 1) {
+      //   arrow.destination = null;
+      // } else if (i === 0) {
+      //   arrow.origin = null;
+      // }
     }
   }
 })
@@ -526,10 +524,7 @@ grid.addEventListener('mouseup', (e) => {
   }
   
   for (let diagram of diagrams.data) {
-    console.dir(diagram)
     const externalInfo = diagram.external;
-    console.log(document.querySelector(".diagram").offsetHeight)
-    console.log(externalInfo.height)
 
     if ((pointIndex === selectedArrow.xPoints.length - 1) && (selectedArrow.destination === null)) {
       // console.log(externalInfo.xPosition, externalInfo.xPosition + externalInfo.width, externalInfo.yPosition, externalInfo.yPosition + externalInfo.height)
@@ -544,9 +539,6 @@ grid.addEventListener('mouseup', (e) => {
         const right = externalInfo.xPosition + externalInfo.width - finalX;
         const top = finalY - externalInfo.yPosition;
         const bottom = externalInfo.yPosition + externalInfo.height - finalY;
-
-        console.log(externalInfo.xPosition, externalInfo.yPosition)
-        console.log("he", left, right, top, bottom)
 
         const min = Math.min(left, right, top, bottom);
 
@@ -567,9 +559,6 @@ grid.addEventListener('mouseup', (e) => {
 
         const childArrows = document.querySelector("#arrows").children;
 
-        console.log(arrowData)
-        console.log(childArrows)
-
         for (let i = 0; i < arrowData.length; i++) {
           const currentArrowData = arrowData[i];
           console.log(currentArrowData)
@@ -579,15 +568,19 @@ grid.addEventListener('mouseup', (e) => {
           if (currentArrowData.destination === externalInfo.id) {
             for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
               const childArrow = childArrows[0];
-              console.log(childArrow)
-              childArrow.remove()
+              console.log("be", currentArrowData)
+              childArrow.remove();
             }
           }
         }
+
+        // for (let childArrow in childArrows) {
+        //   console.log(childArrow)
+        //   if ("--" + selectedArrow.id === childArrow.classList.item(0)) {
+        //     childArrow.remove();
+        //   }
+        // }
         drawArrows(arrowData)
-      } else {
-        console.log(selectedArrow.destination)
-        selectedArrow.destination = null;
       }
     } else if ((pointIndex === 0) && (selectedArrow.origin === null)) {
       // console.log(externalInfo.xPosition, externalInfo.xPosition + externalInfo.width, externalInfo.yPosition, externalInfo.yPosition + externalInfo.height)
@@ -634,10 +627,12 @@ grid.addEventListener('mouseup', (e) => {
           }
         }
         drawArrows(arrowData)
-      } else {
-        selectedArrow.origin = null;
       }
     }
+  }
+
+  for (let arrow of arrowData) {
+    console.log("ia",arrow)
   }
 
   dragging = false;
@@ -939,38 +934,38 @@ const snap = () => {
       //   }
       // }
 
-      console.log(arrowData.length)
-      for (let i = 0; i < arrowData.length; i++) {
-        // console.log(Number(arrowData[i].destination))
-        // console.log(diagrams.data[Number(element.id.slice(7))].external.id)
-        if ((arrowData[i].destination !== null) && (Number(arrowData[i].destination) === diagrams.data[Number(element.id.slice(7))].external.id)) {
-          // console.log(arrowData[i])
-          // console.log(arrowData[i].xPoints[-1], arrowData[i].yPoints[-1])
-          arrowData[i].xPoints[arrowData[i].xPoints.length - 1] += event.dx / scale;
-          arrowData[i].yPoints[arrowData[i].xPoints.length - 1] += event.dy / scale;
-          arrowData[i].destination = diagrams.data[Number(element.id.slice(7))].external.id
-          drawArrows(arrowData)
-        }
-      }
+      // console.log(arrowData.length)
+      // for (let i = 0; i < arrowData.length; i++) {
+      //   // console.log(Number(arrowData[i].destination))
+      //   // console.log(diagrams.data[Number(element.id.slice(7))].external.id)
+      //   if ((arrowData[i].destination !== null) && (Number(arrowData[i].destination) === diagrams.data[Number(element.id.slice(7))].external.id)) {
+      //     // console.log(arrowData[i])
+      //     // console.log(arrowData[i].xPoints[-1], arrowData[i].yPoints[-1])
+      //     arrowData[i].xPoints[arrowData[i].xPoints.length - 1] += event.dx / scale;
+      //     arrowData[i].yPoints[arrowData[i].xPoints.length - 1] += event.dy / scale;
+      //     arrowData[i].destination = diagrams.data[Number(element.id.slice(7))].external.id
+      //     drawArrows(arrowData)
+      //   }
+      // }
 
-      const childArrows = document.querySelector("#arrows").children;
+      // const childArrows = document.querySelector("#arrows").children;
 
-      // console.log(arrowData)
-      // console.log(childArrows)
+      // // console.log(arrowData)
+      // // console.log(childArrows)
 
-      for (let i = 0; i < arrowData.length; i++) {
-        const currentArrowData = arrowData[i];
-        // console.log(currentArrowData)
+      // for (let i = 0; i < arrowData.length; i++) {
+      //   const currentArrowData = arrowData[i];
+      //   // console.log(currentArrowData)
         
-        // console.log("cheese", currentArrowData.destination, diagrams.data[Number(element.id.slice(7))].external.id)
+      //   // console.log("cheese", currentArrowData.destination, diagrams.data[Number(element.id.slice(7))].external.id)
 
-        if (currentArrowData.destination === diagrams.data[Number(element.id.slice(7))].external.id) {
-          for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
-            const childArrow = childArrows[0];
-            childArrow.remove()
-          }
-        }
-      }
+      //   if (currentArrowData.destination === diagrams.data[Number(element.id.slice(7))].external.id) {
+      //     for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
+      //       const childArrow = childArrows[0];
+      //       childArrow.remove()
+      //     }
+      //   }
+      // }
     })
   })
 }
@@ -1222,8 +1217,8 @@ const saveUML = async () => {
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
-        xSize: diagram.external.xSize,
-        ySize: diagram.external.ySize,
+        xSize: diagram.external.width,
+        ySize: diagram.external.height,
         isAbstract: false,
         fields: [...document.querySelector(`#diagram${diagram.external.id} > .fields`).value.split("\n")],
         methods: [...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")]
@@ -1235,8 +1230,8 @@ const saveUML = async () => {
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
-        xSize: diagram.external.xSize,
-        ySize: diagram.external.ySize,
+        xSize: diagram.external.width,
+        ySize: diagram.external.height,
         isAbstract: true,
         fields: [...document.querySelector(`#diagram${diagram.external.id} > .fields`).textContent.split("\n")],
         methods: [...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")]
@@ -1248,8 +1243,8 @@ const saveUML = async () => {
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
-        xSize: diagram.external.xSize,
-        ySize: diagram.external.ySize,
+        xSize: diagram.external.width,
+        ySize: diagram.external.height,
         methods: [...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")]
       })
     } else if (diagram.external.type === "EXCEPTIONDIAGRAM") {
@@ -1259,8 +1254,8 @@ const saveUML = async () => {
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
-        xSize: diagram.external.xSize,
-        ySize: diagram.external.ySize,
+        xSize: diagram.external.width,
+        ySize: diagram.external.height,
       })
     } 
   }
@@ -1387,3 +1382,7 @@ closeShare.addEventListener("click", (e) => {
 //     }
 //   }
 // })
+
+grid.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+})
