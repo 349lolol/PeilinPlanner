@@ -1081,12 +1081,10 @@ const saveUML = async () => {
 
 
   for (let diagram of diagrams.data) {
-    console.log(`#diagram${diagram.external.id} > .fields`)
-    console.dir(document.querySelector(`#diagram${diagram.external.id} > .fields`))
     if (diagram.external.type === "CLASSDIAGRAM") {
       classes.push({
         classId: diagram.external.id,
-        className: document.querySelector(`#diagram${diagram.external.id} > .name`),
+        className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
         xSize: diagram.external.xSize,
@@ -1099,7 +1097,7 @@ const saveUML = async () => {
       
       classes.push({
         classId: diagram.external.id,
-        className: document.querySelector(`#diagram${diagram.external.id} > .name`),
+        className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
         xSize: diagram.external.xSize,
@@ -1112,7 +1110,7 @@ const saveUML = async () => {
       
       interfaces.push({
         classId: diagram.external.id,
-        className: document.querySelector(`#diagram${diagram.external.id} > .name`),
+        className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
         xSize: diagram.external.xSize,
@@ -1123,7 +1121,7 @@ const saveUML = async () => {
       
       exceptions.push({
         classId: diagram.external.id,
-        className: document.querySelector(`#diagram${diagram.external.id} > .name`),
+        className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
         xSize: diagram.external.xSize,
@@ -1245,7 +1243,7 @@ closeShare.addEventListener("click", (e) => {
 grid.addEventListener("contextmenu", (e) => {
   e.preventDefault();
   if (MouseEvent.shiftKey) {
-    
+
   }
 })
 
