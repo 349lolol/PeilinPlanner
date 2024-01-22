@@ -64,14 +64,19 @@ public class User {
     }
 
     /**
-     * 
+     * addSharedProject
      * @param project
-     * @return
+     * @return successfully added or not
      */
     public boolean addSharedProject(String project) {
         return sharedProjects.add(project);
     }
 
+    /**
+     * createProject
+     * @param project new project title
+     * @return successful added or not
+     */
     public boolean createProject(String project) {
         return ownedProjects.add(project);
     }

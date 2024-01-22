@@ -86,10 +86,20 @@ public class UserBase implements Serializable {
         return userBase.get(username).createProject(project.getProjectName());
     }
 
+    /**
+     * getSharedProjects
+     * @param username target user
+     * @return list of projects shared to them
+     */
     public LinkedList<String> getSharedProjects(String username) {
         return userBase.get(username).getSharedProjects();
     }
 
+    /**
+     * getOwnedProjects
+     * @param username target user
+     * @return list of projects owned by them
+     */
     public LinkedList<String> getSOwnedProjects(String username) {
         return userBase.get(username).getSharedProjects();
     }
