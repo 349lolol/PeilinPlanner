@@ -50,7 +50,6 @@ class MultiThreadedServer {
              
             // Method for deserialization of object
             userBase = (UserBase)in.readObject();
-             
             in.close();
             file.close();
         }
@@ -58,6 +57,26 @@ class MultiThreadedServer {
         {
             System.out.println("Error deserializing");
         }
+        try
+        {   
+            // Reading the object from a file
+            File folder = new File("./server/umlStorage/");
+            File[] listOfFiles = folder.listFiles();
+
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    BufferedReader UMLReader = new BufferedReader(new FileReader(file));
+                    projectBase.addProject(file.getName());
+                    projectBase.getProject(file.getName()).JsonToJava(UMLReader.readLine());
+                    UMLReader.close();
+                }
+            }
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Error deserializing");
+        }
+
         MultiThreadedServer server = new MultiThreadedServer();
         MultiThreadedServer.assets = new Assets();
         server.go();
