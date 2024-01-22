@@ -425,7 +425,7 @@ public class Project {
     }
 
     public String javaToJson() {
-        String data = "{\n" + "\"ProjectName\": \""  + this.projectName + "\", ";
+        String data = "{" + "\"ProjectName\": \""  + this.projectName + "\", ";
         data = data + "\"diagramIdCount\": "  + this.diagramIdCount + ", ";
         data = data + "\"arrowIdCount\": "  + this.arrowIdCount + ", ";
         data = data + "\"classDiagrams\": [";
