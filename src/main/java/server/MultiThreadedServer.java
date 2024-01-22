@@ -20,6 +20,7 @@ import user.User;
 import user.UserBase;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +75,7 @@ class MultiThreadedServer {
         }
         catch(IOException exception)
         {
-            System.out.println("Error deserializing");
+            System.out.println("Error reading in UML diagrams");
         }
 
         MultiThreadedServer server = new MultiThreadedServer();
@@ -96,6 +97,22 @@ class MultiThreadedServer {
         catch(IOException ex)
         {
             System.out.println("Error serializing");
+        }
+
+        try
+        {   
+            Set<String> keys = projectBase.getAllKeys();
+            // Reading the object from a file
+            for(String key : keys) {
+                File UMLSave = new File("./server/umlStorage/" + projectBase.getProject(key));
+                PrintWriter UMLWriter = new PrintWriter(UMLSave);
+                UMLWriter.print(projectBase.getProject(key).toString());
+                UMLWriter.close();
+            }
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Error printing UML diagrams");
         }
     }
     

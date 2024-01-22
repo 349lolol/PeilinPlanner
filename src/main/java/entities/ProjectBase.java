@@ -9,6 +9,8 @@
 package entities;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProjectBase {
     private HashMap<String, Project> projects;
@@ -91,5 +93,9 @@ public class ProjectBase {
     @Override
     public String toString() {
         return this.projects.toString() + " | " + this.isInUse.toString();
+    }
+
+    public Set<String> getAllKeys() {
+        return projects.keySet();
     }
 }
