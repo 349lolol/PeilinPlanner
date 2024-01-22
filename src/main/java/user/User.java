@@ -1,17 +1,15 @@
+/**
+ * [User.java]
+ * Class representing a single user
+ * @author Perry Xu & Patrick Wei
+ * @version 1.1
+ * 01/09/24
+ */
+
 package user;
 
 import java.util.LinkedList;
 import java.util.HashSet;
-
-import entities.Arrow;
-import entities.ClassDiagram;
-import entities.Diagram;
-import entities.ExceptionDiagram;
-import entities.Field;
-import entities.InterfaceDiagram;
-import entities.Method;
-import entities.Project;
-import entities.ProjectBase;
 
 
 public class User {
@@ -20,6 +18,11 @@ public class User {
     private final HashSet<String> ownedProjects;
     private final LinkedList<String> sharedProjects;
 
+    /**
+     * User constructor
+     * @param username unique username of user
+     * @param password password of user
+     */
     User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -27,10 +30,18 @@ public class User {
         sharedProjects = new LinkedList<String>();
     }
 
+    /**
+     * getUsername
+     * @return username
+     */
     public String getUserName() {
         return this.username;
     }
 
+    /**
+     * getPass
+     * @return
+     */
     public String getPassword() {
         return this.password;
     }

@@ -1,16 +1,17 @@
+/**
+ * [UserBase.java]
+ * Class representing all created users
+ * @author Perry Xu & Patrick Wei
+ * @version 1.1
+ * 01/09/24
+ */
+
 package user;
+
 import java.util.HashMap;
 import java.util.LinkedList;
-import entities.Arrow;
-import entities.ClassDiagram;
-import entities.Diagram;
-import entities.ExceptionDiagram;
-import entities.Field;
-import entities.InterfaceDiagram;
-import entities.Method;
 import entities.Project;
 import java.io.Serializable;
-import entities.ProjectBase;
 
 public class UserBase implements Serializable {
     private HashMap<String, User> userBase;

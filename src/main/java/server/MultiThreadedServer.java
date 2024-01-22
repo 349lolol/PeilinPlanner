@@ -1,3 +1,11 @@
+/**
+ * [MultiThreadedServer.java]
+ * Server supporting multiple users
+ * @author Perry Xu & Patrick Wei
+ * @version 1.1
+ * 01/09/24
+ */
+
 package server;
 
 //imports for network communication
@@ -43,11 +51,6 @@ class MultiThreadedServer {
         {
             System.out.println("Error deserializing");
         }
-        // INITIALIZE userBase
-        // userBase.addUser("MidtrickWei", "IMADECAKID");
-        // userBase.addUser("Parmesan", "Cheese");
-        
-        // userBase.getUser("MidtrickWei").createProject();
         MultiThreadedServer server = new MultiThreadedServer();
         MultiThreadedServer.assets = new Assets();
         server.go();
@@ -95,14 +98,12 @@ class MultiThreadedServer {
 //------------------------------------------------------------------------------        
         @Override
         public void run() {
-            boolean breakLoop = false;
             int line = 0;
             int emptyLine = 0;
             Map<String, String> header = new HashMap<>();
 
             List<String> request = new ArrayList<>();
-            String msg = "";
-            
+
                 try {
                     input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     output = socket.getOutputStream();
