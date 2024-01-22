@@ -15,7 +15,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -42,7 +41,7 @@ public class Assets {
                     return Files.readAllBytes(path);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return null; // TODO: DONT RETURN NULL
+                    return null;
                 }
             })
             .collect(Collectors.toList());

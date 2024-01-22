@@ -8,7 +8,6 @@
 
 package entities;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class InterfaceDiagram extends Diagram {
@@ -29,6 +28,12 @@ public class InterfaceDiagram extends Diagram {
         this.methods = methods;
         
     }
+
+    /**
+     * toJson
+     * prints interfaceDiagarm to json
+     * @return
+     */
 
     public String toJson(){
         String data = "\"name\": " + getName() + ", ";

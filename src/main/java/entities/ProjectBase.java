@@ -39,6 +39,12 @@ public class ProjectBase {
             "\"arrows\": []}";
     }
     
+    /**
+     * addProject
+     * adds project to the system
+     * @param projectName name of the project
+     * @return
+     */
     public String addProject(String projectName) {
         projects.putIfAbsent(projectName, new Project(projectName));
         isInUse.put(projectName, false);

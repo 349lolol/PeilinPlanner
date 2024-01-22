@@ -3,7 +3,6 @@ package server;
 //imports for network communication
 import java.io.*;
 import java.net.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -50,7 +49,6 @@ class MultiThreadedServer {
         
         // userBase.getUser("MidtrickWei").createProject();
         MultiThreadedServer server = new MultiThreadedServer();
-        HttpHandler e = new HttpHandler();
         MultiThreadedServer.assets = new Assets();
         server.go();
 

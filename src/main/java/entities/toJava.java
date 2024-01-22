@@ -22,7 +22,7 @@ public class toJava {
      *  */ 
     public static void printToJava(Project project) throws FileNotFoundException{
         //initialize the new folder
-        String path = "./"+project.getProjectName();
+        String path = "./" + project.getProjectName();
         File folder = new File(path);
         if (!folder.exists()) {
             folder.mkdirs();

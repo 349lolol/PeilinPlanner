@@ -19,7 +19,7 @@ public abstract class Diagram {
      * Diagram
      * constructs a new diagram
      * @param name name of diagram
-     * @param xPosition x poisiton of diagram
+     * @param xPosition x position of diagram
      * @param yPosition y position of diagram
      * @param xSize x size of diagram
      * @param ySize y size of diagram
@@ -35,7 +35,6 @@ public abstract class Diagram {
     /**
      * getName
      * returns the name of the exception
-     * 
      * @return the name of the exception
      */
     public String getName() {
