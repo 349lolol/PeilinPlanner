@@ -410,7 +410,7 @@ class MultiThreadedServer {
                         System.out.println(request.get(line));
                         projectBase.setProject(projectName, objectMapper.readValue(request.get(line), Project.class));
 
-                        System.out.println(projectBase.getProject(projectName).getAllDiagrams());
+                        System.out.println(projectBase.getProject(projectName).getAllDiagrams().get(0));
                     }
 
                     // LOADING UML
