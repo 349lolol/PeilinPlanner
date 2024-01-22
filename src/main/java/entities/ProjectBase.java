@@ -71,6 +71,10 @@ public class ProjectBase {
         return null;
     }
 
+    public void setProject(String name, Project project) {
+        projects.put(name, project);
+    }
+
     /**
      * returnProject
      * allows someone else to access the project
