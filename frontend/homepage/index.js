@@ -101,11 +101,6 @@ const create = async (username, projectName) => {
         })
         .then(res => {
             if (res.valid) {
-            //     <button type="submit" class="project" id="project1">
-            //     <p>[Project Name]</p>
-
-            //     <i class="ri-article-line" id="projectIcon"></i>
-            //     </button>
                 const projects = document.querySelector(".projects");
 
                 const project = document.createElement("button");

@@ -1,8 +1,3 @@
-// DOUBLE ARROW WHEN MULTIPLE ARROWS ARE CONNECTED
-// ZOOM NO WORK
-// ADD DELETE
-// ARROWS DRAG ALONG WITH THE DIAGRAM
-
 let arrowID = 0;
 let diagramID = 0;
 const grid = document.getElementById('grid');
@@ -16,15 +11,10 @@ const diagramsData = diagrams.data;
 
 const arrowData = []
 
-// const arrows = axios.get("URL");
-// const arrowData = arrows.data;
-
 diagrams = {
   data: []
 }
 
-// ARROWS
-// FUNCTIONS FOR ARROWS
 const lineDraw = (ax, ay, bx, by, type, id, arrow) => {
   if(ax > bx) {
       bx = ax + bx; 
@@ -93,24 +83,6 @@ const lineDraw = (ax, ay, bx, by, type, id, arrow) => {
       arrowData.splice(index, 1);
     }
 
-
-    // const childArrows = document.querySelector("#arrows").children;
-
-    // console.log(arrowData)
-    // console.log(arrowID.slice(2))
-
-    // console.log(childArrows)
-
-    // childArrows
-
-    // for (let childArrow of childArrows) {
-    //   console.dir(childArrow)
-    //   if (childArrow.classList.contains(arrowID)) {
-    //     childArrow.remove()
-    //   } else {
-    //     console.dir(childArrow)
-    //   }
-    // }
 
     arrowData.splice(arrowID.slice(2), 1)
 

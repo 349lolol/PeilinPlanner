@@ -68,6 +68,12 @@ public class Arrow {
         return data;
     }
 
+    /**
+     * ArrayListToJson
+     * converts an arraylist of points to json
+     * @param points arraylist of integer points
+     * @return
+     */
     private String arrayListToJson(ArrayList<Integer> points) {
         String data = "[";
         for(int i = 0; i < points.size(); i++) {

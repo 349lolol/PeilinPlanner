@@ -35,6 +35,10 @@ public class ClassDiagram extends Diagram {
         this.methods = methods;
     }
 
+    /**
+     * converts json
+     * @return a string rep of the json
+     */
     public String toJson(){
         String data = "\"name\": " + getName() + ", ";
         data = data + "\"xPosition\": " + super.getXPosition() + ", ";
@@ -47,6 +51,12 @@ public class ClassDiagram extends Diagram {
         return data;
     }
 
+    /**
+     * methodsToJson
+     * converts method linkedlist to string representation
+     * @param points linkedlist of methods
+     * @return
+     */
     private String methodsToJson(LinkedList<Method> points) {
         String data = "[";
         for(int i = 0; i < points.size(); i++) {
@@ -57,6 +67,12 @@ public class ClassDiagram extends Diagram {
         return data;
     }
 
+    /**
+     * methodsToJson
+     * converts field linkedlist to string representation
+     * @param points linkedlist of methods
+     * @return
+     */
     private String fieldsToJson(LinkedList<Field> points) {
         String data = "[";
         for(int i = 0; i < points.size(); i++) {
