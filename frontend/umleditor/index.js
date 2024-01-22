@@ -25,7 +25,7 @@ diagrams = {
 
 // ARROWS
 // FUNCTIONS FOR ARROWS
-const lineDraw = (ax, ay, bx, by, type, id) => {
+const lineDraw = (ax, ay, bx, by, type, id, arrow) => {
   if(ax > bx) {
       bx = ax + bx; 
       ax = bx - ax;
@@ -41,7 +41,8 @@ const lineDraw = (ax, ay, bx, by, type, id) => {
   const degree = calc * 180 / Math.PI;
 
   const line = document.createElement('div');
-  line.classList.add(id)
+  console.log(id)
+  line.classList.add(`--${id}`)
 
   if (type === "COMPOSITION" || type === "INHERITANCE") {
     line.style.cssText = `
@@ -69,13 +70,61 @@ const lineDraw = (ax, ay, bx, by, type, id) => {
 
 
   document.querySelector("#arrows").appendChild(line);
+
+  line.addEventListener("contextmenu", (e) => {
+    e.preventDefault()
+    if (!e.shiftKey) {
+      return;
+    }
+
+    const arrowID = e.target.classList[0];
+
+    const arrowSegments = document.querySelectorAll(`#arrows > .${arrowID}`);
+    
+    for (let i = 0; i < arrowSegments.length; i++) {
+      console.log(arrowSegments)
+      arrowSegments[i].remove();
+    }
+
+
+    const index = arrowData.indexOf(arrow);
+  
+    if (index !== -1) {
+      arrowData.splice(index, 1);
+    }
+
+
+    // const childArrows = document.querySelector("#arrows").children;
+
+    // console.log(arrowData)
+    // console.log(arrowID.slice(2))
+
+    // console.log(childArrows)
+
+    // childArrows
+
+    // for (let childArrow of childArrows) {
+    //   console.dir(childArrow)
+    //   if (childArrow.classList.contains(arrowID)) {
+    //     childArrow.remove()
+    //   } else {
+    //     console.dir(childArrow)
+    //   }
+    // }
+
+    arrowData.splice(arrowID.slice(2), 1)
+
+    // console.dir(childArrows)
+    
+    drawArrows(arrowData)
+  })
 }
 
-const pointDraw = (x, y, id) => {
+const pointDraw = (x, y, id, arrow) => {
   const dot = document.createElement("div")
   const radius = 4
 
-  dot.classList.add(id);
+  dot.classList.add(`--${id}`)
 
   dot.style.cssText = `
     height: ${2*radius}px;
@@ -89,13 +138,57 @@ const pointDraw = (x, y, id) => {
   }`
 
   document.querySelector("#arrows").appendChild(dot);
+
+  dot.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    if (!e.shiftKey) {
+      return;
+    }
+
+    const arrowID = e.target.classList[0];
+
+    const arrowSegments = document.querySelectorAll(`#arrows > .${arrowID}`);
+    
+    for (let i = 0; i < arrowSegments.length; i++) {
+      arrowSegments[i].remove();
+    }
+
+    // arrowData.splice(arrowID.slice(2), 1)
+
+    const index = arrowData.indexOf(arrow);
+  
+    if (index !== -1) {
+      arrowData.splice(index, 1);
+    }
+
+
+    // const childArrows = document.querySelector("#arrows >").children;
+
+    // console.log(arrowData)
+    // console.log(arrowID.slice(2))
+
+    // console.log(childArrows)
+
+    // childArrows
+
+    // for (let i = 0; i < childArrows.length; i++) {
+    //   if (chi)
+    //   childArrows[0].remove();
+    // }
+
+    // console.dir(childArrows)
+
+    arrowData.splice(arrowID.slice(2), 1)
+
+    drawArrows(arrowData)
+  })
 };
 
-const headDraw = (ax, ay, bx, by, type, id) => {
+const headDraw = (ax, ay, bx, by, type, id, arrow) => {
 
   const triangle = document.createElement("div")
 
-  triangle.classList.add(id)
+  triangle.classList.add(`--${id}`)
 
   let degree = 0;
 
@@ -172,6 +265,31 @@ const headDraw = (ax, ay, bx, by, type, id) => {
     triangle.appendChild(triangle2);
   }
 
+  triangle.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    if (!e.shiftKey) {
+      return;
+    }
+
+    const arrowID = e.target.classList[0];
+
+    const arrowSegments = document.querySelectorAll(`#arrows > .${arrowID}`);
+
+    for (let i = 0; i < arrowSegments.length; i++) {
+      arrowSegments[i].remove();
+    }
+
+    const index = arrowData.indexOf(arrow);
+  
+    if (index !== -1) {
+      arrowData.splice(index, 1);
+    }
+
+    arrowData.splice(arrowID.slice(2), 1)
+
+    drawArrows(arrowData)
+  })
+
 };
 
 const drawArrows = (arrowData) => {
@@ -182,15 +300,16 @@ const drawArrows = (arrowData) => {
   
       let x2 = arrowData[arrow].xPoints[i + 1];
       let y2 = arrowData[arrow].yPoints[i + 1];
+
+      console.log("cheese", arrowData[arrow].id)
   
-      lineDraw(x1, y1, x2, y2, arrowData[arrow].type, arrow)
-      pointDraw(x1, y1, arrow)
+      lineDraw(x1, y1, x2, y2, arrowData[arrow].type, arrowData[arrow].id, arrowData[arrow])
+      pointDraw(x1, y1, arrowData[arrow].id, arrowData, arrowData[arrow])
   
       if (i === arrowData[arrow].xPoints.length - 2) {
-        headDraw(x1, y1, x2, y2, arrowData[arrow].type, arrow)
+        headDraw(x1, y1, x2, y2, arrowData[arrow].type, arrowData[arrow].id, arrowData[arrow])
       }
     }
-  
   }
 }
 
@@ -334,12 +453,12 @@ grid.addEventListener("mousemove", (e) => {
     
         let x2 = selectedArrow.xPoints[i + 1];
         let y2 = selectedArrow.yPoints[i + 1];
-    
-        lineDraw(x1, y1, x2, y2, selectedArrow.type);
-        pointDraw(x1, y1);
+
+        lineDraw(x1, y1, x2, y2, selectedArrow.type, selectedArrow.id, arrowData[selectedArrow.id]);
+        pointDraw(x1, y1, selectedArrow.id, arrowData[selectedArrow.id]);
 
         if (i === selectedArrow.xPoints.length - 2) {
-          headDraw(x1, y1, x2, y2, selectedArrow.type)
+          headDraw(x1, y1, x2, y2, selectedArrow.type, selectedArrow.id, arrowData[selectedArrow.id])
         }
       }
     }
@@ -755,6 +874,21 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
   console.log("CHAHSD")
   console.log(document.querySelector(`#${diagram.id}`).offsetHeight)
   diagrams.data.push(diagramInfo)
+
+  diagram.addEventListener("contextmenu", (e) => {
+
+    if (!e.shiftKey) {
+      return;
+    }
+
+    const index = diagrams.data.indexOf(diagramInfo);
+  
+    if (index !== -1) {
+      diagrams.data.splice(index, 1);
+    }
+
+    grid.removeChild(diagram);
+  })
 }
 
 const snap = () => {
@@ -934,63 +1068,63 @@ snap();
 
  // ZOOMING
 
-const zoom = (e, factor) => {
-  for (let child of grid.children) {
-    const width = child.offsetWidth;
-    const height = child.offsetHeight;
+// const zoom = (e, factor) => {
+//   for (let child of grid.children) {
+//     const width = child.offsetWidth;
+//     const height = child.offsetHeight;
 
-    const clientX = e.clientX - grid.offsetLeft;
-    const clientY = e.clientY - grid.offsetTop;
+//     const clientX = e.clientX - grid.offsetLeft;
+//     const clientY = e.clientY - grid.offsetTop;
 
-    let x1 = 0;
-    let y1 = grid.offsetHeight;
-    if (!(child.style.transform === "")) {
-      const position = child.style.transform.slice(10, -1); // __px, __px)
-      x1 = Number(position.split(", ")[0].slice(0, -2)) // px
-      y1 = grid.offsetHeight - Number(position.split(", ")[1].slice(0, -2)) // px
-    }
+//     let x1 = 0;
+//     let y1 = grid.offsetHeight;
+//     if (!(child.style.transform === "")) {
+//       const position = child.style.transform.slice(10, -1); // __px, __px)
+//       x1 = Number(position.split(", ")[0].slice(0, -2)) // px
+//       y1 = grid.offsetHeight - Number(position.split(", ")[1].slice(0, -2)) // px
+//     }
 
-    const x2 = x1 + width;
-    const y2 = y1;
+//     const x2 = x1 + width;
+//     const y2 = y1;
 
-    const m1 = (y1 - clientY)/(x1 - clientX);
-    const m2 = (y2 - clientY)/(x2 - clientX);
+//     const m1 = (y1 - clientY)/(x1 - clientX);
+//     const m2 = (y2 - clientY)/(x2 - clientX);
 
-    const b1 = y1 - m1*x1;
-    const b2 = y2 - m2*x2;
+//     const b1 = y1 - m1*x1;
+//     const b2 = y2 - m2*x2;
 
-    const xDisplacement1 = clientX - x1;
+//     const xDisplacement1 = clientX - x1;
 
-    if (e.deltaY < 0) {
-      scale *= factor
-      child.style.scale = scale
+//     if (e.deltaY < 0) {
+//       scale *= factor
+//       child.style.scale = scale
 
-      const newXPosition = (factor*((m2*xDisplacement1) - (m1*xDisplacement1) - b1 + b2) + b1 - b2)/(m2 - m1);
-      const newYPosition = m1*newXPosition + b1;
-      const xTranslation = newXPosition - x1;
-      const yTranslation = newYPosition - y1;
+//       const newXPosition = (factor*((m2*xDisplacement1) - (m1*xDisplacement1) - b1 + b2) + b1 - b2)/(m2 - m1);
+//       const newYPosition = m1*newXPosition + b1;
+//       const xTranslation = newXPosition - x1;
+//       const yTranslation = newYPosition - y1;
 
-      child.style.transform = `translate(${ x1 + xTranslation}px, ${y1 - yTranslation}px)`;
+//       child.style.transform = `translate(${ x1 + xTranslation}px, ${y1 - yTranslation}px)`;
       
-    } else {
-      scale /= factor
-      child.style.scale = scale
+//     } else {
+//       scale /= factor
+//       child.style.scale = scale
 
-      const newXPosition = (((m2*xDisplacement1) - (m1*xDisplacement1) - b1 + b2) + b1 - b2)/(factor*(m2 - m1));
-      const newYPosition = m1*newXPosition + b1;
+//       const newXPosition = (((m2*xDisplacement1) - (m1*xDisplacement1) - b1 + b2) + b1 - b2)/(factor*(m2 - m1));
+//       const newYPosition = m1*newXPosition + b1;
 
-      const xTranslation = newXPosition - xDisplacement1;
-      const yTranslation = newYPosition - y1;
+//       const xTranslation = newXPosition - xDisplacement1;
+//       const yTranslation = newYPosition - y1;
 
-      child.style.transform = `translate(${x1 + xTranslation}px, ${y1 - yTranslation}px)`;
-    }
-  }
-}
+//       child.style.transform = `translate(${x1 + xTranslation}px, ${y1 - yTranslation}px)`;
+//     }
+//   }
+// }
 
-grid.addEventListener("wheel", (e) => {
-  zoom(e, 2)
+// grid.addEventListener("wheel", (e) => {
+//   zoom(e, 2)
 
-})
+// })
 
 const loadUML = async (username, projectName) => {
   await fetch("/frontend/loadUML", {
@@ -1069,9 +1203,9 @@ window.addEventListener("DOMContentLoaded", () => {
   loadUML(window.localStorage.getItem("username"), window.localStorage.getItem("projectName"))
 })
 
-const UMLFormat = () => {
+// const UMLFormat = () => {
 
-}
+// }
 
 // SENDING BACK UML INFO TO THE SERVER
 
@@ -1241,11 +1375,15 @@ closeShare.addEventListener("click", (e) => {
     shareModal.close();
 })
 
-grid.addEventListener("contextmenu", (e) => {
-  e.preventDefault();
-  if (MouseEvent.shiftKey) {
-
-  }
-})
-
-grid.addEventListener("s")
+// grid.addEventListener("contextmenu", (e) => {
+//   const xPoint = e.x;
+//   const yPoint = e.y
+//   e.preventDefault();
+//   if (MouseEvent.shiftKey) {
+//     if (Math.sqrt((xPoint - x)**2 + (yPoint - y)**2) <= 20) {
+//       pointIndex = i;
+//       dragging = true;
+//       selectedArrow = arrow;
+//     }
+//   }
+// })
