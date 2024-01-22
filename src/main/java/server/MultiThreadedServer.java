@@ -394,7 +394,7 @@ class MultiThreadedServer {
                         String projectString = request.get(line).split(",")[0];
                         String projectNameValue = projectString.split(":")[1];
                         System.out.println(projectNameValue);
-                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 3);
+                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
                         System.out.println(projectName);
 
                         System.out.println(request.get(line));
