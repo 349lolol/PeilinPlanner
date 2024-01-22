@@ -1252,13 +1252,13 @@ const saveUML = async () => {
         "Content-Type": "application/json"
     },
     body: JSON.stringify({
-        projectName: window.localStorage.getItem("projectName") + "##",
-        diagramCount: diagramID + "##",
-        arrowCount: arrowID + "##",
-        classDiagrams: JSON.stringify(classes) + "##",
-        interfaceDiagrams: JSON.stringify(interfaces) + "##",
-        exceptionDiagrams: JSON.stringify(exceptions) + "##",
-        arrows: JSON.stringify(arrows) + "##"
+        projectName: window.localStorage.getItem("projectName"),
+        diagramCount: diagramID,
+        arrowCount: arrowID,
+        classDiagrams: JSON.stringify(classes),
+        interfaceDiagrams: JSON.stringify(interfaces),
+        exceptionDiagrams: JSON.stringify(exceptions),
+        arrows: JSON.stringify(arrows)
     })
 })
     .then(res => {
