@@ -14,6 +14,8 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import user.User;
 import user.UserBase;
 
@@ -387,6 +389,7 @@ class MultiThreadedServer {
 
                     // SAVING UML
                     else if ((type.equals("POST")) && (url.equals("/frontend/saveUML"))) {
+                        ObjectMapper objectMapper = new ObjectMapper();
                         System.out.println(request);
                         
                         byte[] content;
@@ -397,7 +400,7 @@ class MultiThreadedServer {
                         System.out.println(projectName);
 
                         System.out.println(request.get(line));
-                        projectBase.getProject(projectName).JsonToJava(request.get(line));
+                        projectBase.setProject(projectName, objectMapper.readValue(request.get(line), Project.class));
 
                         System.out.println(projectBase.getProject(projectName).getAllDiagrams());
                     }
