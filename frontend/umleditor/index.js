@@ -745,14 +745,15 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
       xPosition: x,
       yPosition: y,
       width: diagramWidth,
-      height: 223, // change later
+      height: document.querySelector(`#${diagram.id}`).offsetHeight,
       id: diagramID
     }
   }
 
   diagramID++;
 
-  console.log(diagrams.data)
+  console.log("CHAHSD")
+  console.log(document.querySelector(`#${diagram.id}`).offsetHeight)
   diagrams.data.push(diagramInfo)
 }
 
@@ -849,7 +850,7 @@ const snap = () => {
 // }
 document.querySelector("#addclass > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
-   ((grid.offsetHeight - (defaultLineHeight*16*scale))/2), defaultDiagramWidth,
+   ((grid.offsetHeight - (20*11*scale))/2), defaultDiagramWidth,
    "CLASSDIAGRAM")
   
   
@@ -871,7 +872,7 @@ document.querySelector("#addclass > img").addEventListener("click", (e) => {
 })
 document.querySelector("#addinterface > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
-  ((grid.offsetHeight -defaultLineHeight*6*scale)/2), defaultDiagramWidth,
+  ((grid.offsetHeight -20*6*scale)/2), defaultDiagramWidth,
   "INTERFACEDIAGRAM")
 
   // diagrams.data.push({
@@ -890,7 +891,7 @@ document.querySelector("#addinterface > img").addEventListener("click", (e) => {
 })
 document.querySelector("#addabstractclass > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
-  ((grid.offsetHeight - defaultLineHeight*11*scale)/2), defaultDiagramWidth,
+  ((grid.offsetHeight - 20*11*scale)/2), defaultDiagramWidth,
   "ABSTRACTCLASSDIAGRAM")
 
   // diagrams.data.push({
@@ -909,7 +910,7 @@ document.querySelector("#addabstractclass > img").addEventListener("click", (e) 
 })
 document.querySelector("#addexception > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
-  ((grid.offsetHeight - defaultLineHeight*1*scale)/2), defaultDiagramWidth,
+  ((grid.offsetHeight - 20*1*scale)/2), defaultDiagramWidth,
   "EXCEPTIONDIAGRAM")
 
   // diagrams.data.push({
