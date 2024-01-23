@@ -25,6 +25,9 @@ public class ProjectBase {
         isInUse = new HashMap<String, Boolean>();
     }
 
+    public HashMap<String, Project> getProjects() {
+        return projects;
+    }
     /**
      * addProject
      * @param project new project being added

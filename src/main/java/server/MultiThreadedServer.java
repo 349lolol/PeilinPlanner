@@ -211,7 +211,6 @@ class MultiThreadedServer {
 
                     // LOGIN VERIFICATION
                     else if ((type.equals("POST")) && (url.equals("/frontend/verify"))) {
-                        System.out.println(request);
                         byte[] content;
                         String usernameObject = request.get(line).split(",")[0];
                         String usernameValue = usernameObject.split(":")[1];
@@ -245,7 +244,6 @@ class MultiThreadedServer {
 
                     // NEW USER
                     else if ((type.equals("POST")) && (url.equals("/frontend/newUser"))) {
-                        System.out.println(request);
                         byte[] content;
                         String usernameObject = request.get(line).split(",")[0];
                         String usernameValue = usernameObject.split(":")[1];
@@ -279,7 +277,6 @@ class MultiThreadedServer {
 
                     // LOADING PROJECTS IN
                     else if ((type.equals("POST")) && (url.equals("/frontend/loadProjects"))) {
-                        System.out.println(request);
                         // byte[] content = "{\"projectNames\": [ \"PROJECTNAME\", ]}".getBytes(StandardCharsets.UTF_8);
                         byte[] content;
                         StringBuilder stringContent = new StringBuilder();
@@ -321,7 +318,6 @@ class MultiThreadedServer {
                             "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
                         );
 
-                        System.out.println(stringContent.toString());
                         output.write(content);
 
                         output.flush();
@@ -329,7 +325,6 @@ class MultiThreadedServer {
 
                     // CREATING A PROJECT
                     else if ((type.equals("POST")) && (url.equals("/frontend/createProject"))) {
-                        System.out.println(request);
                         byte[] content;
                         String usernameString = request.get(line).split(",")[0];
                         String usernameValue = usernameString.split(":")[1];
@@ -351,11 +346,6 @@ class MultiThreadedServer {
                             content = "{\"valid\": false}".getBytes();
                         }
 
-                        System.out.println(projectBase.getProject(projectName));
-                        System.out.println(userBase.getUser(username).getOwnedProjects());
-
-                        System.out.println(new String(content, StandardCharsets.UTF_8));
-
                         output.write(
                             ("HTTP/1.1 200 OK\r\n" +
                             "Content-Type: application/json\r\n" +
@@ -371,7 +361,6 @@ class MultiThreadedServer {
 
                     // SHARING A PROJECT
                     else if ((type.equals("POST")) && (url.equals("/frontend/shareProject"))) {
-                        System.out.println(request);
                         byte[] content;
                         String projectString = request.get(line).split(",")[0];
                         String projectValue = projectString.split(":")[1];
@@ -406,7 +395,6 @@ class MultiThreadedServer {
 
                     // COLLABORATION
                     else if ((type.equals("POST")) && (url.equals("/frontend/collaborate"))) {
-                        System.out.println(request);
                         byte[] content;
                         String usernameString = request.get(line).split(",")[0];
                         String usernameValue = usernameString.split(":")[1];
@@ -438,7 +426,6 @@ class MultiThreadedServer {
                     // SAVING UML
                     else if ((type.equals("POST")) && (url.equals("/frontend/saveUML"))) {
                         ObjectMapper objectMapper = new ObjectMapper();
-                        System.out.println(request);
                         
                         byte[] content;
                         String projectString = request.get(line).split(",")[0];
@@ -448,11 +435,8 @@ class MultiThreadedServer {
                         Project project = projectBase.getProject(projectName);
                         
                         TypeReference<HashMap<String, String>> typeReference = new TypeReference<HashMap<String,String>>() {};
-                        System.out.println(request.get(line));
                         Map<String, String> jsonMap = objectMapper.readValue(request.get(line), typeReference);
 
-                        System.out.println("\n\n\n");
-                        System.out.println(jsonMap);
 
                         project.setProjectName(projectName);
                         project.setDiagramIdCount(Integer.parseInt(jsonMap.get("diagramCount")));
@@ -461,7 +445,7 @@ class MultiThreadedServer {
                         // GETTING CLASS INFORMATION
 
                         // splitting into individual diagram objects
-                        String[] diagramMapArray = jsonMap.get("diagrams").substring(1, jsonMap.get("arrows").length() - 1).split("\\}\\,\\{");
+                        String[] diagramMapArray = jsonMap.get("diagrams").substring(1, jsonMap.get("diagrams").length() - 1).split("\\}\\,\\{");
                         for (int i = 0; i < diagramMapArray.length; i++) {
                             if (i > 0) {
                                 diagramMapArray[i] = "{" + diagramMapArray[i];
@@ -472,46 +456,51 @@ class MultiThreadedServer {
                             }
                         }
 
-                        for (String diagramObject : diagramMapArray) {
-                            Map<String, String> diagramMap = objectMapper.readValue(diagramObject, typeReference);
-                            List<String> fields;
-                            List<String> methods;
+
+                        for (int i = 0; i < diagramMapArray.length; i++) {
+                            Map<String, String> diagramMap = objectMapper.readValue(diagramMapArray[i], typeReference);
+                            LinkedList<Field> fields = new LinkedList<>();
+                            LinkedList<Method> methods = new LinkedList<>();
                             if (diagramMap.get("fields") != null) {
                                 String fieldsString = diagramMap.get("fields");
                                 String[] fieldsArray = fieldsString.substring(1, fieldsString.length() - 1).split(",");
-                                fields = new LinkedList<>(Arrays.asList(fieldsArray));
+                                fields = Arrays.stream(fieldsArray)
+                                    .map(str -> new Field(str))
+                                    .collect(Collectors.toCollection(LinkedList::new));
                             }
 
                             if (diagramMap.get("methods") != null) {
                                 String methodsString = diagramMap.get("methods");
                                 String[] methodsArray = methodsString.substring(1, methodsString.length() - 1).split(",");
-                                methods = new LinkedList<>(Arrays.asList(methodsArray));
+                                methods = Arrays.stream(methodsArray)
+                                    .map(str -> new Method(str))
+                                    .collect(Collectors.toCollection(LinkedList::new));
                             }
 
                             // class
                             if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
                             && (diagramMap.get("isAbstract").equals("false"))) {
-                                if (project.getDiagram(diagramMap.get("classId")) != null) {
-                                    project.setDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                if (project.getDiagram(Integer.parseInt(diagramMap.get("classId"))) != null) {
+                                    project.updateDiagram(Integer.parseInt(diagramMap.get("classId")), new ClassDiagram(
                                         diagramMap.get("className"),
                                         false,
                                         fields,
                                         methods,
-                                        diagramMap.get("xPosition"),
-                                        diagramMap.get("yPosition"),
-                                        diagramMap.get("xSize"),
-                                        diagramMap.get("ySize")
+                                        (int) Double.parseDouble(diagramMap.get("xPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("yPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("xSize")),
+                                        (int) Double.parseDouble(diagramMap.get("ySize"))
                                     ));
                                 } else {
-                                    project.addDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                    project.addDiagram(new ClassDiagram(
                                         diagramMap.get("className"),
                                         false,
                                         fields,
                                         methods,
-                                        diagramMap.get("xPosition"),
-                                        diagramMap.get("yPosition"),
-                                        diagramMap.get("xSize"),
-                                        diagramMap.get("ySize")
+                                        (int) Double.parseDouble(diagramMap.get("xPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("yPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("xSize")),
+                                        (int) Double.parseDouble(diagramMap.get("ySize"))
                                     ));
                                 }
 
@@ -519,76 +508,71 @@ class MultiThreadedServer {
                             // abstract class
                             } else if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
                             && (diagramMap.get("isAbstract").equals("true"))) {
-                                if (project.getDiagram(diagramMap.get("classId"), diagramMap.get("classId")) != null) {
-                                    project.setDiagram(new ClassDiagram(
+                                if (project.getDiagram(Integer.parseInt(diagramMap.get("classId"))) != null) {
+                                    project.updateDiagram(Integer.parseInt(diagramMap.get("classId")), new ClassDiagram(
                                         diagramMap.get("className"),
                                         true,
                                         fields,
                                         methods,
-                                        diagramMap.get("xPosition"),
-                                        diagramMap.get("yPosition"),
-                                        diagramMap.get("xSize"),
-                                        diagramMap.get("ySize")
+                                        (int) Double.parseDouble(diagramMap.get("xPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("yPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("xSize")),
+                                        (int) Double.parseDouble(diagramMap.get("ySize"))
                                     ));
                                 } else {
-                                    project.addDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                    project.addDiagram(new ClassDiagram(
                                         diagramMap.get("className"),
                                         true,
                                         fields,
                                         methods,
-                                        diagramMap.get("xPosition"),
-                                        diagramMap.get("yPosition"),
-                                        diagramMap.get("xSize"),
-                                        diagramMap.get("ySize")
+                                        (int) Double.parseDouble(diagramMap.get("xPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("yPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("xSize")),
+                                        (int) Double.parseDouble(diagramMap.get("ySize"))
                                     ));
                                 }
                             // interface
                             } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") != null)) {
-                                if (project.getDiagram(diagramMap.get("classId")) != null) {
-                                    project.setDiagram(diagramMap.get("classId"), new InterfaceDiagram(
+                                if (project.getDiagram(Integer.parseInt(diagramMap.get("classId"))) != null) {
+                                    project.updateDiagram(Integer.parseInt(diagramMap.get("classId")), new InterfaceDiagram(
                                         diagramMap.get("className"),
                                         methods,
-                                        diagramMap.get("xPosition"),
-                                        diagramMap.get("yPosition"),
-                                        diagramMap.get("xSize"),
-                                        diagramMap.get("ySize")
+                                        (int) Double.parseDouble(diagramMap.get("xPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("yPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("xSize")),
+                                        (int) Double.parseDouble(diagramMap.get("ySize"))
                                     ));
                                 } else {
-                                    project.addDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                    project.addDiagram(new InterfaceDiagram(
                                         diagramMap.get("className"),
                                         methods,
-                                        diagramMap.get("xPosition"),
-                                        diagramMap.get("yPosition"),
-                                        diagramMap.get("xSize"),
-                                        diagramMap.get("ySize")
+                                        (int) Double.parseDouble(diagramMap.get("xPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("yPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("xSize")),
+                                        (int) Double.parseDouble(diagramMap.get("ySize"))
                                     ));
                                 }
                             // exception
                             } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") == null)) {
-                                if (project.getDiagram(diagramMap.get("classId")) != null) {
-                                    project.setDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                if (project.getDiagram(Integer.parseInt(diagramMap.get("classId"))) != null) {
+                                    project.updateDiagram(Integer.parseInt(diagramMap.get("classId")), new ExceptionDiagram(
                                         diagramMap.get("className"),
-                                        diagramMap.get("xPosition"),
-                                        diagramMap.get("yPosition"),
-                                        diagramMap.get("xSize"),
-                                        diagramMap.get("ySize")
+                                        (int) Double.parseDouble(diagramMap.get("xPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("yPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("xSize")),
+                                        (int) Double.parseDouble(diagramMap.get("ySize"))
                                     ));
                                 } else {
-                                    project.addDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                    project.addDiagram(new ExceptionDiagram(
                                         diagramMap.get("className"),
-                                        diagramMap.get("xPosition"),
-                                        diagramMap.get("yPosition"),
-                                        diagramMap.get("xSize"),
-                                        diagramMap.get("ySize")
+                                        (int) Double.parseDouble(diagramMap.get("xPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("yPosition")),
+                                        (int) Double.parseDouble(diagramMap.get("xSize")),
+                                        (int) Double.parseDouble(diagramMap.get("ySize"))
                                     ));
                                 }
                             }
                         }
-                        System.out.println("\n e");
-                        System.out.println(Arrays.toString(diagramMapArray));
-
-
-
 
                         // GETTING ARROW INFORMATION
 
@@ -609,49 +593,82 @@ class MultiThreadedServer {
 
                             String xPointsString = arrowMap.get("xPoints");
                             String[] xPointsArray = xPointsString.substring(1, xPointsString.length() - 1).split(",");
-                            List<Integer> xPoints = Arrays.stream(xPointsArray)
-                                .mapToInt(Integer::parseInt)
+                            ArrayList<Integer> xPoints = Arrays.stream(xPointsArray)
+                                .mapToDouble(Double::parseDouble)
+                                .mapToInt(d -> (int) d)
                                 .boxed()
-                                .collect(Collectors.toList());
+                                .collect(Collectors.toCollection(ArrayList::new));
 
                             String yPointsString = arrowMap.get("yPoints");
                             String[] yPointsArray = yPointsString.substring(1, yPointsString.length() - 1).split(",");
-                            List<Integer> yPoints = Arrays.stream(yPointsArray)
-                                .mapToInt(Integer::parseInt)
+                            ArrayList<Integer> yPoints = Arrays.stream(yPointsArray)
+                                .mapToDouble(Double::parseDouble)
+                                .mapToInt(d -> (int) d)
                                 .boxed()
-                                .collect(Collectors.toList());
+                                .collect(Collectors.toCollection(ArrayList::new));
 
-                            Arrow arrow = new Arrow(
-                                project.getAllDiagrams().ge,
-                                arrowMap.get("destination"),
-                                arrowMap.get("type"),
-                                xPoints,
-                                yPoints
-                            );
-                            project.addArrow();
+
+                            Diagram origin;
+                            Diagram destination;
+                            if (arrowMap.get("origin") != null) {
+                                origin = project.getDiagram(Integer.parseInt(arrowMap.get("origin")));
+                            } else {
+                                origin = null;
+                            }
+
+                            if (arrowMap.get("destination") != null) {
+                                destination = project.getDiagram(Integer.parseInt(arrowMap.get("destination")));
+                            } else {
+                                destination = null;
+                            }
+
+                            if (project.getArrow(Integer.parseInt(arrowMap.get("arrowId"))) != null) {
+                                project.updateArrow(Integer.parseInt(arrowMap.get("arrowId")), new Arrow(
+                                    origin,
+                                    destination,
+                                    "\"" + arrowMap.get("arrowType") + "\"",
+                                    xPoints,
+                                    yPoints
+                                ));
+                            } else {
+                                project.addArrow(Integer.parseInt(arrowMap.get("arrowId")), new Arrow(
+                                    origin,
+                                    destination,
+                                    "\"" + arrowMap.get("arrowType") + "\"",
+                                    xPoints,
+                                    yPoints
+                                ));
+                            }
+
                         }
 
 
-                        
+                        content = "{\"valid\": true}".getBytes();
+
+                        output.write(
+                            ("HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: application/json\r\n" +
+                            "Vary: Accept-Encoding\r\n" +
+                            "Accept-Ranges: none\r\n" +
+                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
+                        );
+
+                        output.write(content);
+
+                        output.flush();
 
                     }
 
                     // LOADING UML
                     else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
-                        System.out.println("HI");
-                        System.out.println(request);
                         byte[] content;
                         String usernameString = request.get(line).split(",")[0];
                         String usernameValue = usernameString.split(":")[1];
-                        System.out.println(usernameValue);
                         String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 2);
 
                         String projectString = request.get(line).split(",")[1];
                         String projectNameValue = projectString.split(":")[1];
-                        System.out.println(projectNameValue);
                         String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
-
-                        System.out.println(projectBase.getProject(projectName).javaToJson());
 
                         content = projectBase.getProject(projectName).javaToJson().getBytes();
 

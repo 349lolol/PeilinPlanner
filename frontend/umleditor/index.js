@@ -31,7 +31,6 @@ const lineDraw = (ax, ay, bx, by, type, id, arrow) => {
   const degree = calc * 180 / Math.PI;
 
   const line = document.createElement('div');
-  console.log(id)
   line.classList.add(`--${id}`)
 
   if (type === "COMPOSITION" || type === "INHERITANCE") {
@@ -72,7 +71,6 @@ const lineDraw = (ax, ay, bx, by, type, id, arrow) => {
     const arrowSegments = document.querySelectorAll(`#arrows > .${arrowID}`);
     
     for (let i = 0; i < arrowSegments.length; i++) {
-      console.log(arrowSegments)
       arrowSegments[i].remove();
     }
 
@@ -85,8 +83,6 @@ const lineDraw = (ax, ay, bx, by, type, id, arrow) => {
 
 
     arrowData.splice(arrowID.slice(2), 1)
-
-    // console.dir(childArrows)
     
     drawArrows(arrowData)
   })
@@ -125,30 +121,11 @@ const pointDraw = (x, y, id, arrow) => {
       arrowSegments[i].remove();
     }
 
-    // arrowData.splice(arrowID.slice(2), 1)
-
     const index = arrowData.indexOf(arrow);
   
     if (index !== -1) {
       arrowData.splice(index, 1);
     }
-
-
-    // const childArrows = document.querySelector("#arrows >").children;
-
-    // console.log(arrowData)
-    // console.log(arrowID.slice(2))
-
-    // console.log(childArrows)
-
-    // childArrows
-
-    // for (let i = 0; i < childArrows.length; i++) {
-    //   if (chi)
-    //   childArrows[0].remove();
-    // }
-
-    // console.dir(childArrows)
 
     arrowData.splice(arrowID.slice(2), 1)
 
@@ -344,10 +321,10 @@ const addArrow = (arrowData, vertices, type) => {
   drawArrows(arrowData);
 }
 
-const loadArrow = (xPoints, yPoints, origin, destination, type) => {
+const loadArrow = (xPointsArr, yPointsArr, origin, destination, type) => {
   arrowData.push({
-    xPoints: [...xPoints],
-    yPoints: [...yPoints],
+    xPoints: xPointsArr.slice(),
+    yPoints: yPointsArr.slice(),
     origin: origin,
     destination: destination,
     type: type,
@@ -437,52 +414,6 @@ grid.addEventListener("mousemove", (e) => {
 
 grid.addEventListener('mouseup', (e) => {
 
-  // const data = {
-  //   arrow: arrowID,
-  //   arrowPointIndex: pointIndex,
-  //   newX: arrowData[arrowID].xPoints[pointIndex],
-  //   newY: arrowData[arrowID].yPoints[pointIndex],
-  // }
-
-  // axios.post("SERVERURL", data)
-  // .then(res => {
-
-  // })
-  // .catch(err => {
-  //   console.log("ERROR SAVING DATA")
-  // })
-
-
-//   let diagrams = axios.get("SERVERURL")
-// const diagramsData = diagrams.data;
-
-// let diagram = {
-//   external: {
-//     type: "class",
-//     xPosition: 750,
-//     yPosition: 250,
-//     width: 164,
-//     height: 190,
-//   }
-// }
-
-// diagrams = {
-//   data: [
-//     diagram = {
-//       external: {
-//         type: "class",
-//         xPosition: 750,
-//         yPosition: 250,
-//         width: 164,
-//         height: 190,
-//       },
-//       internal: {
-
-//       }
-//     }
-//   ]
-// }
-
 // ARROW DIAGRAM INTERACTION
 
   const finalX = selectedArrow.xPoints[pointIndex];
@@ -490,18 +421,11 @@ grid.addEventListener('mouseup', (e) => {
 
   const previousX = selectedArrow.xPoints[pointIndex - 1];
   const previousY = selectedArrow.yPoints[pointIndex - 1];
-
-  for (let i = 0; i < selectedArrow.xPoints.length; i++) {
-    console.log(`(${selectedArrow.xPoints[i]},${selectedArrow.yPoints[i]})`)
-  }
   
   for (let diagram of diagrams.data) {
     const externalInfo = diagram.external;
 
     if ((pointIndex === selectedArrow.xPoints.length - 1) && (selectedArrow.destination === null)) {
-      // console.log(externalInfo.xPosition, externalInfo.xPosition + externalInfo.width, externalInfo.yPosition, externalInfo.yPosition + externalInfo.height)
-      // console.log(finalX, finalY)
-      // console.log(finalX >= externalInfo.xPosition, finalX <= externalInfo.xPosition + externalInfo.width, finalY >= externalInfo.yPosition, finalY <= externalInfo.yPosition + externalInfo.height)
       if (((finalX >= externalInfo.xPosition) && (finalX <= externalInfo.xPosition + externalInfo.width)) && 
       ((finalY >= externalInfo.yPosition) && (finalY <= externalInfo.yPosition + externalInfo.height))) {
         
@@ -533,31 +457,18 @@ grid.addEventListener('mouseup', (e) => {
 
         for (let i = 0; i < arrowData.length; i++) {
           const currentArrowData = arrowData[i];
-          console.log(currentArrowData)
-          
-          console.log("cheese", currentArrowData.destination, externalInfo.id)
 
           if (currentArrowData.destination === externalInfo.id) {
             for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
               const childArrow = childArrows[0];
-              console.log("be", currentArrowData)
               childArrow.remove();
             }
           }
         }
 
-        // for (let childArrow in childArrows) {
-        //   console.log(childArrow)
-        //   if ("--" + selectedArrow.id === childArrow.classList.item(0)) {
-        //     childArrow.remove();
-        //   }
-        // }
         drawArrows(arrowData)
       }
     } else if ((pointIndex === 0) && (selectedArrow.origin === null)) {
-      // console.log(externalInfo.xPosition, externalInfo.xPosition + externalInfo.width, externalInfo.yPosition, externalInfo.yPosition + externalInfo.height)
-      // console.log(finalX, finalY)
-      // console.log(finalX >= externalInfo.xPosition, finalX <= externalInfo.xPosition + externalInfo.width, finalY >= externalInfo.yPosition, finalY <= externalInfo.yPosition + externalInfo.height)
       if (((finalX >= externalInfo.xPosition) && (finalX <= externalInfo.xPosition + externalInfo.width)) && 
       ((finalY >= externalInfo.yPosition) && (finalY <= externalInfo.yPosition + externalInfo.height))) {
         
@@ -593,7 +504,6 @@ grid.addEventListener('mouseup', (e) => {
           if (currentArrowData.origin === externalInfo.id) {
             for (let j = 0; j < (2 * currentArrowData.xPoints.length) - 1; j++) {
               const childArrow = childArrows[0];
-              console.log(childArrow)
               childArrow.remove()
             }
           }
@@ -601,10 +511,6 @@ grid.addEventListener('mouseup', (e) => {
         drawArrows(arrowData)
       }
     }
-  }
-
-  for (let arrow of arrowData) {
-    console.log("ia",arrow)
   }
 
   dragging = false;
@@ -838,8 +744,6 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
 
   diagramID++;
 
-  console.log("CHAHSD")
-  console.log(document.querySelector(`#${diagram.id}`).offsetHeight)
   diagrams.data.push(diagramInfo)
 
   diagram.addEventListener("contextmenu", (e) => {
@@ -953,7 +857,7 @@ const loadUML = async (username, projectName) => {
       .then(res => {
 
 
-        for (let classDiagram in res.classDiagram) {
+        for (let classDiagram of res.classDiagrams) {
 
           let fieldsText = "";
           for (let field of classDiagram.fields) {
@@ -966,49 +870,45 @@ const loadUML = async (username, projectName) => {
           }
 
           if (!classDiagram.isAbstract) {
-            addDiagram(classDiagram.xPosition, classDiagram.yPosition, classDiagram.width, "CLASS", classDiagram.name,
+            addDiagram(diagrams, classDiagram.xPosition, classDiagram.yPosition, classDiagram.width, "CLASSDIAGRAM", classDiagram.name,
              methodsText, fieldsText)
           } else {
-            addDiagram(classDiagram.xPosition, classDiagram.yPosition, classDiagram.width, "ABSTRACTCLASS", classDiagram.name,
+            addDiagram(diagrams, classDiagram.xPosition, classDiagram.yPosition, classDiagram.width, "ABSTRACTCLASSDIAGRAM", classDiagram.name,
             methodsText, fieldsText)
           }
         }
 
-        for (let interfaceDiagram in res.interfaceDiagrams) {
+        for (let interfaceDiagram of res.interfaceDiagrams) {
 
           let methodsText = "";
           for (let method of interfaceDiagram.methods) {
             methodsText += method + "\n";
           }
 
-          addDiagram(interfaceDiagram.xPosition, interfaceDiagram.yPosition, interfaceDiagram.width, "INTERFACE", interfaceDiagram.name,
-             fieldsText)
+          addDiagram(diagrams, interfaceDiagram.xPosition, interfaceDiagram.yPosition, interfaceDiagram.width, "INTERFACEDIAGRAM", interfaceDiagram.name,
+          methodsText)
         }
         
-        for (let exceptionDiagram in res.exceptionDiagrams) {
+        for (let exceptionDiagram of res.exceptionDiagrams) {
 
-          addDiagram(exceptionDiagram.xPosition, exceptionDiagram.yPosition, exceptionDiagram.width, "EXCEPTION", exceptionDiagram.name)
+          addDiagram(diagrams, exceptionDiagram.xPosition, exceptionDiagram.yPosition, exceptionDiagram.width, "EXCEPTIONDIAGRAM", exceptionDiagram.name)
         }
 
         for (let arrow of res.arrows) {
-          loadArrow(arrow.xPoints, arrow.yPoints, arrow.origin, arrow.destination, arrow.type);
+          loadArrow(arrow.xPoints, arrow.yPoints, arrow.origin, arrow.destination, arrow.arrowType);
         }
 
       })
       .catch(err => {
         console.log(err)
           console.log("ERROR RETRIEVING USER DATA")
-          // window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+          window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
       })
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   loadUML(window.localStorage.getItem("username"), window.localStorage.getItem("projectName"))
 })
-
-// const UMLFormat = () => {
-
-// }
 
 // SENDING BACK UML INFO TO THE SERVER
 
@@ -1102,10 +1002,8 @@ const saveUML = async () => {
         return res.json();
     })
     .then(res => {
-      console.log(res)
     })
     .catch(err => {
-      console.log(err)
     })
 }
 
@@ -1125,7 +1023,6 @@ const share = async (projectName, sharee) => {
         return res.json();
     })
     .then(res => {
-       console.log(res)
        if (!res.valid) {
          document.querySelector("#incorrect").style.display = "flex";
          document.querySelector("#warning").style.display = "flex";
@@ -1143,8 +1040,6 @@ const share = async (projectName, sharee) => {
 
 document.querySelector("#menu > form:nth-of-type(1)").addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log(diagrams.data);
-  console.log(e)
   saveUML();
 })
 
@@ -1175,22 +1070,9 @@ const closeShare = document.querySelector("#shareModal .close")
 closeShare.addEventListener("click", (e) => {
     document.querySelector("#incorrect").style.display = "flex";
     document.querySelector("#warning").style.display = "flex";
-    console.log(e);
     shareModal.close();
 })
 
-// grid.addEventListener("contextmenu", (e) => {
-//   const xPoint = e.x;
-//   const yPoint = e.y
-//   e.preventDefault();
-//   if (MouseEvent.shiftKey) {
-//     if (Math.sqrt((xPoint - x)**2 + (yPoint - y)**2) <= 20) {
-//       pointIndex = i;
-//       dragging = true;
-//       selectedArrow = arrow;
-//     }
-//   }
-// })
 
 grid.addEventListener("contextmenu", (e) => {
   e.preventDefault();

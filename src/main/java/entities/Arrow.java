@@ -60,11 +60,11 @@ public class Arrow {
     }
 
     public String toJson() {
-        String data = "\"origin\": " + origin + ", ";
+        String data = "{ \"origin\": " + origin + ", ";
         data = data + "\"destination\": " + destination + ", ";
         data = data + "\"arrowType\": " + arrowType + ", ";
         data = data + "\"xPoints\": " + arrayListToJson(xPoints) + ", ";
-        data = data + "\"yPoints\": " + arrayListToJson(yPoints);
+        data = data + "\"yPoints\": " + arrayListToJson(yPoints) + "}";
         return data;
     }
 
@@ -77,7 +77,7 @@ public class Arrow {
     private String arrayListToJson(ArrayList<Integer> points) {
         String data = "[";
         for(int i = 0; i < points.size(); i++) {
-            data = data + points + ", ";
+            data = data + points.get(i) + ", ";
         }
         data = data.substring(0, data.length()-2);
         data = data + "]";

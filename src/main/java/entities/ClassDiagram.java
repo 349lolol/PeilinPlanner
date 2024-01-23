@@ -40,14 +40,15 @@ public class ClassDiagram extends Diagram {
      * @return a string rep of the json
      */
     public String toJson(){
-        String data = "\"name\": " + getName() + ", ";
+        String data = "{\"name\": \"" + getName() + "\", ";
         data = data + "\"xPosition\": " + super.getXPosition() + ", ";
         data = data + "\"yPosition\": " + super.getYPosition() + ", ";
         data = data + "\"xSize\": " + super.getXSize() + ", ";
         data = data + "\"ySize\": " + super.getYSize() + ", ";
         data = data + "\"isAbstract\": " + this.isAbstract + ", ";
         data = data + "\"fields\": " + fieldsToJson(this.fields) + ", ";
-        data = data + "\"methods\": " + methodsToJson(this.methods);
+        data = data + "\"methods\": " + methodsToJson(this.methods) + "}";
+
         return data;
     }
 
@@ -60,13 +61,15 @@ public class ClassDiagram extends Diagram {
     private String methodsToJson(LinkedList<Method> points) {
         String data = "[";
         for(int i = 0; i < points.size(); i++) {
-            data = data + points + ", ";
+            data = data + points.get(i).getData()  + ", ";
         }
         data = data.substring(0, data.length()-2);
         data = data + "]";
+
+
         return data;
     }
-
+    
     /**
      * methodsToJson
      * converts field linkedlist to string representation
@@ -76,7 +79,7 @@ public class ClassDiagram extends Diagram {
     private String fieldsToJson(LinkedList<Field> points) {
         String data = "[";
         for(int i = 0; i < points.size(); i++) {
-            data = data + points + ", ";
+            data = data + points.get(i).getData() + ", ";
         }
         data = data.substring(0, data.length()-2);
         data = data + "]";

@@ -29,11 +29,11 @@ public class ExceptionDiagram extends Diagram {
      * @return
      */
     public String toJson(){
-        String data = "\"name\": " + getName() + ", ";
+        String data = "{\"name\": \"" + getName() + "\", ";
         data = data + "\"xPosition\": " + super.getXPosition() + ", ";
         data = data + "\"yPosition\": " + super.getYPosition() + ", ";
         data = data + "\"xSize\": " + super.getXSize() + ", ";
-        data = data + "\"ySize\": " + super.getYSize();
+        data = data + "\"ySize\": " + super.getYSize() + "}";
         return data;
     }
 

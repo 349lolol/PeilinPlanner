@@ -64,7 +64,6 @@ document.querySelector("#create > button").addEventListener("click", (e) => {
 })
 
 closeCreate.addEventListener("click", (e) => {
-    console.log(e)
     createModal.close();
 })
 
@@ -78,7 +77,6 @@ document.querySelector("#collaborate > button").addEventListener("click", (e) =>
 })
 
 closeCollaborate.addEventListener("click", (e) => {
-    console.log(e)
     collaborateModal.close();
 })
 
@@ -164,7 +162,6 @@ const collaborate = async (username, projectName) => {
             return res.json();
         })
         .then(res => {
-           console.log(res)
            if (res.valid) {
             window.localStorage.setItem("projectName", projectName)
             window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
@@ -191,14 +188,8 @@ collaborateForm.addEventListener("submit", (e) => {
 const addProjectListeners = () => {
     const projects = document.querySelectorAll(".project")
     projects.forEach(project => project.addEventListener("click", (e) => {
-        console.log(e)
-
-
-
-        projectsList.push(e.target.parentNode.id)
                     
         window.localStorage.setItem("projectName", e.target.parentNode.id);
-        window.localStorage.setItem("projectsList", projectsList);
         window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
     }))
 }

@@ -46,7 +46,6 @@ public class Project {
     }
 
     public String[] splitUML(String data) {
-        System.out.println("\n\n\n\n");
         int layersDeep = 0;
         int linesCount = 2;
         for(int i = 3; i < data.length(); i++){
@@ -74,16 +73,8 @@ public class Project {
             else if((data.charAt(i) == ',') && (layersDeep < 2)) {
                 lines[linesIndex] = data.substring(lastRecordedEnter, i + 1);
                 lastRecordedEnter = i + 1;
-                System.out.println(lines[linesIndex]);
                 
             }
-        }
-        //
-        //bug test
-        
-        System.out.println("\n\n\n");
-        for(int i = 0; i < lines.length; i++) {
-            System.out.println(lines[i]);
         }
         return lines;
     }
@@ -103,8 +94,7 @@ public class Project {
      * @param data the json string being converted
      */
     public void JsonToJava(String data) {
-        System.out.println(data);
-        
+
         // data = data.replace("\\", "");
         // String[] lines = data.split("##\",");
         // for (int i = 0; i < lines.length; i++) {
@@ -432,36 +422,53 @@ public class Project {
     }
 
     public String javaToJson() {
-        String data = "{" + "\"ProjectName\": \""  + this.projectName + "\", ";
-        data = data + "\"diagramIdCount\": "  + this.diagramIdCount + ", ";
-        data = data + "\"arrowIdCount\": "  + this.arrowIdCount + ", ";
-        data = data + "\"classDiagrams\": [";
-        for(int i = 0; i < diagramIdCount; i++) {
-            if(diagrams.get(i) instanceof ClassDiagram) {
-                data = data + ((ClassDiagram)diagrams.get(i)).toJson() + ", ";
+        String data = "{" + "\"ProjectName\":\""  + this.projectName + "\",";
+        data = data + "\"diagramIdCount\":"  + this.diagramIdCount + ",";
+        data = data + "\"arrowIdCount\":"  + this.arrowIdCount + ",";
+        data = data + "\"classDiagrams\":[";
+        for(int i = 1; i < diagramIdCount + 1; i++) {
+            System.out.println(this.diagrams);
+            if(this.diagrams.get(i) instanceof ClassDiagram) {
+                data = data + ((ClassDiagram)this.diagrams.get(i)).toJson();
+
+                if (i != diagramIdCount) {
+                    data = data + ",";
+                }
             }
         }
         data = data.substring(0, data.length());
-        data = data + "], ";
-        data = data + "\"interfaceDiagrams\": [";
-        for(int i = 0; i < diagramIdCount; i++) {
-            if(diagrams.get(i) instanceof InterfaceDiagram) {
-                data = data + ((InterfaceDiagram)diagrams.get(i)).toJson() + ", ";
+        data = data + "],";
+        data = data + "\"interfaceDiagrams\":[";
+        for(int i = 1; i < diagramIdCount + 1; i++) {
+            if(this.diagrams.get(i) instanceof InterfaceDiagram) {
+                data = data + ((InterfaceDiagram)this.diagrams.get(i)).toJson();
+                
+                if (i != diagramIdCount) {
+                    data = data + ",";
+                }
             }
         }
         data = data.substring(0, data.length());
-        data = data + "], ";
-        data = data + "\"exceptionDiagrams\": [";
-        for(int i = 0; i < diagramIdCount; i++) {
-            if(diagrams.get(i) instanceof ExceptionDiagram) {
-                data = data + ((ExceptionDiagram)diagrams.get(i)).toJson() + ", ";
+        data = data + "],";
+        data = data + "\"exceptionDiagrams\":[";
+        for(int i = 1; i < diagramIdCount + 1; i++) {
+            if(this.diagrams.get(i) instanceof ExceptionDiagram) {
+                data = data + "{" + ((ExceptionDiagram)this.diagrams.get(i)).toJson();
+
+                if (i != diagramIdCount) {
+                    data = data + ",";
+                }
             }
         }
         data = data.substring(0, data.length());
-        data = data + "], ";
-        data = data + "\"arrows\": [";
+        data = data + "],";
+        data = data + "\"arrows\":[";
         for(int i = 0; i < arrowIdCount; i++) {
-            data = data + arrows.get(i).toJson() + ", ";
+            data = data + this.arrows.get(i).toJson();
+
+            if (i != arrowIdCount - 1) {
+                data = data + ",";
+            }
         }
         data = data.substring(0, data.length());
         data = data + "]}";
@@ -492,7 +499,6 @@ public class Project {
      */
     public void addDiagram(Diagram diagram) {   
         diagrams.put(diagramIdCount, diagram);
-        diagramIdCount++;
     }
 
     /**
@@ -527,7 +533,7 @@ public class Project {
      */
     public LinkedList<Diagram> getAllDiagrams() {
         LinkedList<Diagram> allDiagrams = new LinkedList<Diagram>();
-        for(int i = 0; i < diagramIdCount; i++) {
+        for(int i = 0; i < diagramIdCount + 1; i++) {
             if(getDiagram(i) != null) {
                 allDiagrams.add(getDiagram(i));
             }
@@ -540,9 +546,8 @@ public class Project {
      * adds an arrow to the system
      * @param arrow arrow being added
      */
-    public void addArrow(Arrow arrow) {
-        arrows.put(arrowIdCount, arrow);
-        arrowIdCount++;
+    public void addArrow(int id, Arrow arrow) {
+        arrows.put(id, arrow);
     }
 
     /**
@@ -557,7 +562,7 @@ public class Project {
 
     public LinkedList<Arrow> getAllArrows() {
         LinkedList<Arrow> allArrows = new LinkedList<Arrow>();
-        for(int i = 0; i < arrowIdCount; i++) {
+        for(int i = 0; i < arrowIdCount + 1; i++) {
             if(getArrow(i) != null) {
                 allArrows.add(getArrow(i));
             }
