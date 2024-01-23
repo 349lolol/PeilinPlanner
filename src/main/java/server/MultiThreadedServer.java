@@ -14,12 +14,14 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import user.User;
 import user.UserBase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,77 +45,77 @@ class MultiThreadedServer {
      */
     public static void main(String[] args) throws Exception { 
 
-        try
-        {   
-            // Reading the object from a file
-            FileInputStream file = new FileInputStream("./userStorage.txt");
-            ObjectInputStream in = new ObjectInputStream(file);
+        // try
+        // {   
+        //     // Reading the object from a file
+        //     FileInputStream file = new FileInputStream("./userStorage.txt");
+        //     ObjectInputStream in = new ObjectInputStream(file);
              
-            // Method for deserialization of object
-            userBase = (UserBase)in.readObject();
-            in.close();
-            file.close();
-        }
-        catch(IOException e)
-        {
-            System.out.println("Error deserializing");
-        }
-        try
-        {   
-            // Reading the object from a file
-            File folder = new File("./server/umlStorage/");
-            File[] listOfFiles = folder.listFiles();
+        //     // Method for deserialization of object
+        //     userBase = (UserBase)in.readObject();
+        //     in.close();
+        //     file.close();
+        // }
+        // catch(IOException e)
+        // {
+        //     System.out.println("Error deserializing");
+        // }
+        // try
+        // {   
+        //     // Reading the object from a file
+        //     File folder = new File("./server/umlStorage/");
+        //     File[] listOfFiles = folder.listFiles();
 
-            for (File file : listOfFiles) {
-                if (file.isFile()) {
-                    BufferedReader UMLReader = new BufferedReader(new FileReader(file));
-                    projectBase.addProject(file.getName());
-                    projectBase.getProject(file.getName()).JsonToJava(UMLReader.readLine());
-                    UMLReader.close();
-                }
-            }
-        }
-        catch(IOException exception)
-        {
-            System.out.println("Error reading in UML diagrams");
-        }
+        //     for (File file : listOfFiles) {
+        //         if (file.isFile()) {
+        //             BufferedReader UMLReader = new BufferedReader(new FileReader(file));
+        //             projectBase.addProject(file.getName());
+        //             projectBase.getProject(file.getName()).JsonToJava(UMLReader.readLine());
+        //             UMLReader.close();
+        //         }
+        //     }
+        // }
+        // catch(IOException exception)
+        // {
+        //     System.out.println("Error reading in UML diagrams");
+        // }
 
         MultiThreadedServer server = new MultiThreadedServer();
         MultiThreadedServer.assets = new Assets();
         server.go();
 
-        try
-        {   
-            //Saving of object in a file
-            FileOutputStream file = new FileOutputStream("./userStorage.txt");
-            ObjectOutputStream out = new ObjectOutputStream(file);
+        // try
+        // {   
+        //     //Saving of object in a file
+        //     FileOutputStream file = new FileOutputStream("./userStorage.txt");
+        //     ObjectOutputStream out = new ObjectOutputStream(file);
              
-            // Method for serialization of object
-            out.writeObject(userBase);
+        //     // Method for serialization of object
+        //     out.writeObject(userBase);
              
-            out.close();
-            file.close();
-        }
-        catch(IOException ex)
-        {
-            System.out.println("Error serializing");
-        }
+        //     out.close();
+        //     file.close();
+        // }
+        // catch(IOException ex)
+        // {
+        //     System.out.println("Error serializing");
+        // }
 
-        try
-        {   
-            Set<String> keys = projectBase.getAllKeys();
-            // Reading the object from a file
-            for(String key : keys) {
-                File UMLSave = new File("./server/umlStorage/" + projectBase.getProject(key));
-                PrintWriter UMLWriter = new PrintWriter(UMLSave);
-                UMLWriter.print(projectBase.getProject(key).toString());
-                UMLWriter.close();
-            }
-        }
-        catch(IOException exception)
-        {
-            System.out.println("Error printing UML diagrams");
-        }
+        // try
+        // {   
+        //     Set<String> keys = projectBase.getAllKeys();
+        //     // Reading the object from a file
+        //     for(String key : keys) {
+        //         File UMLSave = new File("./server/umlStorage/" + projectBase.getProject(key));
+        //         PrintWriter UMLWriter = new PrintWriter(UMLSave);
+        //         UMLWriter.print(projectBase.getProject(key).toString());
+        //         UMLWriter.close();
+        //     }
+        // }
+        // catch(IOException exception)
+        // {
+        //     System.out.println("Error printing UML diagrams");
+        // }
     }
     
     public void go() throws Exception { 
@@ -439,14 +441,21 @@ class MultiThreadedServer {
                         byte[] content;
                         String projectString = request.get(line).split(",")[0];
                         String projectNameValue = projectString.split(":")[1];
-                        System.out.println(projectNameValue);
                         String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
-                        System.out.println(projectName);
 
+                        Project project = projectBase.getProject(projectName);
+                        
+                        TypeReference<HashMap<String, String>> typeReference = new TypeReference<HashMap<String,String>>() {};
                         System.out.println(request.get(line));
-                        projectBase.setProject(projectName, objectMapper.readValue(request.get(line), Project.class));
+                        Map<String, String> jsonMap = objectMapper.readValue(request.get(line), typeReference);
 
-                        System.out.println(projectBase.getProject(projectName).getAllDiagrams().get(0));
+                        System.out.println("\n\n\n");
+                        System.out.println(jsonMap);
+
+                        project
+
+                        
+
                     }
 
                     // LOADING UML

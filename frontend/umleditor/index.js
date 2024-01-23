@@ -1028,8 +1028,8 @@ const saveUML = async () => {
         xSize: diagram.external.width,
         ySize: diagram.external.height,
         isAbstract: false,
-        fields: [...document.querySelector(`#diagram${diagram.external.id} > .fields`).value.split("\n")],
-        methods: [...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")]
+        fields: JSON.stringify([...document.querySelector(`#diagram${diagram.external.id} > .fields`).value.split("\n")]),
+        methods: JSON.stringify([...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")])
       })
     } else if (diagram.external.type === "ABSTRACTCLASSDIAGRAM") {
       
@@ -1041,29 +1041,32 @@ const saveUML = async () => {
         xSize: diagram.external.width,
         ySize: diagram.external.height,
         isAbstract: true,
-        fields: [...document.querySelector(`#diagram${diagram.external.id} > .fields`).textContent.split("\n")],
-        methods: [...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")]
+        fields: JSON.stringify([...document.querySelector(`#diagram${diagram.external.id} > .fields`).textContent.split("\n")]),
+        methods: JSON.stringify([...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")])
       })
     } else if (diagram.external.type === "INTERFACEDIAGRAM") {
       
-      interfaces.push({
+      classes.push({
         classId: diagram.external.id,
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
         xSize: diagram.external.width,
         ySize: diagram.external.height,
-        methods: [...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")]
+        fields: null,
+        methods: JSON.stringify([...document.querySelector(`#diagram${diagram.external.id} > .methods`).value.split("\n")])
       })
     } else if (diagram.external.type === "EXCEPTIONDIAGRAM") {
       
-      exceptions.push({
+      classes.push({
         classId: diagram.external.id,
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
         yPosition: diagram.external.yPosition,
         xSize: diagram.external.width,
         ySize: diagram.external.height,
+        fields: null,
+        methods: null
       })
     } 
   }
@@ -1076,8 +1079,8 @@ const saveUML = async () => {
       destination: arrow.destination,
       arrowType: arrow.arrowType,
       arrowId: arrow.id,
-      xPoints: arrow.xPoints,
-      yPoints: arrow.yPoints
+      xPoints: JSON.stringify(arrow.xPoints),
+      yPoints: JSON.stringify(arrow.yPoints)
     })
   }
 
@@ -1092,8 +1095,6 @@ const saveUML = async () => {
         diagramCount: diagramID,
         arrowCount: arrowID,
         classDiagrams: JSON.stringify(classes),
-        interfaceDiagrams: JSON.stringify(interfaces),
-        exceptionDiagrams: JSON.stringify(exceptions),
         arrows: JSON.stringify(arrows)
     })
 })
