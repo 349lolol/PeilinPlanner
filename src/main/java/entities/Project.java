@@ -598,4 +598,12 @@ public class Project {
     public void setArrowIdCount(int count) {
         this.arrowIdCount = count;
     }
+
+    public void updateDiagram(int id, Diagram diagram) {
+        diagrams.put(id, diagram);
+    }
+
+    public void updateArrow(int id, Arrow arrow) {
+        arrows.put(id, arrow);
+    }
 }
