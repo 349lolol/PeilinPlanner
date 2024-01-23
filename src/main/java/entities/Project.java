@@ -582,5 +582,20 @@ public class Project {
     public void setProjectName(String name) {
         this.projectName = name;
     }
+
+    public int getDiagramIdCount() {
+        return this.diagramIdCount;
+    }
+
+    public int getArrowIdCount() {
+        return this.arrowIdCount;
+    }
     
+    public void setDiagramIdCount(int count) {
+        this.diagramIdCount = count;
+    }
+
+    public void setArrowIdCount(int count) {
+        this.arrowIdCount = count;
+    }
 }
