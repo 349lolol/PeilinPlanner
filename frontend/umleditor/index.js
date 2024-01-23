@@ -1077,7 +1077,7 @@ const saveUML = async () => {
     arrows.push({
       origin: arrow.origin,
       destination: arrow.destination,
-      arrowType: arrow.arrowType,
+      arrowType: arrow.type,
       arrowId: arrow.id,
       xPoints: JSON.stringify(arrow.xPoints),
       yPoints: JSON.stringify(arrow.yPoints)
@@ -1094,7 +1094,7 @@ const saveUML = async () => {
         projectName: window.localStorage.getItem("projectName"),
         diagramCount: diagramID,
         arrowCount: arrowID,
-        classDiagrams: JSON.stringify(classes),
+        diagrams: JSON.stringify(classes),
         arrows: JSON.stringify(arrows)
     })
 })

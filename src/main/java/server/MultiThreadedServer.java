@@ -23,8 +23,10 @@ import user.UserBase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import entities.*;
 
@@ -452,7 +454,183 @@ class MultiThreadedServer {
                         System.out.println("\n\n\n");
                         System.out.println(jsonMap);
 
-                        project
+                        project.setProjectName(projectName);
+                        project.setDiagramIdCount(Integer.parseInt(jsonMap.get("diagramCount")));
+                        project.setArrowIdCount(Integer.parseInt(jsonMap.get("arrowCount")));
+
+                        // GETTING CLASS INFORMATION
+
+                        // splitting into individual diagram objects
+                        String[] diagramMapArray = jsonMap.get("diagrams").substring(1, jsonMap.get("arrows").length() - 1).split("\\}\\,\\{");
+                        for (int i = 0; i < diagramMapArray.length; i++) {
+                            if (i > 0) {
+                                diagramMapArray[i] = "{" + diagramMapArray[i];
+                            }
+                            
+                            if (i < diagramMapArray.length - 1) {
+                                diagramMapArray[i] = diagramMapArray[i] + "}";
+                            }
+                        }
+
+                        for (String diagramObject : diagramMapArray) {
+                            Map<String, String> diagramMap = objectMapper.readValue(diagramObject, typeReference);
+                            List<String> fields;
+                            List<String> methods;
+                            if (diagramMap.get("fields") != null) {
+                                String fieldsString = diagramMap.get("fields");
+                                String[] fieldsArray = fieldsString.substring(1, fieldsString.length() - 1).split(",");
+                                fields = new LinkedList<>(Arrays.asList(fieldsArray));
+                            }
+
+                            if (diagramMap.get("methods") != null) {
+                                String methodsString = diagramMap.get("methods");
+                                String[] methodsArray = methodsString.substring(1, methodsString.length() - 1).split(",");
+                                methods = new LinkedList<>(Arrays.asList(methodsArray));
+                            }
+
+                            // class
+                            if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
+                            && (diagramMap.get("isAbstract").equals("false"))) {
+                                if (project.getDiagram(diagramMap.get("classId")) != null) {
+                                    project.setDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                        diagramMap.get("className"),
+                                        false,
+                                        fields,
+                                        methods,
+                                        diagramMap.get("xPosition"),
+                                        diagramMap.get("yPosition"),
+                                        diagramMap.get("xSize"),
+                                        diagramMap.get("ySize")
+                                    ));
+                                } else {
+                                    project.addDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                        diagramMap.get("className"),
+                                        false,
+                                        fields,
+                                        methods,
+                                        diagramMap.get("xPosition"),
+                                        diagramMap.get("yPosition"),
+                                        diagramMap.get("xSize"),
+                                        diagramMap.get("ySize")
+                                    ));
+                                }
+
+
+                            // abstract class
+                            } else if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
+                            && (diagramMap.get("isAbstract").equals("true"))) {
+                                if (project.getDiagram(diagramMap.get("classId"), diagramMap.get("classId")) != null) {
+                                    project.setDiagram(new ClassDiagram(
+                                        diagramMap.get("className"),
+                                        true,
+                                        fields,
+                                        methods,
+                                        diagramMap.get("xPosition"),
+                                        diagramMap.get("yPosition"),
+                                        diagramMap.get("xSize"),
+                                        diagramMap.get("ySize")
+                                    ));
+                                } else {
+                                    project.addDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                        diagramMap.get("className"),
+                                        true,
+                                        fields,
+                                        methods,
+                                        diagramMap.get("xPosition"),
+                                        diagramMap.get("yPosition"),
+                                        diagramMap.get("xSize"),
+                                        diagramMap.get("ySize")
+                                    ));
+                                }
+                            // interface
+                            } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") != null)) {
+                                if (project.getDiagram(diagramMap.get("classId")) != null) {
+                                    project.setDiagram(diagramMap.get("classId"), new InterfaceDiagram(
+                                        diagramMap.get("className"),
+                                        methods,
+                                        diagramMap.get("xPosition"),
+                                        diagramMap.get("yPosition"),
+                                        diagramMap.get("xSize"),
+                                        diagramMap.get("ySize")
+                                    ));
+                                } else {
+                                    project.addDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                        diagramMap.get("className"),
+                                        methods,
+                                        diagramMap.get("xPosition"),
+                                        diagramMap.get("yPosition"),
+                                        diagramMap.get("xSize"),
+                                        diagramMap.get("ySize")
+                                    ));
+                                }
+                            // exception
+                            } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") == null)) {
+                                if (project.getDiagram(diagramMap.get("classId")) != null) {
+                                    project.setDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                        diagramMap.get("className"),
+                                        diagramMap.get("xPosition"),
+                                        diagramMap.get("yPosition"),
+                                        diagramMap.get("xSize"),
+                                        diagramMap.get("ySize")
+                                    ));
+                                } else {
+                                    project.addDiagram(diagramMap.get("classId"), new ClassDiagram(
+                                        diagramMap.get("className"),
+                                        diagramMap.get("xPosition"),
+                                        diagramMap.get("yPosition"),
+                                        diagramMap.get("xSize"),
+                                        diagramMap.get("ySize")
+                                    ));
+                                }
+                            }
+                        }
+                        System.out.println("\n e");
+                        System.out.println(Arrays.toString(diagramMapArray));
+
+
+
+
+                        // GETTING ARROW INFORMATION
+
+                        // splitting into individual arrow objects
+                        String[] arrowMapArray = jsonMap.get("arrows").substring(1, jsonMap.get("arrows").length() - 1).split("\\}\\,\\{");
+                        for (int i = 0; i < arrowMapArray.length; i++) {
+                            if (i > 0) {
+                                arrowMapArray[i] = "{" + arrowMapArray[i];
+                            }
+                            
+                            if (i < arrowMapArray.length - 1) {
+                                arrowMapArray[i] = arrowMapArray[i] + "}";
+                            }
+                        }
+
+                        for (String arrowObject : arrowMapArray) {
+                            Map<String, String> arrowMap = objectMapper.readValue(arrowObject, typeReference);
+
+                            String xPointsString = arrowMap.get("xPoints");
+                            String[] xPointsArray = xPointsString.substring(1, xPointsString.length() - 1).split(",");
+                            List<Integer> xPoints = Arrays.stream(xPointsArray)
+                                .mapToInt(Integer::parseInt)
+                                .boxed()
+                                .collect(Collectors.toList());
+
+                            String yPointsString = arrowMap.get("yPoints");
+                            String[] yPointsArray = yPointsString.substring(1, yPointsString.length() - 1).split(",");
+                            List<Integer> yPoints = Arrays.stream(yPointsArray)
+                                .mapToInt(Integer::parseInt)
+                                .boxed()
+                                .collect(Collectors.toList());
+
+                            Arrow arrow = new Arrow(
+                                project.getAllDiagrams().ge,
+                                arrowMap.get("destination"),
+                                arrowMap.get("type"),
+                                xPoints,
+                                yPoints
+                            );
+                            project.addArrow();
+                        }
+
 
                         
 

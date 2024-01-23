@@ -23,7 +23,7 @@ public class Arrow {
      * @param destination name of the destination diagram
      * @param arrowType arrow identifier
      */
-    Arrow(Diagram origin, Diagram destination, String arrowType) {
+    public Arrow(Diagram origin, Diagram destination, String arrowType) {
         this.origin = origin;
         this.destination = destination;
         this.arrowType = arrowType;
@@ -39,7 +39,7 @@ public class Arrow {
      * @param xPoints list of x points
      * @param yPoints list of y points
      */
-    Arrow(Diagram origin, Diagram destination, String arrowType, ArrayList<Integer> xPoints, ArrayList<Integer> yPoints) {
+    public Arrow(Diagram origin, Diagram destination, String arrowType, ArrayList<Integer> xPoints, ArrayList<Integer> yPoints) {
         this.origin = origin;
         this.destination = destination;
         this.arrowType = arrowType;
@@ -51,7 +51,7 @@ public class Arrow {
      * arrow
      * empty constructor
      */
-    Arrow() {
+    public Arrow() {
         this.origin = null;
         this.destination = null;
         this.arrowType = null;
