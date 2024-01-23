@@ -22,7 +22,6 @@ import user.UserBase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -661,11 +660,7 @@ class MultiThreadedServer {
 
                     // LOADING UML
                     else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
-                        byte[] content;
-                        String usernameString = request.get(line).split(",")[0];
-                        String usernameValue = usernameString.split(":")[1];
-                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 2);
-
+                        byte[] content;                        
                         String projectString = request.get(line).split(",")[1];
                         String projectNameValue = projectString.split(":")[1];
                         String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);

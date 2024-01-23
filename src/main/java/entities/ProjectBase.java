@@ -9,7 +9,6 @@
 package entities;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 public class ProjectBase {
@@ -76,6 +75,12 @@ public class ProjectBase {
         return null;
     }
 
+    /**
+     * setProject
+     * sets a project to a new project
+     * @param name the name of the old project
+     * @param project the new project
+     */
     public void setProject(String name, Project project) {
         projects.put(name, project);
     }
@@ -98,6 +103,11 @@ public class ProjectBase {
         return this.projects.toString() + " | " + this.isInUse.toString();
     }
 
+    /**
+     * getAllKeys
+     * gets all project keys
+     * @return all project keys
+     */
     public Set<String> getAllKeys() {
         return projects.keySet();
     }
