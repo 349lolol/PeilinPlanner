@@ -43,7 +43,7 @@ import entities.Method;
 import entities.Project;
 import entities.ProjectBase;
 
-class MultiThreadedServer {
+public class MultiThreadedServer {
     final int PORT = 5069;       
     
     private ServerSocket serverSocket;
@@ -53,81 +53,8 @@ class MultiThreadedServer {
     private static ProjectBase projectBase = new ProjectBase();
     private static Assets assets;
     
-    public static void main(String[] args) throws Exception { 
-
-
-        // FILE IO. does not work
-        // try
-        // {   
-        //     // Reading the object from a file
-        //     FileInputStream file = new FileInputStream("./userStorage.txt");
-        //     ObjectInputStream in = new ObjectInputStream(file);
-             
-        //     // Method for deserialization of object
-        //     userBase = (UserBase)in.readObject();
-        //     in.close();
-        //     file.close();
-        // }
-        // catch(IOException e)
-        // {
-        //     System.out.println("Error deserializing");
-        // }
-        // try
-        // {   
-        //     // Reading the object from a file
-        //     File folder = new File("./server/umlStorage/");
-        //     File[] listOfFiles = folder.listFiles();
-
-        //     for (File file : listOfFiles) {
-        //         if (file.isFile()) {
-        //             BufferedReader UMLReader = new BufferedReader(new FileReader(file));
-        //             projectBase.addProject(file.getName());
-        //             projectBase.getProject(file.getName()).JsonToJava(UMLReader.readLine());
-        //             UMLReader.close();
-        //         }
-        //     }
-        // }
-        // catch(IOException exception)
-        // {
-        //     System.out.println("Error reading in UML diagrams");
-        // }
-
-        MultiThreadedServer server = new MultiThreadedServer();
-        MultiThreadedServer.assets = new Assets();
-        server.go();
-
-        // try
-        // {   
-        //     //Saving of object in a file
-        //     FileOutputStream file = new FileOutputStream("./userStorage.txt");
-        //     ObjectOutputStream out = new ObjectOutputStream(file);
-             
-        //     // Method for serialization of object
-        //     out.writeObject(userBase);
-             
-        //     out.close();
-        //     file.close();
-        // }
-        // catch(IOException ex)
-        // {
-        //     System.out.println("Error serializing");
-        // }
-
-        // try
-        // {   
-        //     Set<String> keys = projectBase.getAllKeys();
-        //     // Reading the object from a file
-        //     for(String key : keys) {
-        //         File UMLSave = new File("./server/umlStorage/" + projectBase.getProject(key));
-        //         PrintWriter UMLWriter = new PrintWriter(UMLSave);
-        //         UMLWriter.print(projectBase.getProject(key).toString());
-        //         UMLWriter.close();
-        //     }
-        // }
-        // catch(IOException exception)
-        // {
-        //     System.out.println("Error printing UML diagrams");
-        // }
+    public static void setAssets(Assets assets) {
+        MultiThreadedServer.assets = assets;
     }
     
     public void go() throws Exception { 

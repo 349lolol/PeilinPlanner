@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UML Editor</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script defer src="index.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <form action="" method="get" id="homeForm">
+            <button type="submit" id="home">
+                <i class="ri-home-office-line"></i>
+            </button>
+        </form>
+
+        <h1>PeilinPlanner</h1>
+    </header>
+
+    <main>
+
+        <nav>
+
+            <section id="diagramsdisplay" class="elementsdisplay">
+
+                <h2>Diagrams</h2>
+
+                <div class="optionelements" id="optiondiagrams">
+                    <div class="diagramdisplay" id="addclass">
+                        <img src="images/diagrams/classdiagramdisplay.png" alt="Class Diagram">
+
+                        <p>Class</p>
+                    </div>
+
+                    <div class="diagramdisplay" id="addinterface">
+                        <img src="images/diagrams/interfacediagramdisplay.png" alt="Interface Diagram">
+
+                        <p>Interface</p>
+                    </div>
+
+                    <div class="diagramdisplay" id="addabstractclass">
+                        <img src="images/diagrams/abstractclassdiagramdisplay.png" alt="Abstract Class Diagram">
+
+                        <p>Abstract Class</p>
+                    </div>
+
+                    <div class="diagramdisplay" id="addexception">
+                        <img src="images/diagrams/exceptiondiagramdisplay.png" alt="Exception Diagram">
+
+                        <p>Exception</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="connectionsdisplay" class="elementsdisplay">
+
+                <h2>Connections</h2>
+
+                <form action="" method="get" id="verticesform">
+                    <label for="vertices">Vertices: </label>
+                    <select name="vertices" id="vertices">
+                        <option value="0">0</option>
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </form>
+
+                <div class="optionelements" id="optionconnections">
+                    <div class="connectiondisplay">
+                        <img src="images/connections/inheritancearrow.png" alt="Inheritance Arrow" id="inheritancearrow">
+
+                        <p>Inheritance Arrow</p>
+                    </div>
+
+                    <div class="connectiondisplay">
+                        <img src="images/connections/compositionarrow.png" alt="Composition Arrow" id="compositionarrow">
+
+                        <p>Composition Arrow</p>
+                    </div>
+
+                    <div class="connectiondisplay">
+                        <img src="images/connections/implemetationarrow.png" alt="Implementation Arrow" id="implementationarrow">
+
+                        <p>Implementation Arrow</p>
+                    </div>
+                </div>
+            </section>
+
+        </nav>
+
+        <div id="grid">
+            <!-- <div class="classdiagram diagram" id="diagram1">
+                <textarea name="name" cols="20" rows="1" placeholder="name" class="name"></textarea>
+                <textarea name="fields" cols="20" rows="5" placeholder="fields" class="fields"></textarea>
+                <textarea name="methods" cols="20" rows="5" placeholder="methods" class="methods"></textarea>
+            </div> -->
+
+            <!-- <div class="interfacediagram diagram" id="diagram2">
+                <textarea name="name" cols="20" rows="1" placeholder="name" class="name"></textarea>
+                <textarea name="methods" cols="20" rows="5" placeholder="methods" class="methods"></textarea>
+            </div>
+
+            <div class="abstractclassdiagram diagram" id="diagram3">
+                <textarea name="name" cols="20" rows="1" placeholder="name" class="name"></textarea>
+                <textarea name="fields" cols="20" rows="5" placeholder="fields" class="fields"></textarea>
+                <textarea name="methods" cols="20" rows="5" placeholder="methods" class="methods"></textarea>
+            </div>
+
+            <div class="exceptiondiagram diagram" id="diagram4">
+                <textarea name="name" cols="20" rows="1" placeholder="name" class="name"></textarea>
+            </div> -->
+
+            <div id="arrows">
+
+            </div>
+        </div>
+
+        <section id="menu">
+            <form action="" method="get">
+                <button class="option" type="submit" id="save">
+                    Save
+                </button>
+            </form>
+            <form action="" method="get">
+                <button class="option" type="submit" id="share">
+                    Share
+                </button>
+            </form>
+        </section>
+
+        <dialog class="dialog" id="shareModal">
+            <form action="" method="get" id="shareForm" enctype="application/x-www-form-urlencoded">
+                <i class="ri-close-circle-line close"></i>
+    
+                <div id="information">
+                    <div id="labels">
+                        <label for="projectName">User Name: </label>
+                    </div>
+    
+                    <div id="inputs">
+                        <input type="text" id="username">
+                    </div>
+                </div>
+    
+                <div id="account">
+    
+                    <button type="submit">
+                        Share
+                    </button>
+                </div>
+    
+                <div id="incorrect">
+                    <div id="warning"">
+                        Invalid Username
+                    </div>
+                </div>
+            </form>
+        </dialog>
+    </main>
+    
+</body>
+</html>

@@ -1,0 +1,474 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+header {
+    background-color: rgb(117, 117, 117);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+}
+
+header > form {
+    height: 4rem;
+    width: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+}
+
+#home {
+    background-color: rgb(117, 117, 117);
+    border: none;
+    padding: 0 0 0 0;
+    cursor: pointer;
+
+}
+
+#home > i {
+    font-size: 3rem;
+    color: #000;
+}
+
+h1 {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 3rem;
+}
+
+nav {
+    width: 25rem;
+    height: 100%;
+    background-color: darkgray;
+    display: flex;
+    justify-content: space-around;
+    align-items:flex-start;
+
+}
+
+section > h2 {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.8rem;
+    background-color: rgb(146, 146, 146);
+    width: 12.5rem;
+    text-align: center;
+}
+
+#diagramsdisplay > h2 {
+    background-color: rgb(141, 141, 141);
+}
+
+.elementsdisplay {
+    width: 12.5rem;
+}
+
+.optionelements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#verticesform {
+    display: flex;
+    height: 2rem;
+    margin-left: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#verticesform > *:hover {
+    cursor:pointer;
+}
+
+#verticesform > label {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1rem;
+    letter-spacing: 0.2rem;
+
+}
+
+#optiondiagrams {
+    position: relative;
+    top: 3rem;
+}
+
+#optionconnections {
+    position: relative;
+    top: 1rem;
+}
+
+select {
+    width: 6rem;
+    height: 100%;
+    border: 1px solid grey;
+    background-color: rgb(189, 189, 189);
+}
+
+option {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 0.7rem;
+    
+    
+}
+
+#diagramsdisplay {
+    background-color: rgb(160, 160, 160);
+    height: 100%;
+}
+
+.optionelements {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.diagramdisplay {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.diagramdisplay:hover {
+    cursor: pointer;
+}
+.diagramdisplay > p {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1rem;
+}
+
+.connectiondisplay {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.connectiondisplay:hover {
+    cursor: pointer;
+}
+.connectiondisplay > p {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1rem;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    height: calc(100% - 4rem);
+}
+
+#grid {
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.classdiagram, .interfacediagram, .abstractclassdiagram, .exceptiondiagram {
+    width: 10rem;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(230, 230, 230);
+    border: 2px solid black;
+    position: absolute;
+
+    scale: 1;
+    z-index: 2;
+}
+
+.classdiagram > textarea, .interfacediagram > textarea, .abstractclassdiagram > textarea, .exceptiondiagram > textarea {
+    resize: none;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 0.8rem;
+}
+
+.classdiagram > .name, .interfacediagram > .name, .abstractclassdiagram > .name, .exceptiondiagram > .name {
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.classdiagram > .methods, .interfacediagram > .methods, .abstractclassdiagram > .methods, .exceptiondiagram > .methods {
+    border-top: 1px solid black;
+}
+
+.classdiagram >.name {
+    border-top: 4px solid #ff9f2a;
+}
+
+.interfacediagram >.name {
+    border-top: 4px solid #2aff66;
+}
+
+.abstractclassdiagram >.name {
+    border-top: 4px solid #2ebdfc;
+}
+
+.exceptiondiagram >.name {
+    border-top: 4px solid #ff2626;
+}
+#menu {
+    width: 8rem;
+    background-color: rgb(141, 141, 141);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.option:nth-of-type(1) {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.3rem;
+    border: 1px solid rgb(130, 130, 130);
+    width: 100%;
+    height: 2rem;
+    box-sizing: border-box;
+    background-color: rgb(141, 141, 141);
+}
+
+.option {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.3rem;
+    border-left: 1px solid rgb(130, 130, 130);
+    border-right: 1px solid rgb(130, 130, 130);
+    border-bottom: 1px solid rgb(130, 130, 130);
+    border-top: 0px;
+    width: 100%;
+    height: 2rem;
+    box-sizing: border-box;
+    background-color: rgb(141, 141, 141);
+}
+
+.option:hover {
+    background-color: rgb(130, 130, 130);
+
+    transition: background-color 0.1s linear 0s;
+}
+
+.option:active {
+    background-color: rgb(117, 117, 117);
+
+    transition: background-color 0.1s linear 0s;
+}
+
+#menu form {
+    width: 100%;
+}
+
+#menu form:nth-of-type(2) {
+    border-bottom: 2px solid rgb(130, 130, 130);
+}
+
+dialog {
+    padding: 1rem;
+    background-color: lightgray;
+    width: 40%;
+    height: 30%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input {
+    height: 3rem;
+    width: 15rem;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 2.5rem;
+    border: 1px solid gray;
+}
+
+dialog button {
+    width: 32rem;
+    height: 4rem;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5rem;
+}
+
+#information {
+    display: flex;
+    gap: 2rem;
+}
+
+#account {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#incorrect {
+    display: none;
+    justify-content: center;
+    height: 20%;
+    width: 32rem;
+}
+
+#warning {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid darkred;
+    background-color: red;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5rem;
+    width: 100%;
+    height: 100%;
+}
+
+.project {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#projectIcon {
+    font-size: 12rem;
+    color: rgb(110, 110, 110);
+}
+
+.close {
+    position: absolute;
+    font-size: 2rem;
+    top: 0.25rem;
+    left: 0.25rem;
+}
+
+.close:nth-of-type(1) {
+    opacity: 100%;
+}
+
+.close:nth-of-type(2) {
+    opacity: 0%;
+}
+
+#information {
+    display: flex;
+    justify-content: space-around;
+    height: 4rem;
+}
+
+#labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5rem;
+    margin-top: 0.3rem;
+}
+
+#inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+
+#shareForm {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
