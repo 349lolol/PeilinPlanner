@@ -1,6 +1,7 @@
 /**
  * [ToJava.java]
  * Class that converts a uml to a workable java project
+ * For file IO, which doesn't work
  * @author Perry Xu & Patrick Wei
  * @version 1.1
  * 01/09/24

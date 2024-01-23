@@ -9,8 +9,12 @@
 package server;
 
 //imports for network communication
-import java.io.*;
-import java.net.*;
+import java.io.OutputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -22,12 +26,21 @@ import user.UserBase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import entities.*;
+import entities.Arrow;
+import entities.ClassDiagram;
+import entities.Diagram;
+import entities.ExceptionDiagram;
+import entities.Field;
+import entities.InterfaceDiagram;
+import entities.Method;
+import entities.Project;
+import entities.ProjectBase;
 
 class MultiThreadedServer {
     final int PORT = 5069;       
@@ -39,13 +52,10 @@ class MultiThreadedServer {
     private static ProjectBase projectBase = new ProjectBase();
     private static Assets assets;
     
-    /**
-     * amin method
-     * @param args
-     * @throws Exception
-     */
     public static void main(String[] args) throws Exception { 
 
+
+        // FILE IO. does not work
         // try
         // {   
         //     // Reading the object from a file
@@ -660,7 +670,11 @@ class MultiThreadedServer {
 
                     // LOADING UML
                     else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
-                        byte[] content;                        
+                        byte[] content;
+                        String usernameString = request.get(line).split(",")[0];
+                        String usernameValue = usernameString.split(":")[1];
+                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 2);
+
                         String projectString = request.get(line).split(",")[1];
                         String projectNameValue = projectString.split(":")[1];
                         String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
