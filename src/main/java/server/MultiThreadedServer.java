@@ -6,6 +6,7 @@
  * 01/09/24
  */
 
+ // RUN THIS FILE and go to http://localhost:5069/frontend/loginpage/loginpage.html
 package server;
 
 //imports for network communication
