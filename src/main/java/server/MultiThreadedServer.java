@@ -425,249 +425,258 @@
  
                      // SAVING UML
                      else if ((type.equals("POST")) && (url.equals("/frontend/saveUML"))) {
-                         ObjectMapper objectMapper = new ObjectMapper();
-                         
-                         byte[] content;
+
                          String projectString = request.get(line).split(",")[0];
                          String projectNameValue = projectString.split(":")[1];
                          String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
  
                          Project project = projectBase.getProject(projectName);
-                         
-                         TypeReference<HashMap<String, String>> typeReference = new TypeReference<HashMap<String,String>>() {};
-                         Map<String, String> jsonMap = objectMapper.readValue(request.get(line), typeReference);
- 
-                         System.out.println(request.get(line));
- 
-                         project.setProjectName(projectName);
-                         project.setDiagramIdCount(Integer.parseInt(jsonMap.get("diagramCount")));
-                         project.setArrowIdCount(Integer.parseInt(jsonMap.get("arrowCount")));
- 
-                         // GETTING CLASS INFORMATION
- 
-                         // splitting into individual diagram objects
-                         if (!request.get(line).contains("\"diagrams\":\"[]\"")) {
-                             String[] diagramMapArray = jsonMap.get("diagrams").substring(1, jsonMap.get("diagrams").length() - 1).split("\\}\\,\\{");
-                             for (int i = 0; i < diagramMapArray.length; i++) {
-                                 if (i > 0) {
-                                     diagramMapArray[i] = "{" + diagramMapArray[i];
-                                    }
-                                    
-                                    if (i < diagramMapArray.length - 1) {
-                                        diagramMapArray[i] = diagramMapArray[i] + "}";
-                                    }
-                                }
-                                
-                            System.out.println(jsonMap);
-                            System.out.println(Arrays.toString(diagramMapArray));
- 
-                             for (int i = 0; i < diagramMapArray.length; i++) {
-                                 Map<String, String> diagramMap = objectMapper.readValue(diagramMapArray[i], typeReference);
-                                 System.out.println(diagramMap);
-                                 LinkedList<Field> fields = new LinkedList<>();
-                                 LinkedList<Method> methods = new LinkedList<>();
-                                 if (diagramMap.get("fields") != null) {
-                                     String fieldsString = diagramMap.get("fields");
-                                     String[] fieldsArray = fieldsString.substring(1, fieldsString.length() - 1).split(",");
-                                     fields = Arrays.stream(fieldsArray)
-                                         .map(str -> new Field(str))
-                                         .collect(Collectors.toCollection(LinkedList::new));
-                                 }
- 
-                                 if (diagramMap.get("methods") != null) {
-                                     String methodsString = diagramMap.get("methods");
-                                     String[] methodsArray = methodsString.substring(1, methodsString.length() - 1).split(",");
-                                     methods = Arrays.stream(methodsArray)
-                                         .map(str -> new Method(str))
-                                         .collect(Collectors.toCollection(LinkedList::new));
-                                 }
- 
-                                 int id = Integer.parseInt(diagramMap.get("classId"));
-                                 // class
-                                 if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
-                                 && (diagramMap.get("isAbstract").equals("false"))) {
-                                     if (project.getDiagram(id) != null) {
-                                         project.updateDiagram(id, new ClassDiagram(
-                                             diagramMap.get("className"),
-                                             id,
-                                             false,
-                                             fields,
-                                             methods,
-                                             (int) Double.parseDouble(diagramMap.get("xPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("yPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("xSize")),
-                                             (int) Double.parseDouble(diagramMap.get("ySize"))
-                                         ));
-                                     } else {
-                                         project.addDiagram(new ClassDiagram(
-                                             diagramMap.get("className"),
-                                             id,
-                                             false,
-                                             fields,
-                                             methods,
-                                             (int) Double.parseDouble(diagramMap.get("xPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("yPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("xSize")),
-                                             (int) Double.parseDouble(diagramMap.get("ySize"))
-                                         ));
-                                     }
- 
- 
-                                 // abstract class
-                                 } else if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
-                                 && (diagramMap.get("isAbstract").equals("true"))) {
-                                     if (project.getDiagram(id) != null) {
-                                         project.updateDiagram(id, new ClassDiagram(
-                                             diagramMap.get("className"),
-                                             id,
-                                             true,
-                                             fields,
-                                             methods,
-                                             (int) Double.parseDouble(diagramMap.get("xPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("yPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("xSize")),
-                                             (int) Double.parseDouble(diagramMap.get("ySize"))
-                                         ));
-                                     } else {
-                                         project.addDiagram(new ClassDiagram(
-                                             diagramMap.get("className"),
-                                             id,
-                                             true,
-                                             fields,
-                                             methods,
-                                             (int) Double.parseDouble(diagramMap.get("xPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("yPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("xSize")),
-                                             (int) Double.parseDouble(diagramMap.get("ySize"))
-                                         ));
-                                     }
-                                 // interface
-                                 } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") != null)) {
-                                     if (project.getDiagram(id) != null) {
-                                         project.updateDiagram(id, new InterfaceDiagram(
-                                             diagramMap.get("className"),
-                                             id,
-                                             methods,
-                                             (int) Double.parseDouble(diagramMap.get("xPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("yPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("xSize")),
-                                             (int) Double.parseDouble(diagramMap.get("ySize"))
-                                         ));
-                                     } else {
-                                         project.addDiagram(new InterfaceDiagram(
-                                             diagramMap.get("className"),
-                                             id,
-                                             methods,
-                                             (int) Double.parseDouble(diagramMap.get("xPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("yPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("xSize")),
-                                             (int) Double.parseDouble(diagramMap.get("ySize"))
-                                         ));
-                                     }
-                                 // exception
-                                 } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") == null)) {
-                                     if (project.getDiagram(id) != null) {
-                                         project.updateDiagram(id, new ExceptionDiagram(
-                                             diagramMap.get("className"),
-                                             id,
-                                             (int) Double.parseDouble(diagramMap.get("xPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("yPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("xSize")),
-                                             (int) Double.parseDouble(diagramMap.get("ySize"))
-                                         ));
-                                     } else {
-                                         project.addDiagram(new ExceptionDiagram(
-                                             diagramMap.get("className"),
-                                             id,
-                                             (int) Double.parseDouble(diagramMap.get("xPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("yPosition")),
-                                             (int) Double.parseDouble(diagramMap.get("xSize")),
-                                             (int) Double.parseDouble(diagramMap.get("ySize"))
-                                         ));
-                                     }
-                                 }
-                             }
-                         }
- 
-                         for (Diagram diagram : project.getAllDiagrams()) {
-                             System.out.println(diagram.getName());
-                             System.out.println(diagram.getXPosition());
-                             System.out.println(diagram.getYPosition());
-                             System.out.println(diagram.getXSize());
-                             System.out.println(diagram.getYSize());
-                         }
 
-                         System.out.println(project.getAllDiagrams());
+                         project.jsonToJava(request.get(line));
+
+                        //  ObjectMapper objectMapper = new ObjectMapper();
                          
-                         // GETTING ARROW INFORMATION
+                        byte[] content;
+                        //  String projectString = request.get(line).split(",")[0];
+                        //  String projectNameValue = projectString.split(":")[1];
+                        //  String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
  
-                         // splitting into individual arrow objects
-                         if (!request.get(line).contains("\"arrows\":\"[]\"")) {
+                        //  Project project = projectBase.getProject(projectName);
+                         
+                        //  TypeReference<HashMap<String, String>> typeReference = new TypeReference<HashMap<String,String>>() {};
+                        //  Map<String, String> jsonMap = objectMapper.readValue(request.get(line), typeReference);
+ 
+                        //  System.out.println(request.get(line));
+ 
+                        //  project.setProjectName(projectName);
+                        //  project.setDiagramIdCount(Integer.parseInt(jsonMap.get("diagramCount")));
+                        //  project.setArrowIdCount(Integer.parseInt(jsonMap.get("arrowCount")));
+ 
+                        //  // GETTING CLASS INFORMATION
+ 
+                        //  // splitting into individual diagram objects
+                        //  if (!request.get(line).contains("\"diagrams\":\"[]\"")) {
+                        //      String[] diagramMapArray = jsonMap.get("diagrams").substring(1, jsonMap.get("diagrams").length() - 1).split("\\}\\,\\{");
+                        //      for (int i = 0; i < diagramMapArray.length; i++) {
+                        //          if (i > 0) {
+                        //              diagramMapArray[i] = "{" + diagramMapArray[i];
+                        //             }
+                                    
+                        //             if (i < diagramMapArray.length - 1) {
+                        //                 diagramMapArray[i] = diagramMapArray[i] + "}";
+                        //             }
+                        //         }
+                                
+                        //     System.out.println(jsonMap);
+                        //     System.out.println(Arrays.toString(diagramMapArray));
+ 
+                        //      for (int i = 0; i < diagramMapArray.length; i++) {
+                        //          Map<String, String> diagramMap = objectMapper.readValue(diagramMapArray[i], typeReference);
+                        //          System.out.println(diagramMap);
+                        //          LinkedList<Field> fields = new LinkedList<>();
+                        //          LinkedList<Method> methods = new LinkedList<>();
+                        //          if (diagramMap.get("fields") != null) {
+                        //              String fieldsString = diagramMap.get("fields");
+                        //              String[] fieldsArray = fieldsString.substring(1, fieldsString.length() - 1).split(",");
+                        //              fields = Arrays.stream(fieldsArray)
+                        //                  .map(str -> new Field(str))
+                        //                  .collect(Collectors.toCollection(LinkedList::new));
+                        //          }
+ 
+                        //          if (diagramMap.get("methods") != null) {
+                        //              String methodsString = diagramMap.get("methods");
+                        //              String[] methodsArray = methodsString.substring(1, methodsString.length() - 1).split(",");
+                        //              methods = Arrays.stream(methodsArray)
+                        //                  .map(str -> new Method(str))
+                        //                  .collect(Collectors.toCollection(LinkedList::new));
+                        //          }
+ 
+                        //          int id = Integer.parseInt(diagramMap.get("classId"));
+                        //          // class
+                        //          if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
+                        //          && (diagramMap.get("isAbstract").equals("false"))) {
+                        //              if (project.getDiagram(id) != null) {
+                        //                  project.updateDiagram(id, new ClassDiagram(
+                        //                      diagramMap.get("className"),
+                        //                      id,
+                        //                      false,
+                        //                      fields,
+                        //                      methods,
+                        //                      (int) Double.parseDouble(diagramMap.get("xPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("yPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("xSize")),
+                        //                      (int) Double.parseDouble(diagramMap.get("ySize"))
+                        //                  ));
+                        //              } else {
+                        //                  project.addDiagram(new ClassDiagram(
+                        //                      diagramMap.get("className"),
+                        //                      id,
+                        //                      false,
+                        //                      fields,
+                        //                      methods,
+                        //                      (int) Double.parseDouble(diagramMap.get("xPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("yPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("xSize")),
+                        //                      (int) Double.parseDouble(diagramMap.get("ySize"))
+                        //                  ));
+                        //              }
+ 
+ 
+                        //          // abstract class
+                        //          } else if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
+                        //          && (diagramMap.get("isAbstract").equals("true"))) {
+                        //              if (project.getDiagram(id) != null) {
+                        //                  project.updateDiagram(id, new ClassDiagram(
+                        //                      diagramMap.get("className"),
+                        //                      id,
+                        //                      true,
+                        //                      fields,
+                        //                      methods,
+                        //                      (int) Double.parseDouble(diagramMap.get("xPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("yPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("xSize")),
+                        //                      (int) Double.parseDouble(diagramMap.get("ySize"))
+                        //                  ));
+                        //              } else {
+                        //                  project.addDiagram(new ClassDiagram(
+                        //                      diagramMap.get("className"),
+                        //                      id,
+                        //                      true,
+                        //                      fields,
+                        //                      methods,
+                        //                      (int) Double.parseDouble(diagramMap.get("xPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("yPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("xSize")),
+                        //                      (int) Double.parseDouble(diagramMap.get("ySize"))
+                        //                  ));
+                        //              }
+                        //          // interface
+                        //          } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") != null)) {
+                        //              if (project.getDiagram(id) != null) {
+                        //                  project.updateDiagram(id, new InterfaceDiagram(
+                        //                      diagramMap.get("className"),
+                        //                      id,
+                        //                      methods,
+                        //                      (int) Double.parseDouble(diagramMap.get("xPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("yPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("xSize")),
+                        //                      (int) Double.parseDouble(diagramMap.get("ySize"))
+                        //                  ));
+                        //              } else {
+                        //                  project.addDiagram(new InterfaceDiagram(
+                        //                      diagramMap.get("className"),
+                        //                      id,
+                        //                      methods,
+                        //                      (int) Double.parseDouble(diagramMap.get("xPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("yPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("xSize")),
+                        //                      (int) Double.parseDouble(diagramMap.get("ySize"))
+                        //                  ));
+                        //              }
+                        //          // exception
+                        //          } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") == null)) {
+                        //              if (project.getDiagram(id) != null) {
+                        //                  project.updateDiagram(id, new ExceptionDiagram(
+                        //                      diagramMap.get("className"),
+                        //                      id,
+                        //                      (int) Double.parseDouble(diagramMap.get("xPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("yPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("xSize")),
+                        //                      (int) Double.parseDouble(diagramMap.get("ySize"))
+                        //                  ));
+                        //              } else {
+                        //                  project.addDiagram(new ExceptionDiagram(
+                        //                      diagramMap.get("className"),
+                        //                      id,
+                        //                      (int) Double.parseDouble(diagramMap.get("xPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("yPosition")),
+                        //                      (int) Double.parseDouble(diagramMap.get("xSize")),
+                        //                      (int) Double.parseDouble(diagramMap.get("ySize"))
+                        //                  ));
+                        //              }
+                        //          }
+                        //      }
+                        //  }
+ 
+                        //  for (Diagram diagram : project.getAllDiagrams()) {
+                        //      System.out.println(diagram.getName());
+                        //      System.out.println(diagram.getXPosition());
+                        //      System.out.println(diagram.getYPosition());
+                        //      System.out.println(diagram.getXSize());
+                        //      System.out.println(diagram.getYSize());
+                        //  }
+
+                        //  System.out.println(project.getAllDiagrams());
+                         
+                        //  // GETTING ARROW INFORMATION
+ 
+                        //  // splitting into individual arrow objects
+                        //  if (!request.get(line).contains("\"arrows\":\"[]\"")) {
                              
-                             String[] arrowMapArray = jsonMap.get("arrows").substring(1, jsonMap.get("arrows").length() - 1).split("\\}\\,\\{");
-                             for (int i = 0; i < arrowMapArray.length; i++) {
-                                 if (i > 0) {
-                                     arrowMapArray[i] = "{" + arrowMapArray[i];
-                                 }
+                        //      String[] arrowMapArray = jsonMap.get("arrows").substring(1, jsonMap.get("arrows").length() - 1).split("\\}\\,\\{");
+                        //      for (int i = 0; i < arrowMapArray.length; i++) {
+                        //          if (i > 0) {
+                        //              arrowMapArray[i] = "{" + arrowMapArray[i];
+                        //          }
                                  
-                                 if (i < arrowMapArray.length - 1) {
-                                     arrowMapArray[i] = arrowMapArray[i] + "}";
-                                 }
-                             }
+                        //          if (i < arrowMapArray.length - 1) {
+                        //              arrowMapArray[i] = arrowMapArray[i] + "}";
+                        //          }
+                        //      }
  
-                             for (String arrowObject : arrowMapArray) {
-                                 Map<String, String> arrowMap = objectMapper.readValue(arrowObject, typeReference);
+                        //      for (String arrowObject : arrowMapArray) {
+                        //          Map<String, String> arrowMap = objectMapper.readValue(arrowObject, typeReference);
  
-                                 String xPointsString = arrowMap.get("xPoints");
-                                 String[] xPointsArray = xPointsString.substring(1, xPointsString.length() - 1).split(",");
-                                 ArrayList<Integer> xPoints = Arrays.stream(xPointsArray)
-                                     .mapToDouble(Double::parseDouble)
-                                     .mapToInt(d -> (int) d)
-                                     .boxed()
-                                     .collect(Collectors.toCollection(ArrayList::new));
+                        //          String xPointsString = arrowMap.get("xPoints");
+                        //          String[] xPointsArray = xPointsString.substring(1, xPointsString.length() - 1).split(",");
+                        //          ArrayList<Integer> xPoints = Arrays.stream(xPointsArray)
+                        //              .mapToDouble(Double::parseDouble)
+                        //              .mapToInt(d -> (int) d)
+                        //              .boxed()
+                        //              .collect(Collectors.toCollection(ArrayList::new));
  
-                                 String yPointsString = arrowMap.get("yPoints");
-                                 String[] yPointsArray = yPointsString.substring(1, yPointsString.length() - 1).split(",");
-                                 ArrayList<Integer> yPoints = Arrays.stream(yPointsArray)
-                                     .mapToDouble(Double::parseDouble)
-                                     .mapToInt(d -> (int) d)
-                                     .boxed()
-                                     .collect(Collectors.toCollection(ArrayList::new));
+                        //          String yPointsString = arrowMap.get("yPoints");
+                        //          String[] yPointsArray = yPointsString.substring(1, yPointsString.length() - 1).split(",");
+                        //          ArrayList<Integer> yPoints = Arrays.stream(yPointsArray)
+                        //              .mapToDouble(Double::parseDouble)
+                        //              .mapToInt(d -> (int) d)
+                        //              .boxed()
+                        //              .collect(Collectors.toCollection(ArrayList::new));
  
  
-                                 Diagram origin;
-                                 Diagram destination;
-                                 if (arrowMap.get("origin") != null) {
-                                     origin = project.getDiagram(Integer.parseInt(arrowMap.get("origin")));
-                                 } else {
-                                     origin = null;
-                                 }
+                        //          Diagram origin;
+                        //          Diagram destination;
+                        //          if (arrowMap.get("origin") != null) {
+                        //              origin = project.getDiagram(Integer.parseInt(arrowMap.get("origin")));
+                        //          } else {
+                        //              origin = null;
+                        //          }
  
-                                 if (arrowMap.get("destination") != null) {
-                                     destination = project.getDiagram(Integer.parseInt(arrowMap.get("destination")));
-                                 } else {
-                                     destination = null;
-                                 }
+                        //          if (arrowMap.get("destination") != null) {
+                        //              destination = project.getDiagram(Integer.parseInt(arrowMap.get("destination")));
+                        //          } else {
+                        //              destination = null;
+                        //          }
  
-                                 if (project.getArrow(Integer.parseInt(arrowMap.get("arrowId"))) != null) {
-                                     project.updateArrow(Integer.parseInt(arrowMap.get("arrowId")), new Arrow(
-                                         origin,
-                                         destination,
-                                         "\"" + arrowMap.get("arrowType") + "\"",
-                                         xPoints,
-                                         yPoints
-                                     ));
-                                 } else {
-                                     project.addArrow(Integer.parseInt(arrowMap.get("arrowId")), new Arrow(
-                                         origin,
-                                         destination,
-                                         "\"" + arrowMap.get("arrowType") + "\"",
-                                         xPoints,
-                                         yPoints
-                                     ));
-                                 }
-                             }
-                         }
+                        //          if (project.getArrow(Integer.parseInt(arrowMap.get("arrowId"))) != null) {
+                        //              project.updateArrow(Integer.parseInt(arrowMap.get("arrowId")), new Arrow(
+                        //                  origin,
+                        //                  destination,
+                        //                  "\"" + arrowMap.get("arrowType") + "\"",
+                        //                  xPoints,
+                        //                  yPoints
+                        //              ));
+                        //          } else {
+                        //              project.addArrow(Integer.parseInt(arrowMap.get("arrowId")), new Arrow(
+                        //                  origin,
+                        //                  destination,
+                        //                  "\"" + arrowMap.get("arrowType") + "\"",
+                        //                  xPoints,
+                        //                  yPoints
+                        //              ));
+                        //          }
+                        //      }
+                        //  }
  
  
                          content = "{\"valid\": true}".getBytes();

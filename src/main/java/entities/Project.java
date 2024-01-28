@@ -9,6 +9,16 @@
 package entities;
 
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Project {
@@ -77,9 +87,248 @@ public class Project {
         return lines;
     }
 
-    
-    public String jsonToJava() {
 
+    public void jsonToJava(String jsonString) throws JsonMappingException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+                         
+        String projectString = jsonString.split(",")[0];
+        String projectNameValue = projectString.split(":")[1];
+        String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
+        
+        TypeReference<HashMap<String, String>> typeReference = new TypeReference<HashMap<String,String>>() {};
+        Map<String, String> jsonMap = objectMapper.readValue(jsonString, typeReference);
+
+        System.out.println(jsonString);
+
+        this.setProjectName(projectName);
+        this.setDiagramIdCount(Integer.parseInt(jsonMap.get("diagramCount")));
+        this.setArrowIdCount(Integer.parseInt(jsonMap.get("arrowCount")));
+
+        // GETTING CLASS INFORMATION
+
+        // splitting into individual diagram objects
+        if (!jsonString.contains("\"diagrams\":\"[]\"")) {
+            String[] diagramMapArray = jsonMap.get("diagrams").substring(1, jsonMap.get("diagrams").length() - 1).split("\\}\\,\\{");
+            for (int i = 0; i < diagramMapArray.length; i++) {
+                if (i > 0) {
+                    diagramMapArray[i] = "{" + diagramMapArray[i];
+                }
+                
+                if (i < diagramMapArray.length - 1) {
+                    diagramMapArray[i] = diagramMapArray[i] + "}";
+                }
+            }
+            
+        System.out.println(jsonMap);
+        System.out.println(Arrays.toString(diagramMapArray));
+
+            for (int i = 0; i < diagramMapArray.length; i++) {
+                Map<String, String> diagramMap = objectMapper.readValue(diagramMapArray[i], typeReference);
+                System.out.println(diagramMap);
+                LinkedList<Field> fields = new LinkedList<>();
+                LinkedList<Method> methods = new LinkedList<>();
+                if (diagramMap.get("fields") != null) {
+                    String fieldsString = diagramMap.get("fields");
+                    String[] fieldsArray = fieldsString.substring(1, fieldsString.length() - 1).split(",");
+                    fields = Arrays.stream(fieldsArray)
+                        .map(str -> new Field(str))
+                        .collect(Collectors.toCollection(LinkedList::new));
+                }
+
+                if (diagramMap.get("methods") != null) {
+                    String methodsString = diagramMap.get("methods");
+                    String[] methodsArray = methodsString.substring(1, methodsString.length() - 1).split(",");
+                    methods = Arrays.stream(methodsArray)
+                        .map(str -> new Method(str))
+                        .collect(Collectors.toCollection(LinkedList::new));
+                }
+
+                int id = Integer.parseInt(diagramMap.get("classId"));
+                // class
+                if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
+                && (diagramMap.get("isAbstract").equals("false"))) {
+                    if (this.getDiagram(id) != null) {
+                        this.updateDiagram(id, new ClassDiagram(
+                            diagramMap.get("className"),
+                            id,
+                            false,
+                            fields,
+                            methods,
+                            (int) Double.parseDouble(diagramMap.get("xPosition")),
+                            (int) Double.parseDouble(diagramMap.get("yPosition")),
+                            (int) Double.parseDouble(diagramMap.get("xSize")),
+                            (int) Double.parseDouble(diagramMap.get("ySize"))
+                        ));
+                    } else {
+                        this.addDiagram(new ClassDiagram(
+                            diagramMap.get("className"),
+                            id,
+                            false,
+                            fields,
+                            methods,
+                            (int) Double.parseDouble(diagramMap.get("xPosition")),
+                            (int) Double.parseDouble(diagramMap.get("yPosition")),
+                            (int) Double.parseDouble(diagramMap.get("xSize")),
+                            (int) Double.parseDouble(diagramMap.get("ySize"))
+                        ));
+                    }
+
+
+                // abstract class
+                } else if ((diagramMap.get("fields") != null) && (diagramMap.get("methods") != null)
+                && (diagramMap.get("isAbstract").equals("true"))) {
+                    if (this.getDiagram(id) != null) {
+                        this.updateDiagram(id, new ClassDiagram(
+                            diagramMap.get("className"),
+                            id,
+                            true,
+                            fields,
+                            methods,
+                            (int) Double.parseDouble(diagramMap.get("xPosition")),
+                            (int) Double.parseDouble(diagramMap.get("yPosition")),
+                            (int) Double.parseDouble(diagramMap.get("xSize")),
+                            (int) Double.parseDouble(diagramMap.get("ySize"))
+                        ));
+                    } else {
+                        this.addDiagram(new ClassDiagram(
+                            diagramMap.get("className"),
+                            id,
+                            true,
+                            fields,
+                            methods,
+                            (int) Double.parseDouble(diagramMap.get("xPosition")),
+                            (int) Double.parseDouble(diagramMap.get("yPosition")),
+                            (int) Double.parseDouble(diagramMap.get("xSize")),
+                            (int) Double.parseDouble(diagramMap.get("ySize"))
+                        ));
+                    }
+                // interface
+                } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") != null)) {
+                    if (this.getDiagram(id) != null) {
+                        this.updateDiagram(id, new InterfaceDiagram(
+                            diagramMap.get("className"),
+                            id,
+                            methods,
+                            (int) Double.parseDouble(diagramMap.get("xPosition")),
+                            (int) Double.parseDouble(diagramMap.get("yPosition")),
+                            (int) Double.parseDouble(diagramMap.get("xSize")),
+                            (int) Double.parseDouble(diagramMap.get("ySize"))
+                        ));
+                    } else {
+                        this.addDiagram(new InterfaceDiagram(
+                            diagramMap.get("className"),
+                            id,
+                            methods,
+                            (int) Double.parseDouble(diagramMap.get("xPosition")),
+                            (int) Double.parseDouble(diagramMap.get("yPosition")),
+                            (int) Double.parseDouble(diagramMap.get("xSize")),
+                            (int) Double.parseDouble(diagramMap.get("ySize"))
+                        ));
+                    }
+                // exception
+                } else if ((diagramMap.get("fields") == null) && (diagramMap.get("methods") == null)) {
+                    if (this.getDiagram(id) != null) {
+                        this.updateDiagram(id, new ExceptionDiagram(
+                            diagramMap.get("className"),
+                            id,
+                            (int) Double.parseDouble(diagramMap.get("xPosition")),
+                            (int) Double.parseDouble(diagramMap.get("yPosition")),
+                            (int) Double.parseDouble(diagramMap.get("xSize")),
+                            (int) Double.parseDouble(diagramMap.get("ySize"))
+                        ));
+                    } else {
+                        this.addDiagram(new ExceptionDiagram(
+                            diagramMap.get("className"),
+                            id,
+                            (int) Double.parseDouble(diagramMap.get("xPosition")),
+                            (int) Double.parseDouble(diagramMap.get("yPosition")),
+                            (int) Double.parseDouble(diagramMap.get("xSize")),
+                            (int) Double.parseDouble(diagramMap.get("ySize"))
+                        ));
+                    }
+                }
+            }
+        }
+
+        for (Diagram diagram : this.getAllDiagrams()) {
+            System.out.println(diagram.getName());
+            System.out.println(diagram.getXPosition());
+            System.out.println(diagram.getYPosition());
+            System.out.println(diagram.getXSize());
+            System.out.println(diagram.getYSize());
+        }
+
+        System.out.println(this.getAllDiagrams());
+        
+        // GETTING ARROW INFORMATION
+
+        // splitting into individual arrow objects
+        if (!jsonString.contains("\"arrows\":\"[]\"")) {
+            
+            String[] arrowMapArray = jsonMap.get("arrows").substring(1, jsonMap.get("arrows").length() - 1).split("\\}\\,\\{");
+            for (int i = 0; i < arrowMapArray.length; i++) {
+                if (i > 0) {
+                    arrowMapArray[i] = "{" + arrowMapArray[i];
+                }
+                
+                if (i < arrowMapArray.length - 1) {
+                    arrowMapArray[i] = arrowMapArray[i] + "}";
+                }
+            }
+
+            for (String arrowObject : arrowMapArray) {
+                Map<String, String> arrowMap = objectMapper.readValue(arrowObject, typeReference);
+
+                String xPointsString = arrowMap.get("xPoints");
+                String[] xPointsArray = xPointsString.substring(1, xPointsString.length() - 1).split(",");
+                ArrayList<Integer> xPoints = Arrays.stream(xPointsArray)
+                    .mapToDouble(Double::parseDouble)
+                    .mapToInt(d -> (int) d)
+                    .boxed()
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+                String yPointsString = arrowMap.get("yPoints");
+                String[] yPointsArray = yPointsString.substring(1, yPointsString.length() - 1).split(",");
+                ArrayList<Integer> yPoints = Arrays.stream(yPointsArray)
+                    .mapToDouble(Double::parseDouble)
+                    .mapToInt(d -> (int) d)
+                    .boxed()
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+
+                Diagram origin;
+                Diagram destination;
+                if (arrowMap.get("origin") != null) {
+                    origin = this.getDiagram(Integer.parseInt(arrowMap.get("origin")));
+                } else {
+                    origin = null;
+                }
+
+                if (arrowMap.get("destination") != null) {
+                    destination = this.getDiagram(Integer.parseInt(arrowMap.get("destination")));
+                } else {
+                    destination = null;
+                }
+
+                if (this.getArrow(Integer.parseInt(arrowMap.get("arrowId"))) != null) {
+                    this.updateArrow(Integer.parseInt(arrowMap.get("arrowId")), new Arrow(
+                        origin,
+                        destination,
+                        "\"" + arrowMap.get("arrowType") + "\"",
+                        xPoints,
+                        yPoints
+                    ));
+                } else {
+                    this.addArrow(Integer.parseInt(arrowMap.get("arrowId")), new Arrow(
+                        origin,
+                        destination,
+                        "\"" + arrowMap.get("arrowType") + "\"",
+                        xPoints,
+                        yPoints
+                    ));
+                }
+            }
+        }
     }
 
     /**
