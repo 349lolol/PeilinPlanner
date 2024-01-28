@@ -187,9 +187,11 @@ collaborateForm.addEventListener("submit", (e) => {
 
 const addProjectListeners = () => {
     const projects = document.querySelectorAll(".project")
+    console.log(projects)
     projects.forEach(project => project.addEventListener("click", (e) => {
-                    
-        window.localStorage.setItem("projectName", e.target.parentNode.id);
+                    // TODO: FIX THIS
+            
+        window.localStorage.setItem("projectName", project.id);
         window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
     }))
 }

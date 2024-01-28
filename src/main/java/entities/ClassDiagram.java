@@ -19,6 +19,7 @@ public class ClassDiagram extends Diagram {
      * ClassDiagram
      * Constructor for the ClassDiagram class
      * @param name the name of the class
+     * @param id the id of the class
      * @param isAbstract the abstract status of the class
      * @param fields the fields of the class
      * @param methods the methods of the class
@@ -27,9 +28,9 @@ public class ClassDiagram extends Diagram {
      * @param xSize the x size of the class
      * @param ySize the y size of the class
      */
-    public ClassDiagram(String name, boolean isAbstract, LinkedList<Field> fields, LinkedList<Method> methods, int xPosition,
+    public ClassDiagram(String name, int id, boolean isAbstract, LinkedList<Field> fields, LinkedList<Method> methods, int xPosition,
     int yPosition, int xSize, int ySize) {
-        super(name, xPosition, yPosition, xSize, ySize);
+        super(name, id, xPosition, yPosition, xSize, ySize);
         this.isAbstract = isAbstract;
         this.fields = fields;
         this.methods = methods;
@@ -41,6 +42,7 @@ public class ClassDiagram extends Diagram {
      */
     public String toJson(){
         String data = "{\"name\": \"" + getName() + "\", ";
+        data = data + "\"id\": " + super.getId() + ", ";
         data = data + "\"xPosition\": " + super.getXPosition() + ", ";
         data = data + "\"yPosition\": " + super.getYPosition() + ", ";
         data = data + "\"xSize\": " + super.getXSize() + ", ";
@@ -88,8 +90,8 @@ public class ClassDiagram extends Diagram {
 
     /**
      * getName
-     * returns the name of the exception
-     * @return the name of the exception
+     * returns the name of the class
+     * @return the name of the class
      */
     @Override
     public String getName() {
@@ -98,12 +100,32 @@ public class ClassDiagram extends Diagram {
 
     /**
      * setName
-     * updates the name of the exception
-     * @param name the new name of the exception
+     * updates the name of the class
+     * @param name the new name of the class
      */
     @Override
     public void setName(String name) {
         super.setName(name);
+    }
+
+    /**
+     * getId
+     * returns the id of the class
+     * @return the id of the class
+     */
+    @Override
+    public int getId() {
+        return super.getId();
+    }
+
+    /**
+     * setId
+     * updates the id of the class
+     * @param name the new id of the class
+     */
+    @Override
+    public void setId(int id) {
+        super.setId(id);
     }
 
         /**

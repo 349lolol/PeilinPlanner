@@ -17,14 +17,15 @@ public class InterfaceDiagram extends Diagram {
      * InterfaceDiagram
      * Constructor for the InterfaceDiagram class
      * @param name the name of the interface
+     * @param id the id of the interface
      * @param methods the methods of the interface
-     * @param xPosition the x position of the top left of the class
-     * @param yPosition the y position of the top left of the class
-     * @param xSize the x size of the class
-     * @param ySize the y size of the class
+     * @param xPosition the x position of the top left of the interface
+     * @param yPosition the y position of the top left of the interface
+     * @param xSize the x size of the interface
+     * @param ySize the y size of the interface
      */
-    public InterfaceDiagram(String name, LinkedList<Method> methods, int xPosition, int yPosition, int xSize, int ySize) {
-        super(name, xPosition, yPosition, xSize, ySize);
+    public InterfaceDiagram(String name, int id, LinkedList<Method> methods, int xPosition, int yPosition, int xSize, int ySize) {
+        super(name, id, xPosition, yPosition, xSize, ySize);
         this.methods = methods;
         
     }
@@ -37,6 +38,7 @@ public class InterfaceDiagram extends Diagram {
 
     public String toJson(){
         String data = "{\"name\": \"" + getName() + "\", ";
+        data = data + "\"id\": " + super.getId() + ", ";
         data = data + "\"xPosition\": " + super.getXPosition() + ", ";
         data = data + "\"yPosition\": " + super.getYPosition() + ", ";
         data = data + "\"xSize\": " + super.getXSize() + ", ";
@@ -57,8 +59,8 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * getName
-     * returns the name of the exception
-     * @return the name of the exception
+     * returns the name of the interface
+     * @return the name of the interface
      */
     @Override
     public String getName() {
@@ -67,18 +69,38 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * setName
-     * updates the name of the exception
-     * @param name the new name of the exception
+     * updates the name of the interface
+     * @param name the new name of the interface
      */
     @Override
     public void setName(String name) {
         super.setName(name);
     }
 
+    /**
+     * getId
+     * returns the id of the interface
+     * @return the id of the interface
+     */
+    @Override
+    public int getId() {
+        return super.getId();
+    }
+
+    /**
+     * setId
+     * updates the id of the interface
+     * @param name the new id of the interface
+     */
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+    }
+
         /**
      * getXPosition
-     * returns the x position of the top left of the class
-     * @return the x position of the top left of the class
+     * returns the x position of the top left of the interface
+     * @return the x position of the top left of the interface
      */
     @Override
     public int getXPosition() {
@@ -87,8 +109,8 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * setXPosition
-     * updates the x position of the top left of the class
-     * @param xPosition the new x position of the top left of the class
+     * updates the x position of the top left of the interface
+     * @param xPosition the new x position of the top left of the interface
      */
     @Override
     public void setXPosition(int xPosition) {
@@ -97,8 +119,8 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * getYPosition
-     * returns the y position of the top left of the class
-     * @return the y position of the top left of the class
+     * returns the y position of the top left of the interface
+     * @return the y position of the top left of the interface
      */
     @Override
     public int getYPosition() {
@@ -107,8 +129,8 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * setYPosition
-     * updates the y position of the top left of the class
-     * @param xPosition the new y position of the top left of the class
+     * updates the y position of the top left of the interface
+     * @param xPosition the new y position of the top left of the interface
      */
     @Override
     public void setYPosition(int yPosition) {
@@ -117,8 +139,8 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * getXSize
-     * returns the x size  of the class
-     * @return the x size of the class
+     * returns the x size  of the interface
+     * @return the x size of the interface
      */
     @Override
     public int getXSize() {
@@ -127,8 +149,8 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * setXSize
-     * updates the x size of the class
-     * @param xPosition the new x size of the class
+     * updates the x size of the interface
+     * @param xPosition the new x size of the interface
      */
     @Override
     public void setXSize(int xSize) {
@@ -137,8 +159,8 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * getYSize
-     * returns the y size  of the class
-     * @return the y size of the class
+     * returns the y size  of the interface
+     * @return the y size of the interface
      */
     @Override
     public int getYSize() {
@@ -147,8 +169,8 @@ public class InterfaceDiagram extends Diagram {
 
     /**
      * setYSize
-     * updates the y size of the class
-     * @param xPosition the new y size of the class
+     * updates the y size of the interface
+     * @param xPosition the new y size of the interface
      */
     @Override
     public void setYSize(int ySize) {
@@ -195,7 +217,7 @@ public class InterfaceDiagram extends Diagram {
         /**
      * methodsToJson
      * converts all methods into JSON
-     * @return a String in JSON representing the methods of the class diagram
+     * @return a String in JSON representing the methods of the interface diagram
      */
     public String methodsToJson() {
         StringBuilder methodsJson = new StringBuilder();

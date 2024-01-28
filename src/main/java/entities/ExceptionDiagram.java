@@ -14,13 +14,14 @@ public class ExceptionDiagram extends Diagram {
      * ExceptionDiagram
      * Constructor for the ExceptionDiagram class
      * @param name the name of the exception
-     * @param xPosition the x position of the top left of the class
-     * @param yPosition the y position of the top left of the class
-     * @param xSize the x size of the class
-     * @param ySize the y size of the class
+     * @param id the id of the exception
+     * @param xPosition the x position of the top left of the exception
+     * @param yPosition the y position of the top left of the exception
+     * @param xSize the x size of the exception
+     * @param ySize the y size of the exception
      */
-    public ExceptionDiagram(String name, int xPosition, int yPosition, int xSize, int ySize) {
-        super(name, xPosition, yPosition, xSize, ySize);
+    public ExceptionDiagram(String name, int id, int xPosition, int yPosition, int xSize, int ySize) {
+        super(name, id, xPosition, yPosition, xSize, ySize);
     }
 
     /**
@@ -30,6 +31,7 @@ public class ExceptionDiagram extends Diagram {
      */
     public String toJson(){
         String data = "{\"name\": \"" + getName() + "\", ";
+        data = data + "\"id\": " + super.getId() + ", ";
         data = data + "\"xPosition\": " + super.getXPosition() + ", ";
         data = data + "\"yPosition\": " + super.getYPosition() + ", ";
         data = data + "\"xSize\": " + super.getXSize() + ", ";
@@ -58,9 +60,29 @@ public class ExceptionDiagram extends Diagram {
     }
 
         /**
+     * getId
+     * returns the id of the exception
+     * @return the id of the exception
+     */
+    @Override
+    public int getId() {
+        return super.getId();
+    }
+
+    /**
+     * setId
+     * updates the id of the exception
+     * @param name the new id of the exception
+     */
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+    }
+
+    /**
      * getXPosition
-     * returns the x position of the top left of the class
-     * @return the x position of the top left of the class
+     * returns the x position of the top left of the exception
+     * @return the x position of the top left of the exception
      */
     @Override
     public int getXPosition() {
@@ -69,8 +91,8 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * setXPosition
-     * updates the x position of the top left of the class
-     * @param xPosition the new x position of the top left of the class
+     * updates the x position of the top left of the exception
+     * @param xPosition the new x position of the top left of the exception
      */
     @Override
     public void setXPosition(int xPosition) {
@@ -79,8 +101,8 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * getYPosition
-     * returns the y position of the top left of the class
-     * @return the y position of the top left of the class
+     * returns the y position of the top left of the exception
+     * @return the y position of the top left of the exception
      */
     @Override
     public int getYPosition() {
@@ -89,8 +111,8 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * setYPosition
-     * updates the y position of the top left of the class
-     * @param xPosition the new y position of the top left of the class
+     * updates the y position of the top left of the exception
+     * @param xPosition the new y position of the top left of the exception
      */
     @Override
     public void setYPosition(int yPosition) {
@@ -99,8 +121,8 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * getXSize
-     * returns the x size  of the class
-     * @return the x size of the class
+     * returns the x size  of the exception
+     * @return the x size of the exception
      */
     @Override
     public int getXSize() {
@@ -109,8 +131,8 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * setXSize
-     * updates the x size of the class
-     * @param xPosition the new x size of the class
+     * updates the x size of the exception
+     * @param xPosition the new x size of the exception
      */
     @Override
     public void setXSize(int xSize) {
@@ -119,8 +141,8 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * getYSize
-     * returns the y size  of the class
-     * @return the y size of the class
+     * returns the y size  of the exception
+     * @return the y size of the exception
      */
     @Override
     public int getYSize() {
@@ -129,8 +151,8 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * setYSize
-     * updates the y size of the class
-     * @param xPosition the new y size of the class
+     * updates the y size of the exception
+     * @param xPosition the new y size of the exception
      */
     @Override
     public void setYSize(int ySize) {

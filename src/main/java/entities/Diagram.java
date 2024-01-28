@@ -10,6 +10,7 @@ package entities;
 
 public abstract class Diagram {
     private String name;
+    private int id;
     private int xPosition;
     private int yPosition;
     private int xSize;
@@ -19,13 +20,15 @@ public abstract class Diagram {
      * Diagram
      * constructs a new diagram
      * @param name name of diagram
+     * @param id id of the diagram
      * @param xPosition x position of diagram
      * @param yPosition y position of diagram
      * @param xSize x size of diagram
      * @param ySize y size of diagram
      */
-    public Diagram(String name, int xPosition, int yPosition, int xSize, int ySize) {
+    public Diagram(String name, int id, int xPosition, int yPosition, int xSize, int ySize) {
         this.name = name;
+        this.id = id;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.xSize = xSize;
@@ -34,8 +37,8 @@ public abstract class Diagram {
 
     /**
      * getName
-     * returns the name of the exception
-     * @return the name of the exception
+     * returns the name of the diagram
+     * @return the name of the diagram
      */
     public String getName() {
         return name;
@@ -43,17 +46,35 @@ public abstract class Diagram {
 
     /**
      * setName
-     * updates the name of the exception
-     * @param name the new name of the exception
+     * updates the name of the diagram
+     * @param name the new name of the diagram
      */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * getId
+     * returns the id of the diagram
+     * @return the id of the diagram
+     */
+    public int getId() {
+        return this.id;
+    }
+
+    /**
+     * setId
+     * updates the id of the diagram
+     * @param name the new id of the diagram
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
         /**
      * getXPosition
-     * returns the x position of the top left of the class
-     * @return the x position of the top left of the class
+     * returns the x position of the top left of the diagram
+     * @return the x position of the top left of the diagram
      */
     public int getXPosition() {
         return this.xPosition;
@@ -61,8 +82,8 @@ public abstract class Diagram {
 
     /**
      * setXPosition
-     * updates the x position of the top left of the class
-     * @param xPosition the new x position of the top left of the class
+     * updates the x position of the top left of the diagram
+     * @param xPosition the new x position of the top left of the diagram
      */
     public void setXPosition(int xPosition) {
         this.xPosition = xPosition;
@@ -70,8 +91,8 @@ public abstract class Diagram {
 
     /**
      * getYPosition
-     * returns the y position of the top left of the class
-     * @return the y position of the top left of the class
+     * returns the y position of the top left of the diagram
+     * @return the y position of the top left of the diagram
      */
     public int getYPosition() {
         return this.yPosition;
@@ -79,8 +100,8 @@ public abstract class Diagram {
 
     /**
      * setYPosition
-     * updates the y position of the top left of the class
-     * @param xPosition the new y position of the top left of the class
+     * updates the y position of the top left of the diagram
+     * @param xPosition the new y position of the top left of the diagram
      */
     public void setYPosition(int yPosition) {
         this.yPosition = yPosition;
@@ -97,8 +118,8 @@ public abstract class Diagram {
 
     /**
      * setXSize
-     * updates the x size of the class
-     * @param xPosition the new x size of the class
+     * updates the x size of the diagram
+     * @param xPosition the new x size of the diagram
      */
     public void setXSize(int xSize) {
         this.xSize = xSize;
@@ -106,8 +127,8 @@ public abstract class Diagram {
 
     /**
      * getYSize
-     * returns the y size  of the class
-     * @return the y size of the class
+     * returns the y size  of the diagram
+     * @return the y size of the diagram
      */
     public int getYSize() {
         return this.ySize;
@@ -115,8 +136,8 @@ public abstract class Diagram {
 
     /**
      * setYSize
-     * updates the y size of the class
-     * @param xPosition the new y size of the class
+     * updates the y size of the diagram
+     * @param xPosition the new y size of the diagram
      */
     public void setYSize(int ySize) {
         this.ySize = ySize;

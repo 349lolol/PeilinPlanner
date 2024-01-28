@@ -60,8 +60,24 @@ public class Arrow {
     }
 
     public String toJson() {
-        String data = "{ \"origin\": " + origin + ", ";
-        data = data + "\"destination\": " + destination + ", ";
+        String data = "{ \"origin\": ";
+
+        if (origin == null) {
+            data = data + origin;
+        } else {
+            data = data + origin.getId();
+        }
+
+        data = data + ", ";
+        data = data + "\"destination\": ";
+        
+        if (destination == null) {
+            data = data + destination;
+        } else {
+            data = data + destination.getId();
+        }
+        
+        data = data + ", ";
         data = data + "\"arrowType\": " + arrowType + ", ";
         data = data + "\"xPoints\": " + arrayListToJson(xPoints) + ", ";
         data = data + "\"yPoints\": " + arrayListToJson(yPoints) + "}";

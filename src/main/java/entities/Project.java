@@ -77,61 +77,57 @@ public class Project {
         return lines;
     }
 
+    
+    public String jsonToJava() {
+
+    }
+
     /**
     * javaToJson
     * converts the project class into JSON
     * @return the project class as a JSON string
     */
     public String javaToJson() {
+        System.out.println("DIGRAMS : " + this.diagrams);
         String data = "{" + "\"ProjectName\":\""  + this.projectName + "\",";
         data = data + "\"diagramIdCount\":"  + this.diagramIdCount + ",";
         data = data + "\"arrowIdCount\":"  + this.arrowIdCount + ",";
-        data = data + "\"classDiagrams\":[";
-        for(int i = 1; i < diagramIdCount + 1; i++) {
+        data = data + "\"classDiagrams\":[ ";
+        for(int i = 0; i < diagramIdCount; i++) {
             if(this.diagrams.get(i) instanceof ClassDiagram) {
                 data = data + ((ClassDiagram)this.diagrams.get(i)).toJson();
-
-                if (i != diagramIdCount) {
-                    data = data + ",";
-                }
-            }
-        }
-        data = data.substring(0, data.length());
-        data = data + "],";
-        data = data + "\"interfaceDiagrams\":[";
-        for(int i = 1; i < diagramIdCount + 1; i++) {
-            if(this.diagrams.get(i) instanceof InterfaceDiagram) {
-                data = data + ((InterfaceDiagram)this.diagrams.get(i)).toJson();
-                
-                if (i != diagramIdCount) {
-                    data = data + ",";
-                }
-            }
-        }
-        data = data.substring(0, data.length());
-        data = data + "],";
-        data = data + "\"exceptionDiagrams\":[";
-        for(int i = 1; i < diagramIdCount + 1; i++) {
-            if(this.diagrams.get(i) instanceof ExceptionDiagram) {
-                data = data + "{" + ((ExceptionDiagram)this.diagrams.get(i)).toJson();
-
-                if (i != diagramIdCount) {
-                    data = data + ",";
-                }
-            }
-        }
-        data = data.substring(0, data.length());
-        data = data + "],";
-        data = data + "\"arrows\":[";
-        for(int i = 0; i < arrowIdCount; i++) {
-            data = data + this.arrows.get(i).toJson();
-
-            if (i != arrowIdCount - 1) {
                 data = data + ",";
             }
         }
-        data = data.substring(0, data.length());
+        data = data.substring(0, data.length() - 1);
+        data = data + "],";
+        data = data + "\"interfaceDiagrams\":[ ";
+        for(int i = 0; i < diagramIdCount; i++) {
+            if(this.diagrams.get(i) instanceof InterfaceDiagram) {
+                data = data + ((InterfaceDiagram)this.diagrams.get(i)).toJson();
+                data = data + ",";
+            }
+        }
+        data = data.substring(0, data.length() - 1);
+        data = data + "],";
+        data = data + "\"exceptionDiagrams\":[ ";
+        for(int i = 0; i < diagramIdCount; i++) {
+            if(this.diagrams.get(i) instanceof ExceptionDiagram) {
+                data = data + "{" + ((ExceptionDiagram)this.diagrams.get(i)).toJson();
+                data = data + ",";
+            }
+        }
+        data = data.substring(0, data.length() - 1);
+        data = data + "],";
+        data = data + "\"arrows\":[ ";
+        for(int i = 0; i < arrowIdCount; i++) {
+            data = data + this.arrows.get(i).toJson();
+            data = data + ",";
+        }
+        data = data.substring(0, data.length() - 1);
         data = data + "]}";
+
+        System.out.println(data);
         return data;
         
     }
@@ -159,7 +155,9 @@ public class Project {
      * @param diagram diagram being added
      */
     public void addDiagram(Diagram diagram) {   
-        diagrams.put(diagramIdCount, diagram);
+        System.out.println("ADDING " + diagram);
+        diagrams.put(diagram.getId(), diagram);
+        System.out.println(this.diagrams);
     }
 
     /**

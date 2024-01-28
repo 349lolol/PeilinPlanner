@@ -376,11 +376,11 @@ let y = e.y - grid.offsetTop;
         selectedArrow = arrow;
       }
 
-      // if (i === arrow.xPoints.length - 1) {
-      //   arrow.destination = null;
-      // } else if (i === 0) {
-      //   arrow.origin = null;
-      // }
+      if (i === arrow.xPoints.length - 1) {
+        arrow.destination = null;
+      } else if (i === 0) {
+        arrow.origin = null;
+      }
     }
   }
 })
@@ -522,12 +522,22 @@ grid.addEventListener('mouseup', (e) => {
 
 // ADDING NEW DIAGRAMS
 
+const getDiagramByID = (id) => {
+  for (let diagram of diagrams.data) {
+    console.log(diagram);
+    if (diagram.external.id === id) {
+      return diagram;
+    }
+  }
+
+  return null;
+}
 
 let diagramNum = 0;
 
-const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText="", fieldsText="") => {
+const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText="", fieldsText="", diagramId = diagramID) => {
   const diagram = document.createElement("div");
-  diagram.id = "diagram" + diagramID;
+  diagram.id = "diagram" + diagramId;
   diagram.classList.add("diagram");
 
   diagram.style.cssText = `
@@ -764,6 +774,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
 
 const snap = () => {
   const elements = document.querySelectorAll('.diagram');
+  console.dir(elements)
 
   elements.forEach((element) => {
   let x = 0;
@@ -797,9 +808,13 @@ const snap = () => {
       y += event.dy / scale;
 
       event.target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+      console.log(diagrams.data)
+      const diagram = getDiagramByID(Number(element.id.slice(7)))
+      console.log(Number(element.id.slice(7)))
+      console.log(diagram)
 
-      diagrams.data[Number(element.id.slice(7))].external.xPosition = x + (grid.offsetWidth - diagrams.data[Number(element.id.slice(7))].external.width)/2;
-      diagrams.data[Number(element.id.slice(7))].external.yPosition = y + (grid.offsetHeight - diagrams.data[Number(element.id.slice(7))].external.height)/2;
+      diagram.external.xPosition = x + (grid.offsetWidth - diagram.external.width)/2;
+      diagram.external.yPosition = y + (grid.offsetHeight - diagram.external.height)/2;
     })
   })
 }
@@ -808,7 +823,6 @@ document.querySelector("#addclass > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
    ((grid.offsetHeight - (20*11*scale))/2), defaultDiagramWidth,
    "CLASSDIAGRAM")
-  
   
   snap();
 })
@@ -856,9 +870,9 @@ const loadUML = async (username, projectName) => {
       })
       .then(res => {
 
+        console.log(res)
 
         for (let classDiagram of res.classDiagrams) {
-
           let fieldsText = "";
           for (let field of classDiagram.fields) {
             fieldsText += field + "\n";
@@ -870,11 +884,11 @@ const loadUML = async (username, projectName) => {
           }
 
           if (!classDiagram.isAbstract) {
-            addDiagram(diagrams, classDiagram.xPosition, classDiagram.yPosition, classDiagram.width, "CLASSDIAGRAM", classDiagram.name,
-             methodsText, fieldsText)
+            addDiagram(diagrams, classDiagram.xPosition, classDiagram.yPosition, classDiagram.xSize, "CLASSDIAGRAM", classDiagram.name,
+             methodsText, fieldsText, classDiagram.id)
           } else {
-            addDiagram(diagrams, classDiagram.xPosition, classDiagram.yPosition, classDiagram.width, "ABSTRACTCLASSDIAGRAM", classDiagram.name,
-            methodsText, fieldsText)
+            addDiagram(diagrams, classDiagram.xPosition, classDiagram.yPosition, classDiagram.xSize, "ABSTRACTCLASSDIAGRAM", classDiagram.name,
+            methodsText, fieldsText, classDiagram.id)
           }
         }
 
@@ -885,13 +899,13 @@ const loadUML = async (username, projectName) => {
             methodsText += method + "\n";
           }
 
-          addDiagram(diagrams, interfaceDiagram.xPosition, interfaceDiagram.yPosition, interfaceDiagram.width, "INTERFACEDIAGRAM", interfaceDiagram.name,
-          methodsText)
+          addDiagram(diagrams, interfaceDiagram.xPosition, interfaceDiagram.yPosition, interfaceDiagram.xSize, "INTERFACEDIAGRAM", interfaceDiagram.name,
+          methodsText, interfaceDiagram.id)
         }
         
         for (let exceptionDiagram of res.exceptionDiagrams) {
 
-          addDiagram(diagrams, exceptionDiagram.xPosition, exceptionDiagram.yPosition, exceptionDiagram.width, "EXCEPTIONDIAGRAM", exceptionDiagram.name)
+          addDiagram(diagrams, exceptionDiagram.xPosition, exceptionDiagram.yPosition, exceptionDiagram.xSize, "EXCEPTIONDIAGRAM", exceptionDiagram.name, exceptionDiagram.id)
         }
 
         for (let arrow of res.arrows) {
@@ -901,13 +915,15 @@ const loadUML = async (username, projectName) => {
       })
       .catch(err => {
         console.log(err)
-          console.log("ERROR RETRIEVING USER DATA")
-          window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
+        console.log("ERROR RETRIEVING USER DATA")
+        // window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
       })
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  loadUML(window.localStorage.getItem("username"), window.localStorage.getItem("projectName"))
+window.addEventListener("DOMContentLoaded", async () => {
+  await loadUML(window.localStorage.getItem("username"), window.localStorage.getItem("projectName"))
+  snap()
+  console.log(diagrams)
 })
 
 // SENDING BACK UML INFO TO THE SERVER
@@ -921,6 +937,7 @@ const saveUML = async () => {
   for (let diagram of diagrams.data) {
     if (diagram.external.type === "CLASSDIAGRAM") {
       classes.push({
+        type: "CLASS",
         classId: diagram.external.id,
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
@@ -934,6 +951,7 @@ const saveUML = async () => {
     } else if (diagram.external.type === "ABSTRACTCLASSDIAGRAM") {
       
       classes.push({
+        type: "ABSTRACTCLASS",
         classId: diagram.external.id,
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
@@ -947,6 +965,7 @@ const saveUML = async () => {
     } else if (diagram.external.type === "INTERFACEDIAGRAM") {
       
       classes.push({
+        type: "INTERFACE",
         classId: diagram.external.id,
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
@@ -959,6 +978,7 @@ const saveUML = async () => {
     } else if (diagram.external.type === "EXCEPTIONDIAGRAM") {
       
       classes.push({
+        type: "EXCEPTION",
         classId: diagram.external.id,
         className: document.querySelector(`#diagram${diagram.external.id} > .name`).value,
         xPosition: diagram.external.xPosition,
@@ -983,6 +1003,15 @@ const saveUML = async () => {
       yPoints: JSON.stringify(arrow.yPoints)
     })
   }
+
+  console.log("SENDING: ")
+  console.log({
+    projectName: window.localStorage.getItem("projectName"),
+    diagramCount: diagramID,
+    arrowCount: arrowID,
+    diagrams: classes,
+    arrows: arrows
+  })
 
   await fetch("/frontend/saveUML", {
     method: "POST",
@@ -1045,6 +1074,7 @@ document.querySelector("#menu > form:nth-of-type(1)").addEventListener("submit",
 
 document.querySelector("#homeForm").addEventListener("submit", (e) => {
   e.preventDefault();
+  window.localStorage.setItem("projectName", "");
   window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
 })
 
