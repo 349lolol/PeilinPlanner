@@ -853,7 +853,6 @@ document.querySelector("#addexception > img").addEventListener("click", (e) => {
 
 snap();
 
-
 const loadUML = async (username, projectName) => {
   await fetch("/frontend/loadUML", {
       method: "POST",
@@ -874,12 +873,16 @@ const loadUML = async (username, projectName) => {
         for (let classDiagram of res.classDiagrams) {
           let fieldsText = "";
           for (let field of classDiagram.fields) {
-            fieldsText += field + "\n";
+            if (field !== "") {
+              fieldsText += field + "\n";
+            }
           }
 
           let methodsText = "";
           for (let method of classDiagram.methods) {
-            methodsText += method + "\n";
+            if (method !== "") {
+              methodsText += method + "\n";
+            }
           }
 
           if (!classDiagram.isAbstract) {
@@ -895,7 +898,9 @@ const loadUML = async (username, projectName) => {
 
           let methodsText = "";
           for (let method of interfaceDiagram.methods) {
-            methodsText += method + "\n";
+            if (method !== "") {
+              methodsText += method + "\n";
+            }
           }
 
           addDiagram(diagrams, interfaceDiagram.xPosition, interfaceDiagram.yPosition, interfaceDiagram.xSize, "INTERFACEDIAGRAM", interfaceDiagram.name,
