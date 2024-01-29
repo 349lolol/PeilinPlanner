@@ -17,6 +17,7 @@ const load = async (username) => {
             return res.json();
         })
         .then(res => {
+            console.log(res)
             for (let projectName in res.projectName) {
                 const projects = document.querySelector(".projects");
 
@@ -50,6 +51,7 @@ const load = async (username) => {
 }
 
 window.addEventListener("DOMContentLoaded", (e) => {
+    console.log("LOADING")
     load(localStorage.getItem("username"))
 })
 

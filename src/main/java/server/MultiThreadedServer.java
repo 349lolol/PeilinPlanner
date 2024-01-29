@@ -36,101 +36,134 @@
      private ServerSocket serverSocket;
      private Socket clientSocket;
      private int clientCounter = 0;
-     private static UserBase userBase = new UserBase(new HashMap<String, User>());
-     private static ProjectBase projectBase = new ProjectBase();
-     private static Assets assets;
+     private UserBase userBase;
+     private ProjectBase projectBase = new ProjectBase();
+     private Assets assets;
      
-     /**
-      * amin method
-      * @param args
-      * @throws Exception
-      */
-     public static void main(String[] args) throws Exception { 
+    //  /**
+    //   * amin method
+    //   * @param args
+    //   * @throws Exception
+    //   */
+    //  public static void main(String[] args) throws Exception { 
  
-         try
-         {   
-             // Reading the object from a file
-             FileInputStream file = new FileInputStream("./userStorage.txt");
-             ObjectInputStream in = new ObjectInputStream(file);
+    //      try
+    //      {   
+    //          // Reading the object from a file
+    //          FileInputStream file = new FileInputStream("./userStorage.txt");
+    //          ObjectInputStream in = new ObjectInputStream(file);
               
-             // Method for deserialization of object
-             userBase = (UserBase)in.readObject();
-             in.close();
-             file.close();
-         }
-         catch(IOException e)
-         {
-             System.out.println("Error deserializing");
-         }
-         try
-         {   
-             // Reading the object from a file
-             File folder = new File("./server/umlStorage/");
-             File[] listOfFiles = folder.listFiles();
+    //          // Method for deserialization of object
+    //          thouserBase = (UserBase) in.readObject();
+    //          in.close();
+    //          file.close();
+    //      }
+    //      catch(IOException e)
+    //      {
+    //          System.out.println("Error deserializing");
+    //      }
+    //      try
+    //      {   
+    //          // Reading the object from a file
+    //          File folder = new File("./server/umlStorage/");
+    //          File[] listOfFiles = folder.listFiles();
  
-             for (File file : listOfFiles) {
-                 if (file.isFile()) {
-                     BufferedReader UMLReader = new BufferedReader(new FileReader(file));
-                     projectBase.addProject(file.getName());
-                     projectBase.getProject(file.getName()).JsonToJava(UMLReader.readLine());
-                     UMLReader.close();
-                 }
-             }
-         }
-         catch(IOException exception)
-         {
-             System.out.println("Error reading in UML diagrams");
-         }
+    //          for (File file : listOfFiles) {
+    //              if (file.isFile()) {
+    //                  BufferedReader UMLReader = new BufferedReader(new FileReader(file));
+    //                  projectBase.addProject(file.getName());
+    //                  projectBase.getProject(file.getName()).jsonToJava(UMLReader.readLine());
+    //                  UMLReader.close();
+    //              }
+    //          }
+    //      }
+    //      catch(IOException exception)
+    //      {
+    //          System.out.println("Error reading in UML diagrams");
+    //      }
  
-         try
-         {   
-             //Saving of object in a file
-             FileOutputStream file = new FileOutputStream("./userStorage.txt");
-             ObjectOutputStream out = new ObjectOutputStream(file);
+    //      try
+    //      {   
+    //          //Saving of object in a file
+    //          FileOutputStream file = new FileOutputStream("./userStorage.txt");
+    //          ObjectOutputStream out = new ObjectOutputStream(file);
               
-             // Method for serialization of object
-             out.writeObject(userBase);
+    //          // Method for serialization of object
+    //          out.writeObject(userBase);
               
-             out.close();
-             file.close();
-         }
-         catch(IOException ex)
-         {
-             System.out.println("Error serializing");
-         }
+    //          out.close();
+    //          file.close();
+    //      }
+    //      catch(IOException ex)
+    //      {
+    //          System.out.println("Error serializing");
+    //      }
  
-         try
-         {   
-             Set<String> keys = projectBase.getAllKeys();
-             // Reading the object from a file
-             for(String key : keys) {
-                 File UMLSave = new File("./server/umlStorage/" + projectBase.getProject(key));
-                 PrintWriter UMLWriter = new PrintWriter(UMLSave);
-                 UMLWriter.print(projectBase.getProject(key).toString());
-                 UMLWriter.close();
-             }
-         }
-         catch(IOException exception)
-         {
-             System.out.println("Error printing UML diagrams");
-         }
+    //      try
+    //      {   
+    //          Set<String> keys = projectBase.getAllKeys();
+    //          // Reading the object from a file
+    //          for(String key : keys) {
+    //              File UMLSave = new File("./server/umlStorage/" + projectBase.getProject(key));
+    //              PrintWriter UMLWriter = new PrintWriter(UMLSave);
+    //              UMLWriter.print(projectBase.getProject(key).toString());
+    //              UMLWriter.close();
+    //          }
+    //      }
+    //      catch(IOException exception)
+    //      {
+    //          System.out.println("Error printing UML diagrams");
+    //      }
+    //  }
+
+     public void setAssets(Assets assets) {
+        this.assets = assets;
      }
 
-     public static void setAssets(Assets assets) {
-        MultiThreadedServer.assets = assets;
+     public synchronized void saveUsers() throws IOException {
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("userStorage.txt"))) {
+            output.writeObject(this.userBase);
+        }
+     }
+
+     public void readUsers() throws IOException, ClassNotFoundException {
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream("userStorage.txt"))) {
+            this.userBase = (UserBase) input.readObject();
+        } catch (EOFException e) {
+            this.userBase = new UserBase(new HashMap<String, User>());
+        }
      }
      
+     public synchronized void saveProjects() throws IOException {
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("projectStorage.txt"))) {
+            output.writeObject(this.projectBase);
+        }
+     }
+
+     public void readProjects() throws IOException, ClassNotFoundException {
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream("projectStorage.txt"))) {
+            this.projectBase = (ProjectBase) input.readObject();
+        } catch (EOFException e) {
+            this.projectBase = new ProjectBase();
+        }
+     }
+
      public void go() throws Exception { 
-         //create a socket with the local IP address and wait for connection request       
-         System.out.println("Waiting for a connection request from a client ...");
-         serverSocket = new ServerSocket(PORT);                //create and bind a socket
-         while(true) {
-             clientSocket = serverSocket.accept();             //wait for connection request
-             clientCounter = clientCounter +1;
-             System.out.println("Client "+clientCounter+" connected");
-             Thread connectionThread = new Thread(new ConnectionHandler(clientSocket));
-             connectionThread.start();                         //start a new thread to handle the connection
-         }
+        this.readUsers();
+        this.readProjects();
+
+        System.out.println(this.userBase);
+        System.out.println(this.projectBase);
+        //create a socket with the local IP address and wait for connection request       
+        System.out.println("Waiting for a connection request from a client ...");
+        serverSocket = new ServerSocket(PORT);                //create and bind a socket
+        while(true) {
+            clientSocket = serverSocket.accept();             //wait for connection request
+            clientCounter = clientCounter +1;
+            System.out.println("Client "+clientCounter+" connected");
+            Thread connectionThread = new Thread(new ConnectionHandler(clientSocket));
+            connectionThread.start();                         //start a new thread to handle the connection
+        }
      }
      
      /**
@@ -266,6 +299,8 @@
                              output.write(content);
          
                              output.flush();   
+
+                             saveUsers();
                          } else {
                              content = "{\"valid\": false}".getBytes(StandardCharsets.UTF_8);
                              output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
@@ -287,6 +322,10 @@
                          String username = usernameValue.substring(1, usernameValue.length() - 2);
  
                          User user = userBase.getUser(username);
+
+                         System.out.println(username);
+                         System.out.println(user);
+                         System.out.println(user.getOwnedProjects());
  
                          Iterator<String> projectIterator = user.getOwnedProjects().iterator();
  
@@ -341,7 +380,13 @@
                          } else if (!userBase.getUser(username).getOwnedProjects().contains(projectName)) {
                              content = "{\"valid\": true}".getBytes();
                              projectBase.addProject(projectName);
-                             userBase.getUser(username).getOwnedProjects().add(projectName);
+                             userBase.addToOwnedProjects(username, projectBase.getProject(projectName));
+
+                             System.out.println("OWNED: ");
+                             System.out.println(userBase.getUser(username).getOwnedProjects());
+
+                             saveUsers();
+                             saveProjects();
                          } else {
                              content = "{\"valid\": false}".getBytes();
                          }
@@ -731,5 +776,5 @@
                  e.printStackTrace();
              }
          }
-     }    
+     }
  }

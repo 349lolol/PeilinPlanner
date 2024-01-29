@@ -9,10 +9,11 @@
 package user;
 
 import java.util.LinkedList;
+import java.io.Serializable;
 import java.util.HashSet;
 
 
-public class User {
+public class User implements Serializable {
     private final String username;
     private final String password;
     private final HashSet<String> ownedProjects;

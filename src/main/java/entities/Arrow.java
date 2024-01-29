@@ -8,9 +8,10 @@
 
 package entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Arrow {
+public class Arrow implements Serializable {
     private Diagram origin;
     private Diagram destination;
     private String arrowType;

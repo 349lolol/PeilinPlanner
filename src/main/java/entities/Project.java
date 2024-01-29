@@ -17,11 +17,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Project {
+public class Project implements Serializable {
     private String projectName;
     private int diagramIdCount;
     private final HashMap<Integer, Diagram> diagrams;

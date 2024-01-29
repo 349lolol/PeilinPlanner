@@ -8,10 +8,11 @@
 
 package entities;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
-public class ProjectBase {
+public class ProjectBase implements Serializable {
     private HashMap<String, Project> projects;
     private HashMap<String, Boolean> isInUse;
 

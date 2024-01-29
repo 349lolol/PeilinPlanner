@@ -11,9 +11,13 @@ package user;
 import java.util.HashMap;
 import java.util.LinkedList;
 import entities.Project;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class UserBase implements Serializable {
+    
     private HashMap<String, User> userBase;
 
     /**

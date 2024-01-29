@@ -8,7 +8,9 @@
 
 package entities;
 
-public abstract class Diagram {
+import java.io.Serializable;
+
+public abstract class Diagram implements Serializable {
     private String name;
     private int id;
     private int xPosition;
