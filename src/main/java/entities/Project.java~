@@ -8,8 +8,6 @@
 
 package entities;
 
-import java.io.IOException;
-
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -102,7 +100,7 @@ public class Project implements Serializable {
      * @throws JsonMappingException
      * @throws JsonProcessingException
      */
-    public void jsonToJava(String jsonString) throws JsonMappingException, JsonProcessingException, IOException {
+    public void jsonToJava(String jsonString) throws JsonMappingException, JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
                          
         String projectString = jsonString.split(",")[0];
