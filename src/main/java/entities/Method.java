@@ -8,7 +8,9 @@
 
 package entities;
 
-public class Method {
+import java.io.Serializable;
+
+public class Method implements Serializable {
     private String data;
 
     /**

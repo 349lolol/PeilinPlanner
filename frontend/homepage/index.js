@@ -197,3 +197,11 @@ const addProjectListeners = () => {
         window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"
     }))
 }
+
+document.querySelector("#logoutForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    window.localStorage.setItem("username", "");
+    window.localStorage.setItem("projectName", "");
+    window.localStorage.setItem("projectsList", "");
+    window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
+  })

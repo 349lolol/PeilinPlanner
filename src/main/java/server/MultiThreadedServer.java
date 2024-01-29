@@ -39,82 +39,6 @@
      private UserBase userBase;
      private ProjectBase projectBase = new ProjectBase();
      private Assets assets;
-     
-    //  /**
-    //   * amin method
-    //   * @param args
-    //   * @throws Exception
-    //   */
-    //  public static void main(String[] args) throws Exception { 
- 
-    //      try
-    //      {   
-    //          // Reading the object from a file
-    //          FileInputStream file = new FileInputStream("./userStorage.txt");
-    //          ObjectInputStream in = new ObjectInputStream(file);
-              
-    //          // Method for deserialization of object
-    //          thouserBase = (UserBase) in.readObject();
-    //          in.close();
-    //          file.close();
-    //      }
-    //      catch(IOException e)
-    //      {
-    //          System.out.println("Error deserializing");
-    //      }
-    //      try
-    //      {   
-    //          // Reading the object from a file
-    //          File folder = new File("./server/umlStorage/");
-    //          File[] listOfFiles = folder.listFiles();
- 
-    //          for (File file : listOfFiles) {
-    //              if (file.isFile()) {
-    //                  BufferedReader UMLReader = new BufferedReader(new FileReader(file));
-    //                  projectBase.addProject(file.getName());
-    //                  projectBase.getProject(file.getName()).jsonToJava(UMLReader.readLine());
-    //                  UMLReader.close();
-    //              }
-    //          }
-    //      }
-    //      catch(IOException exception)
-    //      {
-    //          System.out.println("Error reading in UML diagrams");
-    //      }
- 
-    //      try
-    //      {   
-    //          //Saving of object in a file
-    //          FileOutputStream file = new FileOutputStream("./userStorage.txt");
-    //          ObjectOutputStream out = new ObjectOutputStream(file);
-              
-    //          // Method for serialization of object
-    //          out.writeObject(userBase);
-              
-    //          out.close();
-    //          file.close();
-    //      }
-    //      catch(IOException ex)
-    //      {
-    //          System.out.println("Error serializing");
-    //      }
- 
-    //      try
-    //      {   
-    //          Set<String> keys = projectBase.getAllKeys();
-    //          // Reading the object from a file
-    //          for(String key : keys) {
-    //              File UMLSave = new File("./server/umlStorage/" + projectBase.getProject(key));
-    //              PrintWriter UMLWriter = new PrintWriter(UMLSave);
-    //              UMLWriter.print(projectBase.getProject(key).toString());
-    //              UMLWriter.close();
-    //          }
-    //      }
-    //      catch(IOException exception)
-    //      {
-    //          System.out.println("Error printing UML diagrams");
-    //      }
-    //  }
 
      public void setAssets(Assets assets) {
         this.assets = assets;
@@ -179,7 +103,32 @@
             this.socket = socket;
         }
 
-        private 
+        private void sendResponse(byte[] content) throws IOException {
+            this.sendResponse(content, "application/json");
+        }
+
+        private void sendResponse(byte[] content, String mimeType) throws IOException {
+            output.write(
+                ("HTTP/1.1 200 OK\r\n" +
+                "Content-Type: " + mimeType + "\r\n" +
+                "Vary: Accept-Encoding\r\n" +
+                "Accept-Ranges: none\r\n" +
+                "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
+            );
+
+            output.write(content);
+
+            output.flush();
+        }
+
+        private void sendRedirect(String location) throws IOException {
+            output.write(
+                ("HTTP/1.1 302 Found\r\n" +
+                "Location: " + location + "\r\n").getBytes(StandardCharsets.UTF_8)
+            );
+
+            output.flush();
+        }
  //------------------------------------------------------------------------------        
         @Override
         public void run() {
@@ -189,350 +138,246 @@
 
             List<String> request = new ArrayList<>();
 
+            try {
+                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                output = socket.getOutputStream();
+                String currentLine = input.readLine();
+
+                while ((currentLine != null) && (currentLine.length() != 0)) {
+                    request.add(currentLine);
+                    line++;
+
+                    currentLine = input.readLine();
+                }
+
+                StringBuilder requestBody = new StringBuilder();
+
                 try {
-                    input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    output = socket.getOutputStream();
-                    String currentLine = input.readLine();
+                    while (this.input.ready()) {
+                        requestBody.append((char) this.input.read());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+    
+                // Append request body to the request list
+                request.add(requestBody.toString());
 
-                    while ((currentLine != null) && (currentLine.length() != 0)) {
-                        request.add(currentLine);
-                        line++;
+                String type = request.get(0).split(" ")[0];
+                String url = request.get(0).split(" ")[1];
 
-                        currentLine = input.readLine();
+                for (int i = 1; i < emptyLine - 1; i++) {
+                    header.put(request.get(i).split(": ")[0], request.get(i).split(": ")[1]);
+                }
+
+                // ------------------------- REQUEST HANDLING ------------------------------------
+
+                // WEBPAGE LOADING
+                if ((type.equals("GET")) && ((url.equals("/")) || (url.equals("")))) {
+                    this.sendRedirect("/frontend/loginpage/loginpage.html");
+                }
+
+
+                if ((type.equals("GET")) && (assets.getAssets().containsKey(url))) {
+                    byte[] content = assets.getAssets().get(url);
+                    String mimeType = url.substring(url.lastIndexOf('.') + 1);
+                    if (mimeType.equals("js")) {
+                        mimeType = "javascript";
                     }
 
-                    StringBuilder requestBody = new StringBuilder();
+                    sendResponse(content, "text/" + mimeType);
+                }
 
-                    try {
-                        while (this.input.ready()) {
-                            requestBody.append((char) this.input.read());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return;
-                    }
-        
-                    // Append request body to the request list
-                    request.add(requestBody.toString());
-
-                    String type = request.get(0).split(" ")[0];
-                    String url = request.get(0).split(" ")[1];
-
-                    for (int i = 1; i < emptyLine - 1; i++) {
-                        header.put(request.get(i).split(": ")[0], request.get(i).split(": ")[1]);
-                    }
-
-                    // ------------------------- REQUEST HANDLING ------------------------------------
-
-                    // WEBPAGE LOADING
-                    if ((type.equals("GET")) && (assets.getAssets().containsKey(url))) {
-                        byte[] content = assets.getAssets().get(url);
-                        String mimeType = url.substring(url.lastIndexOf('.') + 1);
-                        if (mimeType.equals("js")) {
-                            mimeType = "javascript";
-                        }
-
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: text/" + mimeType + "; charset=iso-8859-1\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n" +
-                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
-
-                        output.write(content);
-
-                        output.flush();
-                    }
-
-                    // LOGIN VERIFICATION
-                    else if ((type.equals("POST")) && (url.equals("/frontend/verify"))) {
-                        byte[] content;
-                        String usernameObject = request.get(line).split(",")[0];
-                        String usernameValue = usernameObject.split(":")[1];
-                        String username = usernameValue.substring(1, usernameValue.length() - 1);
-
-                        String passwordObject = request.get(line).split(",")[1];
-                        String passwordValue = passwordObject.split(":")[1];
-                        String password = passwordValue.substring(1, passwordValue.length() - 2);
-                        
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: application/json\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
-
-                        if (userBase.verifyUser(username, password))  {
-                            content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
-                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
-                            output.write(content);
-        
-                            output.flush();   
-                        } else {
-                            content = "{\"valid\": false}".getBytes(StandardCharsets.UTF_8);
-                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
-                            output.write(content);
-
-                            output.flush();
-                        }
-                    }
-
-                    // NEW USER
-                    else if ((type.equals("POST")) && (url.equals("/frontend/newUser"))) {
-                        byte[] content;
-                        String usernameObject = request.get(line).split(",")[0];
-                        String usernameValue = usernameObject.split(":")[1];
-                        String username = usernameValue.substring(1, usernameValue.length() - 1);
-
-                        String passwordObject = request.get(line).split(",")[1];
-                        String passwordValue = passwordObject.split(":")[1];
-                        String password = passwordValue.substring(1, passwordValue.length() - 2);
-                        
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: application/json\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
-
-                        if (userBase.addUser(username, password))  {
-                            content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
-                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
-                            output.write(content);
-        
-                            output.flush();   
-
-                            saveUsers();
-                        } else {
-                            content = "{\"valid\": false}".getBytes(StandardCharsets.UTF_8);
-                            output.write(("Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
-                            output.write(content);
-
-                            output.flush();
-                        }
-                    }
-
-                    // LOADING PROJECTS IN
-                    else if ((type.equals("POST")) && (url.equals("/frontend/loadProjects"))) {
-                        // byte[] content = "{\"projectNames\": [ \"PROJECTNAME\", ]}".getBytes(StandardCharsets.UTF_8);
-                        byte[] content;
-                        StringBuilder stringContent = new StringBuilder();
-                        stringContent.append("{\"projectName\": [");
-
-                        String usernameObject = request.get(line).split(",")[0];
-                        String usernameValue = usernameObject.split(":")[1];
-                        String username = usernameValue.substring(1, usernameValue.length() - 2);
-
-                        User user = userBase.getUser(username);
-
-                        System.out.println(username);
-                        System.out.println(user);
-                        System.out.println(user.getOwnedProjects());
-
-                        Iterator<String> projectIterator = user.getOwnedProjects().iterator();
-
-                        int i = 0;
-
-                    while (projectIterator.hasNext()) {
-                        String projectName = projectIterator.next();
-
-                        String projectContent = "\"" + projectName + "\"";
-                        
-                        stringContent.append(projectContent);
-
-                        if (i != user.getOwnedProjects().size() - 1) {
-                            stringContent.append(",");
-                        } else {
-                            stringContent.append("]}");
-                        }
-                        i++;
-                    }
-
-                        content = stringContent.toString().getBytes(StandardCharsets.UTF_8);
-
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: application/json\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n" +
-                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
-
-                        output.write(content);
-
-                        output.flush();
-                    }
-
-                    // CREATING A PROJECT
-                    else if ((type.equals("POST")) && (url.equals("/frontend/createProject"))) {
-                        byte[] content;
-                        String usernameString = request.get(line).split(",")[0];
-                        String usernameValue = usernameString.split(":")[1];
-                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 1);
-
-                        String projectString = request.get(line).split(",")[1];
-                        String projectNameValue = projectString.split(":")[1];
-                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
-
-                        // if user's owned projects contain the project with the name
-                        if (projectName.equals("")) {
-                            content = "{\"valid\": false}".getBytes();
-
-                        } else if (!userBase.getUser(username).getOwnedProjects().contains(projectName)) {
-                            content = "{\"valid\": true}".getBytes();
-                            projectBase.addProject(projectName);
-                            userBase.addToOwnedProjects(username, projectBase.getProject(projectName));
-
-                            System.out.println("OWNED: ");
-                            System.out.println(userBase.getUser(username).getOwnedProjects());
-
-                            saveUsers();
-                            saveProjects();
-                        } else {
-                            content = "{\"valid\": false}".getBytes();
-                        }
-
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: application/json\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n" +
-                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
-
-                        output.write(content);
-
-                        output.flush();
-                    }
-
-                    // SHARING A PROJECT
-                    else if ((type.equals("POST")) && (url.equals("/frontend/shareProject"))) {
-                        byte[] content;
-                        String projectString = request.get(line).split(",")[0];
-                        String projectValue = projectString.split(":")[1];
-                        String projectName = projectValue.substring(1, projectValue.length() - 1);
-
-                        String shareeString = request.get(line).split(",")[1];
-                        String shareeValue = shareeString.split(":")[1];
-                        String shareeName = shareeValue.substring(1, shareeValue.length() - 2);
-
-                        // if user's owned projects contain the project with the name
-                        User sharee = userBase.getUser(shareeName);
-
-                        if (sharee != null) {
-                            sharee.getSharedProjects().add(projectName);
-                            content = "{\"valid\": true}".getBytes();
-                        } else {
-                            content = "{\"valid\": false}".getBytes();
-                        }
-
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: application/json\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n" +
-                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
-
-                        output.write(content);
-
-                        output.flush();
-                    }
-
-                    // COLLABORATION
-                    else if ((type.equals("POST")) && (url.equals("/frontend/collaborate"))) {
-                        byte[] content;
-                        String usernameString = request.get(line).split(",")[0];
-                        String usernameValue = usernameString.split(":")[1];
-                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 1);
-
-                        String projectString = request.get(line).split(",")[1];
-                        String projectNameValue = projectString.split(":")[1];
-                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
-
-                        if (userBase.getUser(username).getSharedProjects().contains(projectName)) {
-                            content = "{\"valid\": true}".getBytes();
-                        } else {
-                            content = "{\"valid\": false}".getBytes();
-                        }
-
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: application/json\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n" +
-                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
-
-                        output.write(content);
-
-                        output.flush();
-                    }
-
-                    // SAVING UML
-                    else if ((type.equals("POST")) && (url.equals("/frontend/saveUML"))) {
-
-                        String projectString = request.get(line).split(",")[0];
-                        String projectNameValue = projectString.split(":")[1];
-                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
-
-                        Project project = projectBase.getProject(projectName);
-
-                        project.jsonToJava(request.get(line));
-                        
+                // LOGIN VERIFICATION
+                else if ((type.equals("POST")) && (url.equals("/frontend/verify"))) {
                     byte[] content;
+                    String usernameObject = request.get(line).split(",")[0];
+                    String usernameValue = usernameObject.split(":")[1];
+                    String username = usernameValue.substring(1, usernameValue.length() - 1);
 
+                    String passwordObject = request.get(line).split(",")[1];
+                    String passwordValue = passwordObject.split(":")[1];
+                    String password = passwordValue.substring(1, passwordValue.length() - 2);
 
+                    if (userBase.verifyUser(username, password))  {
+                        content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
+                        sendResponse(content);  
+                    } else {
+                        content = "{\"valid\": false}".getBytes(StandardCharsets.UTF_8);
+                        sendResponse(content);
+                    }
+                }
+
+                // NEW USER
+                else if ((type.equals("POST")) && (url.equals("/frontend/newUser"))) {
+                    byte[] content;
+                    String usernameObject = request.get(line).split(",")[0];
+                    String usernameValue = usernameObject.split(":")[1];
+                    String username = usernameValue.substring(1, usernameValue.length() - 1);
+
+                    String passwordObject = request.get(line).split(",")[1];
+                    String passwordValue = passwordObject.split(":")[1];
+                    String password = passwordValue.substring(1, passwordValue.length() - 2);
+
+                    if (userBase.addUser(username, password))  {
+                        content = "{\"valid\": true}".getBytes(StandardCharsets.UTF_8);
+                        sendResponse(content);
+                        saveUsers();
+                    } else {
+                        content = "{\"valid\": false}".getBytes(StandardCharsets.UTF_8);
+                        sendResponse(content);
+                    }
+                }
+
+                // LOADING PROJECTS IN
+                else if ((type.equals("POST")) && (url.equals("/frontend/loadProjects"))) {
+                    byte[] content;
+                    StringBuilder stringContent = new StringBuilder();
+                    stringContent.append("{\"projectName\": [");
+
+                    String usernameObject = request.get(line).split(",")[0];
+                    String usernameValue = usernameObject.split(":")[1];
+                    String username = usernameValue.substring(1, usernameValue.length() - 2);
+
+                    User user = userBase.getUser(username);
+                    Iterator<String> projectIterator = user.getOwnedProjects().iterator();
+
+                    int i = 0;
+
+                while (projectIterator.hasNext()) {
+                    String projectName = projectIterator.next();
+
+                    String projectContent = "\"" + projectName + "\"";
+                    
+                    stringContent.append(projectContent);
+
+                    if (i != user.getOwnedProjects().size() - 1) {
+                        stringContent.append(",");
+                    } else {
+                        stringContent.append("]}");
+                    }
+                    i++;
+                }
+
+                    content = stringContent.toString().getBytes(StandardCharsets.UTF_8);
+
+                    sendResponse(content);
+                }
+
+                // CREATING A PROJECT
+                else if ((type.equals("POST")) && (url.equals("/frontend/createProject"))) {
+                    byte[] content;
+                    String usernameString = request.get(line).split(",")[0];
+                    String usernameValue = usernameString.split(":")[1];
+                    String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 1);
+
+                    String projectString = request.get(line).split(",")[1];
+                    String projectNameValue = projectString.split(":")[1];
+                    String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
+
+                    // if user's owned projects contain the project with the name
+                    if (projectName.equals("")) {
+                        content = "{\"valid\": false}".getBytes();
+
+                    } else if (!userBase.getUser(username).getOwnedProjects().contains(projectName)) {
                         content = "{\"valid\": true}".getBytes();
+                        projectBase.addProject(projectName);
+                        userBase.addToOwnedProjects(username, projectBase.getProject(projectName));
 
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: application/json\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n" +
-                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
-
-                        output.write(content);
-
-                        output.flush();
-
+                        saveUsers();
+                        saveProjects();
+                    } else {
+                        content = "{\"valid\": false}".getBytes();
                     }
 
-                    // LOADING UML
-                    else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
-                        byte[] content;
-                        String usernameString = request.get(line).split(",")[0];
-                        String usernameValue = usernameString.split(":")[1];
-                        String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 2);
+                    sendResponse(content);
+                }
 
-                        String projectString = request.get(line).split(",")[1];
-                        String projectNameValue = projectString.split(":")[1];
-                        String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
+                // SHARING A PROJECT
+                else if ((type.equals("POST")) && (url.equals("/frontend/shareProject"))) {
+                    byte[] content;
+                    String projectString = request.get(line).split(",")[0];
+                    String projectValue = projectString.split(":")[1];
+                    String projectName = projectValue.substring(1, projectValue.length() - 1);
 
-                        System.out.println(projectBase);
-                        System.out.println(projectName);
-                        
-                        System.out.println(projectBase.getProject(projectName));
-                        System.out.println(projectBase.getProject(projectName).javaToJson());
-                        content = projectBase.getProject(projectName).javaToJson().getBytes();
+                    String shareeString = request.get(line).split(",")[1];
+                    String shareeValue = shareeString.split(":")[1];
+                    String shareeName = shareeValue.substring(1, shareeValue.length() - 2);
 
-                        output.write(
-                            ("HTTP/1.1 200 OK\r\n" +
-                            "Content-Type: application/json\r\n" +
-                            "Vary: Accept-Encoding\r\n" +
-                            "Accept-Ranges: none\r\n" +
-                            "Content-Length: " + content.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8)
-                        );
+                    // if user's owned projects contain the project with the name
+                    User sharee = userBase.getUser(shareeName);
 
-                        output.write(content);
-
-                        output.flush();
+                    if (sharee != null) {
+                        sharee.getSharedProjects().add(projectName);
+                        content = "{\"valid\": true}".getBytes();
+                    } else {
+                        content = "{\"valid\": false}".getBytes();
                     }
+
+                    sendResponse(content);
+                }
+
+                // COLLABORATION
+                else if ((type.equals("POST")) && (url.equals("/frontend/collaborate"))) {
+                    byte[] content;
+                    String usernameString = request.get(line).split(",")[0];
+                    String usernameValue = usernameString.split(":")[1];
+                    String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 1);
+
+                    String projectString = request.get(line).split(",")[1];
+                    String projectNameValue = projectString.split(":")[1];
+                    String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
+
+                    if (userBase.getUser(username).getSharedProjects().contains(projectName)) {
+                        content = "{\"valid\": true}".getBytes();
+                    } else {
+                        content = "{\"valid\": false}".getBytes();
+                    }
+
+                    sendResponse(content);
+                }
+
+                // SAVING UML
+                else if ((type.equals("POST")) && (url.equals("/frontend/saveUML"))) {
+                    byte[] content;
+                    String projectString = request.get(line).split(",")[0];
+                    String projectNameValue = projectString.split(":")[1];
+                    String projectName = projectNameValue.substring(1, projectNameValue.length() - 1);
+
+                    Project project = projectBase.getProject(projectName);
+
+                    project.jsonToJava(request.get(line));
+
+                    for (Diagram diagram : project.getAllDiagrams()) {
+                        System.out.println("hi" + diagram.getXPosition());
+                        System.out.println(diagram.getYPosition());
+                    }
+
+                    content = "{\"valid\": true}".getBytes();
+
+                    sendResponse(content);
+                } // 416 205
+
+                // LOADING UML
+                else if ((type.equals("POST")) && (url.equals("/frontend/loadUML"))) {
+                    byte[] content;
+                    String usernameString = request.get(line).split(",")[0];
+                    String usernameValue = usernameString.split(":")[1];
+                    String username = usernameString.split(":")[1].substring(1, usernameValue.length() - 2);
+
+                    String projectString = request.get(line).split(",")[1];
+                    String projectNameValue = projectString.split(":")[1];
+                    String projectName = projectNameValue.substring(1, projectNameValue.length() - 2);
+
+                    content = projectBase.getProject(projectName).javaToJson().getBytes();
+
+                    sendResponse(content);
+                }
+
                 input.close();
                 output.close();
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

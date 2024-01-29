@@ -8,7 +8,6 @@ let defaultLineHeight = 14;
 
 let diagrams = axios.get("SERVERURL")
 const diagramsData = diagrams.data;
-
 const arrowData = []
 
 diagrams = {
@@ -547,8 +546,7 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
     background-color: rgb(230, 230, 230);
     border: 2px solid black;
     position: absolute;
-    left: ${x}px;
-    top: ${y}px;
+
 
     scale: ${scale};
     z-index: 2;
@@ -752,6 +750,20 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
     }
   }
 
+  console.log(diagramInfo)
+
+  
+  console.log(x)
+  console.log(y)
+
+  // const xWithOffset = x + (grid.offsetWidth - diagramWidth)/2;
+  // const yWithOffset = y + (grid.offsetHeight - document.querySelector(`#${diagram.id}`).offsetHeight)/2
+
+  const xWithOffset = x ;
+  const yWithOffset = y;
+  
+  diagram.style.left = xWithOffset + 'px'
+  diagram.style.top = yWithOffset + 'px'
   diagramID++;
 
   diagrams.data.push(diagramInfo)
@@ -772,50 +784,59 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
   })
 }
 
-const snap = () => {
+const snap = (offset=false) => {
+  console.log(offset)
   const elements = document.querySelectorAll('.diagram');
   console.dir(elements)
 
   elements.forEach((element) => {
-  let x = 0;
-  let y = 0;
+    // console.log("beans")
+    // console.dir(element)
+    console.log(element.style.left.slice(0, -2), element.style.top.slice(0, -2))
+    let x = Number(element.style.left.slice(0, -2));
+    let y = Number(element.style.top.slice(0, -2));
+    const diagram = getDiagramByID(Number(element.id.slice(7)))
 
-  interact(element)
-    .draggable({
-      modifiers: [
-        interact.modifiers.snap({
-          targets: [
-            interact.snappers.grid({
-              x: 10,
-              y: 10, 
-            })
-          ],
-          range: Infinity,
-          relativePoints: [ { x: gridBounds.width / 2 + gridBounds.x, y: gridBounds.height / 2 + gridBounds.y } ]
-        }),
-        interact.modifiers.restrict({
-          restriction: element.parentNode,
-          elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
-          endOnly: true
-        })
-      ],
-      inertia: {
-        resistance: 100000,
-      }
-    })
-    .on('dragmove', function (event) {
-      x += event.dx / scale;
-      y += event.dy / scale;
+    // let x = 0;
+    // let y = 0;
+    console.log(offset)
 
-      event.target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-      console.log(diagrams.data)
-      const diagram = getDiagramByID(Number(element.id.slice(7)))
-      console.log(Number(element.id.slice(7)))
-      console.log(diagram)
+    interact(element)
+      .draggable({
+        modifiers: [
+          interact.modifiers.snap({
+            targets: [
+              interact.snappers.grid({
+                x: 10,
+                y: 10, 
+              })
+            ],
+            range: Infinity,
+            relativePoints: [ { x: gridBounds.width / 2 + gridBounds.x, y: gridBounds.height / 2 + gridBounds.y } ]
+          }),
+          interact.modifiers.restrict({
+            restriction: element.parentNode,
+            elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
+            endOnly: true
+          })
+        ],
+        inertia: {
+          resistance: 100000,
+        }
+      })
+      .on('dragmove', function (event) {
+        x += event.dx / scale;
+        y += event.dy / scale;
 
-      diagram.external.xPosition = x + (grid.offsetWidth - diagram.external.width)/2;
-      diagram.external.yPosition = y + (grid.offsetHeight - diagram.external.height)/2;
-    })
+        event.target.style.left = x + 'px'
+        event.target.style.top = y + 'px'
+
+        // diagram.external.xPosition = x + (grid.offsetWidth - diagram.external.width)/2;
+        // diagram.external.yPosition = y + (grid.offsetHeight - diagram.external.height)/2;
+        diagram.external.xPosition = x;
+        diagram.external.yPosition = y;
+        // console.log(diagram.external.xPosition, diagram.external.yPosition)
+      })
   })
 }
 
@@ -824,7 +845,7 @@ document.querySelector("#addclass > img").addEventListener("click", (e) => {
    ((grid.offsetHeight - (20*11*scale))/2), defaultDiagramWidth,
    "CLASSDIAGRAM")
   
-  snap();
+  snap(true);
 })
 document.querySelector("#addinterface > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
@@ -832,7 +853,7 @@ document.querySelector("#addinterface > img").addEventListener("click", (e) => {
   "INTERFACEDIAGRAM")
 
 
-  snap();
+  snap(true);
 })
 document.querySelector("#addabstractclass > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
@@ -840,14 +861,14 @@ document.querySelector("#addabstractclass > img").addEventListener("click", (e) 
   "ABSTRACTCLASSDIAGRAM")
 
 
-  snap();
+  snap(true);
 })
 document.querySelector("#addexception > img").addEventListener("click", (e) => {
   addDiagram(diagrams, ((grid.offsetWidth - (defaultDiagramWidth*scale))/2),
   ((grid.offsetHeight - 20*1*scale)/2), defaultDiagramWidth,
   "EXCEPTIONDIAGRAM")
 
-  snap();
+  snap(true);
 })
 
 snap();
@@ -922,8 +943,9 @@ const loadUML = async (username, projectName) => {
 
 window.addEventListener("DOMContentLoaded", async () => {
   await loadUML(window.localStorage.getItem("username"), window.localStorage.getItem("projectName"))
-  snap()
-  console.log(diagrams)
+  console.log("achtung");
+  snap(true);
+  console.log("joshau");
 })
 
 // SENDING BACK UML INFO TO THE SERVER
@@ -935,6 +957,7 @@ const saveUML = async () => {
 
 
   for (let diagram of diagrams.data) {
+    console.log(diagram)
     if (diagram.external.type === "CLASSDIAGRAM") {
       classes.push({
         type: "CLASS",
@@ -1004,7 +1027,6 @@ const saveUML = async () => {
     })
   }
 
-  console.log("SENDING: ")
   console.log({
     projectName: window.localStorage.getItem("projectName"),
     diagramCount: diagramID,

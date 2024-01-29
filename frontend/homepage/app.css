@@ -327,3 +327,30 @@ dialog button {
 .close:nth-of-type(2) {
     opacity: 0%;
 }
+
+header > form {
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+}
+
+#logoutForm {
+    left: 1rem;
+}
+
+#logout {
+    background-color: rgb(117, 117, 117);
+    border: none;
+    padding: 0 0 0 0;
+    cursor: pointer;
+
+}
+
+#logout > i {
+    font-size: 3rem;
+    color: #000;
+}

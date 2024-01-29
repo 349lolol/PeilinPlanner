@@ -8,7 +8,9 @@
 
 package entities;
 
-public class Field {
+import java.io.Serializable;
+
+public class Field implements Serializable {
     private String data;
 
     /**
