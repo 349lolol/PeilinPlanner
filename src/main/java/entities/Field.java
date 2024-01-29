@@ -2,8 +2,8 @@
  * [Field.java]
  * Class representing a class field
  * @author Perry Xu & Patrick Wei
- * @version 1.0
- * 01/07/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;

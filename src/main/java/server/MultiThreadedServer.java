@@ -2,8 +2,8 @@
  * [MultiThreadedServer.java]
  * Server supporting multiple users
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
  package server;
@@ -14,24 +14,17 @@
  import java.nio.charset.StandardCharsets;
  import java.util.Map;
  
- import com.fasterxml.jackson.core.type.TypeReference;
- import com.fasterxml.jackson.databind.ObjectMapper;
- 
  import user.User;
  import user.UserBase;
  
  import java.util.ArrayList;
- import java.util.Arrays;
- import java.util.Set;
- import java.util.stream.Collectors;
  import java.util.HashMap;
  import java.util.Iterator;
- import java.util.LinkedList;
  import java.util.List;
  import entities.*;
  
  public class MultiThreadedServer {
-     final int PORT = 5069;       
+     final int PORT = 5069;
      
      private ServerSocket serverSocket;
      private Socket clientSocket;
@@ -76,15 +69,11 @@
         this.readUsers();
         this.readProjects();
 
-        System.out.println(this.userBase);
-        System.out.println(this.projectBase);
         //create a socket with the local IP address and wait for connection request       
-        System.out.println("Waiting for a connection request from a client ...");
         serverSocket = new ServerSocket(PORT);                //create and bind a socket
         while(true) {
             clientSocket = serverSocket.accept();             //wait for connection request
             clientCounter = clientCounter +1;
-            System.out.println("Client "+clientCounter+" connected");
             Thread connectionThread = new Thread(new ConnectionHandler(clientSocket));
             connectionThread.start();                         //start a new thread to handle the connection
         }
@@ -348,11 +337,6 @@
                     Project project = projectBase.getProject(projectName);
 
                     project.jsonToJava(request.get(line));
-
-                    for (Diagram diagram : project.getAllDiagrams()) {
-                        System.out.println("hi" + diagram.getXPosition());
-                        System.out.println(diagram.getYPosition());
-                    }
 
                     content = "{\"valid\": true}".getBytes();
 

@@ -2,8 +2,8 @@
  * [User.java]
  * Class representing a single user
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package user;

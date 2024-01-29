@@ -3,8 +3,8 @@
  * Class that converts a uml to a workable java project
  * For file IO, which doesn't work
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;
@@ -20,7 +20,7 @@ public class toJava {
     /**
      * PrintToJava
      * Converts an entire uml project to a workable folder with 1 file per class object
-     *  */ 
+     */ 
     public static void printToJava(Project project) throws FileNotFoundException{
         //initialize the new folder
         String path = "./" + project.getProjectName();

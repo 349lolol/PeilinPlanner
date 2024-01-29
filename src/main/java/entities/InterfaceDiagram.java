@@ -2,8 +2,8 @@
  * [InterfaceDiagram.java]
  * Class representing an interface diagram in UML
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;
@@ -33,7 +33,7 @@ public class InterfaceDiagram extends Diagram {
     /**
      * toJson
      * prints interfaceDiagarm to json
-     * @return
+     * @return json format
      */
 
     public String toJson(){
@@ -47,14 +47,30 @@ public class InterfaceDiagram extends Diagram {
         return data;
     }
 
-    private String linkedListToJson(LinkedList<Method> points) {
-        String data = "[";
-        for(int i = 0; i < points.size(); i++) {
-            data = data + points.get(i).getData() + ", ";
+    /**
+     * LinkedListToJson
+     * @param <T> type being converted
+     * @param points list of items
+     * @return string representation
+     */
+    private <T> String linkedListToJson(LinkedList<T> points) {
+        if(points.size() > 0) {
+            if(points.get(0) instanceof Method) {
+                String data = "[";
+                for(int i = 0; i < points.size(); i++) {
+                    data = data + ((Method) points.get(i)).getData() + ", ";
+                }
+                data = data.substring(0, data.length()-2);
+                data = data + "]";
+                return data;
+            }
+            else {
+                return null;
+            }
         }
-        data = data.substring(0, data.length()-2);
-        data = data + "]";
-        return data;
+        else {
+            return null;
+        }
     }
 
     /**

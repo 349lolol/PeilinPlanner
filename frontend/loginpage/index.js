@@ -17,7 +17,6 @@ const login = async (data) => {
             return res.json();
         })
         .then(res => {
-            console.log(res)
             if (res.valid) {
                 localStorage.setItem("username", data.username)
                 window.location.href = "/frontend/homepage/homepage.html"
@@ -26,8 +25,6 @@ const login = async (data) => {
             }
         })
         .catch(err => {
-            console.log(err)
-            console.log("ERROR RETRIEVING USER DATA")
         })
     
 }

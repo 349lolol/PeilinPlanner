@@ -2,8 +2,8 @@
  * [Arrow.java]
  * Class representing any arrow in UML
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;
@@ -60,6 +60,11 @@ public class Arrow implements Serializable {
         yPoints = new ArrayList<Integer>();
     }
 
+
+    /**
+     * toJson
+     * @return json format for arrow
+     */
     public String toJson() {
         String data = "{ \"origin\": ";
 

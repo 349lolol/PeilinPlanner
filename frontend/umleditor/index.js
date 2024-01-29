@@ -523,7 +523,6 @@ grid.addEventListener('mouseup', (e) => {
 
 const getDiagramByID = (id) => {
   for (let diagram of diagrams.data) {
-    console.log(diagram);
     if (diagram.external.id === id) {
       return diagram;
     }
@@ -750,14 +749,6 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
     }
   }
 
-  console.log(diagramInfo)
-
-  
-  console.log(x)
-  console.log(y)
-
-  // const xWithOffset = x + (grid.offsetWidth - diagramWidth)/2;
-  // const yWithOffset = y + (grid.offsetHeight - document.querySelector(`#${diagram.id}`).offsetHeight)/2
 
   const xWithOffset = x ;
   const yWithOffset = y;
@@ -785,21 +776,13 @@ const addDiagram = (diagrams, x, y, diagramWidth, type, nameText="", methodsText
 }
 
 const snap = (offset=false) => {
-  console.log(offset)
   const elements = document.querySelectorAll('.diagram');
-  console.dir(elements)
-
   elements.forEach((element) => {
-    // console.log("beans")
-    // console.dir(element)
-    console.log(element.style.left.slice(0, -2), element.style.top.slice(0, -2))
     let x = Number(element.style.left.slice(0, -2));
     let y = Number(element.style.top.slice(0, -2));
     const diagram = getDiagramByID(Number(element.id.slice(7)))
 
-    // let x = 0;
-    // let y = 0;
-    console.log(offset)
+  
 
     interact(element)
       .draggable({
@@ -831,11 +814,8 @@ const snap = (offset=false) => {
         event.target.style.left = x + 'px'
         event.target.style.top = y + 'px'
 
-        // diagram.external.xPosition = x + (grid.offsetWidth - diagram.external.width)/2;
-        // diagram.external.yPosition = y + (grid.offsetHeight - diagram.external.height)/2;
         diagram.external.xPosition = x;
         diagram.external.yPosition = y;
-        // console.log(diagram.external.xPosition, diagram.external.yPosition)
       })
   })
 }
@@ -891,8 +871,6 @@ const loadUML = async (username, projectName) => {
       })
       .then(res => {
 
-        console.log(res)
-
         for (let classDiagram of res.classDiagrams) {
           let fieldsText = "";
           for (let field of classDiagram.fields) {
@@ -935,17 +913,12 @@ const loadUML = async (username, projectName) => {
 
       })
       .catch(err => {
-        console.log(err)
-        console.log("ERROR RETRIEVING USER DATA")
-        // window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
       })
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
   await loadUML(window.localStorage.getItem("username"), window.localStorage.getItem("projectName"))
-  console.log("achtung");
   snap(true);
-  console.log("joshau");
 })
 
 // SENDING BACK UML INFO TO THE SERVER
@@ -957,7 +930,6 @@ const saveUML = async () => {
 
 
   for (let diagram of diagrams.data) {
-    console.log(diagram)
     if (diagram.external.type === "CLASSDIAGRAM") {
       classes.push({
         type: "CLASS",
@@ -1027,13 +999,6 @@ const saveUML = async () => {
     })
   }
 
-  console.log({
-    projectName: window.localStorage.getItem("projectName"),
-    diagramCount: diagramID,
-    arrowCount: arrowID,
-    diagrams: classes,
-    arrows: arrows
-  })
 
   await fetch("/frontend/saveUML", {
     method: "POST",
@@ -1084,7 +1049,6 @@ const share = async (projectName, sharee) => {
       }
     })
     .catch(err => {
-        console.log("ERROR RETRIEVING USER DATA")
         window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
     })
 }

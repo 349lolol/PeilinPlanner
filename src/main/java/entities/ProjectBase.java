@@ -2,8 +2,8 @@
  * [ProjectBase.java]
  * Class representing all created projects
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;
@@ -25,6 +25,10 @@ public class ProjectBase implements Serializable {
         isInUse = new HashMap<String, Boolean>();
     }
 
+    /**
+     * getProjects
+     * @return all projects from projectBase
+     */
     public HashMap<String, Project> getProjects() {
         return projects;
     }

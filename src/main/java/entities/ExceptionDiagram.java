@@ -2,8 +2,8 @@
  * [ExceptionDiagram.java]
  * Class representing an exception diagram in UML
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;
@@ -121,7 +121,7 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * getXSize
-     * returns the x size  of the exception
+     * returns the x size of the exception
      * @return the x size of the exception
      */
     @Override
@@ -141,7 +141,7 @@ public class ExceptionDiagram extends Diagram {
 
     /**
      * getYSize
-     * returns the y size  of the exception
+     * returns the y size of the exception
      * @return the y size of the exception
      */
     @Override

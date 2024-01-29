@@ -18,7 +18,6 @@ const login = async (data) => {
             return res.json();
         })
         .then(res => {
-            console.log(res)
             if (res.valid) {
                 window.location.href = "http://localhost:5069/frontend/loginpage/loginpage.html"
             } else {
@@ -26,8 +25,6 @@ const login = async (data) => {
             }
         })
         .catch(err => {
-            console.log(err)
-            console.log("ERROR RETRIEVING USER DATA")
         form.reset();
         })
     

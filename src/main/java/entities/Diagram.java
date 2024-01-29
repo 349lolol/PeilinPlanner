@@ -2,8 +2,8 @@
  * [Diagram.java]
  * Class representing a diagram in UML
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;
@@ -111,7 +111,7 @@ public abstract class Diagram implements Serializable {
 
     /**
      * getXSize
-     * returns the x size  of the class
+     * returns the x size of the class
      * @return the x size of the class
      */
     public int getXSize() {
@@ -129,7 +129,7 @@ public abstract class Diagram implements Serializable {
 
     /**
      * getYSize
-     * returns the y size  of the diagram
+     * returns the y size of the diagram
      * @return the y size of the diagram
      */
     public int getYSize() {

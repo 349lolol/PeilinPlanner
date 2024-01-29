@@ -2,8 +2,8 @@
  * [Assets.java]
  * process assets
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package server;
@@ -49,8 +49,6 @@ public class Assets {
         for (int i = 0; i < pathNames.size(); i++) {
             this.assets.put("/frontend" + pathNames.get(i), pathContent.get(i));
         }
-        
-        System.out.println(assets.keySet());
     }
 
     public Map<String, byte[]> getAssets() {

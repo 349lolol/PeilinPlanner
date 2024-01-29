@@ -2,8 +2,8 @@
  * [ClassDiagram.java]
  * Class representing a class diagram in UML
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;
@@ -48,44 +48,46 @@ public class ClassDiagram extends Diagram {
         data = data + "\"xSize\": " + super.getXSize() + ", ";
         data = data + "\"ySize\": " + super.getYSize() + ", ";
         data = data + "\"isAbstract\": " + this.isAbstract + ", ";
-        data = data + "\"fields\": " + fieldsToJson(this.fields) + ", ";
-        data = data + "\"methods\": " + methodsToJson(this.methods) + "}";
+        data = data + "\"fields\": " + linkedListToJson(this.fields) + ", ";
+        data = data + "\"methods\": " + linkedListToJson(this.methods) + "}";
 
         return data;
     }
 
-    /**
-     * methodsToJson
-     * converts method linkedlist to string representation
-     * @param points linkedlist of methods
-     * @return
-     */
-    private String methodsToJson(LinkedList<Method> points) {
-        String data = "[";
-        for(int i = 0; i < points.size(); i++) {
-            data = data + points.get(i).getData()  + ", ";
-        }
-        data = data.substring(0, data.length()-2);
-        data = data + "]";
 
-
-        return data;
-    }
-    
     /**
-     * methodsToJson
-     * converts field linkedlist to string representation
-     * @param points linkedlist of methods
-     * @return
+     * LinkedListToJson
+     * @param <T> type being converted
+     * @param points list of items
+     * @return string representation
      */
-    private String fieldsToJson(LinkedList<Field> points) {
-        String data = "[";
-        for(int i = 0; i < points.size(); i++) {
-            data = data + points.get(i).getData() + ", ";
+    private <T> String linkedListToJson(LinkedList<T> points) {
+        if(points.size() > 0) {
+            if(points.get(0) instanceof Method) {
+                String data = "[";
+                for(int i = 0; i < points.size(); i++) {
+                    data = data + ((Method) points.get(i)).getData() + ", ";
+                }
+                data = data.substring(0, data.length()-2);
+                data = data + "]";
+                return data;
+            }
+            else if (points.get(0) instanceof Field) {
+                String data = "[";
+                for(int i = 0; i < points.size(); i++) {
+                    data = data + ((Field) points.get(i)).getData() + ", ";
+                }
+                data = data.substring(0, data.length()-2);
+                data = data + "]";
+                return data;
+            }
+            else {
+                return null;
+            }
         }
-        data = data.substring(0, data.length()-2);
-        data = data + "]";
-        return data;
+        else {
+            return null;
+        }
     }
 
     /**

@@ -17,7 +17,6 @@ const load = async (username) => {
             return res.json();
         })
         .then(res => {
-            console.log(res)
             for (let projectName in res.projectName) {
                 const projects = document.querySelector(".projects");
 
@@ -45,13 +44,12 @@ const load = async (username) => {
             }
         })
         .catch(err => {
-            console.log("ERROR RETRIEVING USER DATA")
-            console.log(err)
+
         })
 }
 
 window.addEventListener("DOMContentLoaded", (e) => {
-    console.log("LOADING")
+
     load(localStorage.getItem("username"))
 })
 
@@ -132,7 +130,6 @@ const create = async (username, projectName) => {
             }
         })
         .catch(err => {
-            console.log("ERROR RETRIEVING USER DATA")
             window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
         })
 }
@@ -174,7 +171,6 @@ const collaborate = async (username, projectName) => {
            }
         })
         .catch(err => {
-            console.log("ERROR RETRIEVING USER DATA")
             window.location.href = "http://localhost:5069/frontend/homepage/homepage.html"
         })
 }
@@ -191,7 +187,6 @@ const addProjectListeners = () => {
     const projects = document.querySelectorAll(".project")
     console.log(projects)
     projects.forEach(project => project.addEventListener("click", (e) => {
-                    // TODO: FIX THIS
             
         window.localStorage.setItem("projectName", project.id);
         window.location.href = "http://localhost:5069/frontend/umleditor/umleditor.html"

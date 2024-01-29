@@ -2,8 +2,8 @@
  * [UserBase.java]
  * Class representing all created users
  * @author Perry Xu & Patrick Wei
- * @version 1.1
- * 01/09/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package user;
@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import entities.Project;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class UserBase implements Serializable {

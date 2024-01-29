@@ -2,8 +2,8 @@
  * [Project.java]
  * Class representing a UML PROJECT
  * @author Perry Xu & Patrick Wei
- * @version 1.0
- * 01/07/24
+ * @version 1.2
+ * 01/29/24
  */
 
 package entities;
@@ -54,6 +54,11 @@ public class Project implements Serializable {
         arrows = new HashMap<Integer, Arrow>();
     }
 
+    /**
+     * splits uml into processable lines
+     * @param data uml data
+     * @return
+     */
     public String[] splitUML(String data) {
         int layersDeep = 0;
         int linesCount = 2;
@@ -88,7 +93,13 @@ public class Project implements Serializable {
         return lines;
     }
 
-
+    /**
+     * JsonToJava
+     * converts entire jsonString to java
+     * @param jsonString json file
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     */
     public void jsonToJava(String jsonString) throws JsonMappingException, JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
                          
@@ -98,9 +109,7 @@ public class Project implements Serializable {
         
         TypeReference<HashMap<String, String>> typeReference = new TypeReference<HashMap<String,String>>() {};
         Map<String, String> jsonMap = objectMapper.readValue(jsonString, typeReference);
-
-        System.out.println(jsonString);
-
+        
         this.setProjectName(projectName);
         this.setDiagramIdCount(Integer.parseInt(jsonMap.get("diagramCount")));
         this.setArrowIdCount(Integer.parseInt(jsonMap.get("arrowCount")));
@@ -120,12 +129,9 @@ public class Project implements Serializable {
                 }
             }
             
-        System.out.println(jsonMap);
-        System.out.println(Arrays.toString(diagramMapArray));
-
+            //iterate through all diagrams
             for (int i = 0; i < diagramMapArray.length; i++) {
                 Map<String, String> diagramMap = objectMapper.readValue(diagramMapArray[i], typeReference);
-                System.out.println(diagramMap);
                 LinkedList<Field> fields = new LinkedList<>();
                 LinkedList<Method> methods = new LinkedList<>();
                 if (diagramMap.get("fields") != null) {
@@ -250,16 +256,6 @@ public class Project implements Serializable {
                 }
             }
         }
-
-        for (Diagram diagram : this.getAllDiagrams()) {
-            System.out.println(diagram.getName());
-            System.out.println(diagram.getXPosition());
-            System.out.println(diagram.getYPosition());
-            System.out.println(diagram.getXSize());
-            System.out.println(diagram.getYSize());
-        }
-
-        System.out.println(this.getAllDiagrams());
         
         // GETTING ARROW INFORMATION
 
@@ -276,7 +272,7 @@ public class Project implements Serializable {
                     arrowMapArray[i] = arrowMapArray[i] + "}";
                 }
             }
-
+            //iterate through all arrows
             for (String arrowObject : arrowMapArray) {
                 Map<String, String> arrowMap = objectMapper.readValue(arrowObject, typeReference);
 
@@ -338,7 +334,6 @@ public class Project implements Serializable {
     * @return the project class as a JSON string
     */
     public String javaToJson() {
-        System.out.println("DIGRAMS : " + this.diagrams);
         String data = "{" + "\"ProjectName\":\""  + this.projectName + "\",";
         data = data + "\"diagramIdCount\":"  + this.diagramIdCount + ",";
         data = data + "\"arrowIdCount\":"  + this.arrowIdCount + ",";
@@ -376,13 +371,9 @@ public class Project implements Serializable {
         }
         data = data.substring(0, data.length() - 1);
         data = data + "]}";
-
-        System.out.println(data);
         return data;
         
     }
-
-
 
     /**
      * getDiagram
@@ -404,10 +395,8 @@ public class Project implements Serializable {
      * adds a diagram to the system
      * @param diagram diagram being added
      */
-    public void addDiagram(Diagram diagram) {   
-        System.out.println("ADDING " + diagram);
+    public void addDiagram(Diagram diagram) { 
         diagrams.put(diagram.getId(), diagram);
-        System.out.println(this.diagrams);
     }
 
     /**
